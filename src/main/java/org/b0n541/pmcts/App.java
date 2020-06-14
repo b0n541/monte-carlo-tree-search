@@ -3,6 +3,7 @@
  */
 package org.b0n541.pmcts;
 
+import org.b0n541.pmcts.game.tictactoe.TicTacToe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,11 +11,9 @@ public class App {
 
     private static final Logger LOG = LoggerFactory.getLogger(App.class);
 
-    public String getGreeting() {
-        return "Hello world.";
-    }
+    public static void main(final String[] args) {
+        final TicTacToe ticTacToe = new TicTacToe();
 
-    public static void main(String[] args) {
-        LOG.info(new App().getGreeting());
+        ticTacToe.playGame();
     }
 }

@@ -21,18 +21,17 @@ repositories {
 }
 
 dependencies {
-    // This dependency is used by the application.
+    // Guava
     implementation("com.google.guava:guava:29.0-jre")
 
     // Logging
-    implementation("org.slf4j:slf4j-api:1.7.25")
-    runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl:2.13.3")
+    implementation("ch.qos.logback:logback-classic:1.2.3")
 
-    // Use JUnit Jupiter API for testing.
+    // Test
+    testImplementation("org.assertj:assertj-core:3.16.1")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
-
-    // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.6.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter:5.6.2")
 }
 
 application {
