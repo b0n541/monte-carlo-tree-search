@@ -46,24 +46,63 @@ public class TreeNodeTest {
         leftChildNode.addVisit(20.0);
         rootNode.addVisit(20.0);
 
+        assertThat(rootNode.getTotalScore()).isEqualTo(20.0);
         assertThat(rootNode.getVisits()).isEqualTo(1);
         assertThat(rootNode.getUcb1Value()).isEqualTo(Double.MAX_VALUE);
 
+        assertThat(leftChildNode.getTotalScore()).isEqualTo(20.0);
         assertThat(leftChildNode.getVisits()).isEqualTo(1);
         assertThat(leftChildNode.getUcb1Value()).isEqualTo(20.0);
 
         final TreeNode rightChildNode = rootNode.getChildren().get(1);
 
+        assertThat(rightChildNode.getTotalScore()).isEqualTo(0.0);
+        assertThat(rightChildNode.getVisits()).isEqualTo(0);
+        assertThat(rightChildNode.getUcb1Value()).isEqualTo(Double.MAX_VALUE);
+
         rightChildNode.addVisit(10.0);
         rootNode.addVisit(10.0);
 
+        assertThat(rootNode.getTotalScore()).isEqualTo(30.0);
         assertThat(rootNode.getVisits()).isEqualTo(2);
         assertThat(rootNode.getUcb1Value()).isEqualTo(Double.MAX_VALUE);
 
+        assertThat(leftChildNode.getTotalScore()).isEqualTo(20.0);
         assertThat(leftChildNode.getVisits()).isEqualTo(1);
         assertThat(leftChildNode.getUcb1Value()).isCloseTo(21.67, within(0.01));
 
+        assertThat(rightChildNode.getTotalScore()).isEqualTo(10.0);
         assertThat(rightChildNode.getVisits()).isEqualTo(1);
         assertThat(rightChildNode.getUcb1Value()).isCloseTo(11.67, within(0.01));
+
+        leftChildNode.expandPossibleMoves();
+
+        final TreeNode leftGrandChildNode = leftChildNode.getChildren().get(0);
+
+        leftGrandChildNode.addVisit(15.0);
+        leftChildNode.addVisit(15.0);
+        rootNode.addVisit(15.0);
+
+        assertThat(rootNode.getTotalScore()).isEqualTo(45.0);
+        assertThat(rootNode.getVisits()).isEqualTo(3);
+        assertThat(rootNode.getUcb1Value()).isEqualTo(Double.MAX_VALUE);
+
+        assertThat(leftChildNode.getTotalScore()).isEqualTo(35.0);
+        assertThat(leftChildNode.getVisits()).isEqualTo(2);
+        assertThat(leftChildNode.getUcb1Value()).isCloseTo(18.98, within(0.01));
+
+        assertThat(rightChildNode.getTotalScore()).isEqualTo(10.0);
+        assertThat(rightChildNode.getVisits()).isEqualTo(1);
+        assertThat(rightChildNode.getUcb1Value()).isCloseTo(12.10, within(0.01));
+
+        assertThat(leftGrandChildNode.getTotalScore()).isEqualTo(15.0);
+        assertThat(leftGrandChildNode.getVisits()).isEqualTo(1);
+        assertThat(leftGrandChildNode.getUcb1Value()).isCloseTo(16.67, within(0.01));
+
+        final TreeNode rightGrandChildNode = leftChildNode.getChildren().get(1);
+
+        assertThat(rightGrandChildNode.getTotalScore()).isEqualTo(0.0);
+        assertThat(rightGrandChildNode.getVisits()).isEqualTo(0);
+        assertThat(rightGrandChildNode.getUcb1Value()).isEqualTo(Double.MAX_VALUE);
     }
 }

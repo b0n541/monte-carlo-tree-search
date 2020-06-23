@@ -36,6 +36,10 @@ public final class TreeNode {
         return parent;
     }
 
+    public double getTotalScore() {
+        return totalScore;
+    }
+
     public long getVisits() {
         return visits;
     }

@@ -28,7 +28,7 @@ public class TestGameState implements GameState {
 
     @Override
     public boolean isGameFinished() {
-        return moves.size() == 3;
+        return moves.size() == 100;
     }
 
     @Override

@@ -15,25 +15,34 @@ public final class MonteCarloTreeSearch {
     }
 
     private static TreeNode traverseTree(final Tree tree) {
-        TreeNode currentNode = tree.getRootNode();
-        while (!currentNode.isLeafNode()) {
-            double bestUcb1Value = Double.MIN_VALUE;
+        TreeNode nextNode = tree.getRootNode();
+        while (!nextNode.isLeafNode()) {
             TreeNode bestChildNode = null;
-            for (final TreeNode node : currentNode.getChildren()) {
+            double bestUcb1Value = Double.MIN_VALUE;
+            for (final TreeNode node : nextNode.getChildren()) {
                 if (node.getUcb1Value() > bestUcb1Value) {
-                    bestUcb1Value = node.getUcb1Value();
                     bestChildNode = node;
+                    bestUcb1Value = node.getUcb1Value();
                 }
             }
-            currentNode = bestChildNode;
+            nextNode = bestChildNode;
         }
-        return currentNode;
+        return nextNode;
     }
 
     private static TreeNode expandTree(final TreeNode node) {
-        if (node.getVisits() == 0) {
+        if (node.isRootNode() && node.isLeafNode()) {
+            return expandPossibleMoves(node);
+        }
+
+        if (node.getVisits() == 0 || node.getGameState().isGameFinished()) {
             return node;
         }
+
+        return expandPossibleMoves(node);
+    }
+
+    private static TreeNode expandPossibleMoves(final TreeNode node) {
         node.expandPossibleMoves();
         return node.getChildren().get(0);
     }
