@@ -1,5 +1,6 @@
 package org.b0n541.pmcts.game.tictactoe;
 
+import org.b0n541.pmcts.mcts.GameMove;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,13 +17,13 @@ public class TicTacToe {
     public void playGame() {
 
         do {
-            final TicTacToeMove move = currentPlayer.play(gameState.getPossibleMoves(currentPlayer.playerSymbol));
+            final GameMove move = currentPlayer.play(gameState.getPossibleMoves());
 
             gameState.addMove(move);
 
             switchPlayer();
 
-        } while (!gameState.isFinished());
+        } while (!gameState.isGameFinished());
 
         LOG.info("--> {}", gameState.getGameResult());
     }

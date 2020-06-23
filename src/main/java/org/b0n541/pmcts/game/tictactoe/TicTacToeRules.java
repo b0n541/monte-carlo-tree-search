@@ -33,45 +33,33 @@ public final class TicTacToeRules {
 
     private static final int FULL_FIELD = 0b111111111;
 
-    private int crosses;
-    private int noughts;
-
-    public void update(final PlayerSymbol playerSymbol, final int row, final int column) {
-        final int bitPosition = row * 3 + column;
-
-        if (playerSymbol == PlayerSymbol.O) {
-            noughts = noughts | (0x1 << bitPosition);
-        } else {
-            crosses = crosses | (0x1 << bitPosition);
-        }
-    }
-
-    public boolean hasWon(final PlayerSymbol playerSymbol) {
-        final int playerPattern = (playerSymbol == PlayerSymbol.O) ? noughts : crosses;
-
+    public static boolean hasWon(final int playerPattern) {
         for (final int winningPattern : WINNING_PATTERNS) {
             if ((winningPattern & playerPattern) == winningPattern) {
                 return true;
             }
         }
-
         return false;
     }
 
-    public boolean isDraw() {
-        return ((crosses | noughts) & FULL_FIELD) == FULL_FIELD;
+    public static boolean isDraw(final int noughts, final int crosses) {
+        return !hasWon(noughts) && !hasWon(crosses);
     }
 
-    public List<TicTacToeMove> getPossibleMoves(final PlayerSymbol playerSymbol) {
+    public static boolean isBoardFull(final int noughts, final int crosses) {
+        return ((noughts | crosses) & FULL_FIELD) == FULL_FIELD;
+    }
 
-        final int freeCells = ~((crosses | noughts) & FULL_FIELD);
+    public static List<TicTacToeMove> getPossibleMoves(final PlayerSymbol player, final int noughts, final int crosses) {
+
+        final int freeCells = ~((noughts | crosses) & FULL_FIELD);
 
         final List<TicTacToeMove> result = new ArrayList<>();
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 3; column++) {
                 final boolean free = (freeCells & (0x1 << row * 3 + column)) != 0;
                 if (free) {
-                    result.add(new TicTacToeMove(playerSymbol, row, column));
+                    result.add(new TicTacToeMove(player, row, column));
                 }
             }
         }

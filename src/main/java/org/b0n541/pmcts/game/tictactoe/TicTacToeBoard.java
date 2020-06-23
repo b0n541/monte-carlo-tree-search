@@ -1,5 +1,6 @@
 package org.b0n541.pmcts.game.tictactoe;
 
+import org.b0n541.pmcts.mcts.GameMove;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +17,8 @@ public final class TicTacToeBoard {
             {null, null, null},
             {null, null, null}
     };
+    private int noughts;
+    private int crosses;
 
     private final List<TicTacToeMove> moves = new ArrayList<>();
 
@@ -33,8 +36,8 @@ public final class TicTacToeBoard {
         return Collections.unmodifiableList(moves);
     }
 
-    public List<TicTacToeMove> getPossibleMoves(final PlayerSymbol playerSymbol) {
-        return Collections.unmodifiableList(rules.getPossibleMoves(playerSymbol));
+    public List<GameMove> getPossibleMoves(final PlayerSymbol player) {
+        return Collections.unmodifiableList(TicTacToeRules.getPossibleMoves(player, noughts, crosses));
     }
 
     public void addMove(final TicTacToeMove move) {
@@ -45,18 +48,29 @@ public final class TicTacToeBoard {
 
         board[move.row][move.column] = move.playerSymbol;
         moves.add(move);
+        updateNoughtsAndCrosses(move.playerSymbol, move.row, move.column);
 
-        rules.update(move.playerSymbol, move.row, move.column);
-
-        final boolean hasWon = rules.hasWon(move.playerSymbol);
         if (move.playerSymbol == PlayerSymbol.O) {
-            noughtsWon = hasWon;
+            noughtsWon = TicTacToeRules.hasWon(noughts);
         } else if (move.playerSymbol == PlayerSymbol.X) {
-            crossesWon = hasWon;
+            crossesWon = TicTacToeRules.hasWon(crosses);
         }
-        isDraw = rules.isDraw();
+
+        if (TicTacToeRules.isBoardFull(noughts, crosses)) {
+            isDraw = rules.isDraw(noughts, crosses);
+        }
 
         LOG.info(format());
+    }
+
+    private void updateNoughtsAndCrosses(final PlayerSymbol playerSymbol, final int row, final int column) {
+        final int bitPosition = row * 3 + column;
+
+        if (playerSymbol == PlayerSymbol.O) {
+            noughts = noughts | (0x1 << bitPosition);
+        } else if (playerSymbol == PlayerSymbol.X) {
+            crosses = crosses | (0x1 << bitPosition);
+        }
     }
 
     public boolean isFinished() {

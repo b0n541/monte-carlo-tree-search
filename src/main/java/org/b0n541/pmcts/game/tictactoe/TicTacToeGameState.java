@@ -1,30 +1,31 @@
 package org.b0n541.pmcts.game.tictactoe;
 
-import org.b0n541.pmcts.game.GameState;
+import org.b0n541.pmcts.mcts.GameMove;
+import org.b0n541.pmcts.mcts.GameState;
 
 import java.util.List;
 
-public final class TicTacToeGameState implements GameState<TicTacToeMove> {
+public final class TicTacToeGameState implements GameState {
 
     private final TicTacToeBoard board = new TicTacToeBoard();
 
     @Override
-    public List<TicTacToeMove> getPossibleMoves(final PlayerSymbol playerSymbol) {
-        return board.getPossibleMoves(playerSymbol);
+    public List<GameMove> getPossibleMoves() {
+        return board.getPossibleMoves(PlayerSymbol.X);
     }
 
     @Override
-    public void addMove(final TicTacToeMove move) {
-        board.addMove(move);
+    public GameState addMove(final GameMove move) {
+        return null;
     }
 
     @Override
-    public boolean isFinished() {
+    public boolean isGameFinished() {
         return board.isFinished();
     }
 
     @Override
-    public GameResult getGameResult() {
-        return board.getGameResult();
+    public double getGameResult() {
+        return 0;
     }
 }

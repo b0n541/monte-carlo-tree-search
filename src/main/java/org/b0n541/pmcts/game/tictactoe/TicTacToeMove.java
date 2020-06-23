@@ -1,8 +1,10 @@
 package org.b0n541.pmcts.game.tictactoe;
 
+import org.b0n541.pmcts.mcts.GameMove;
+
 import java.util.Objects;
 
-public final class TicTacToeMove {
+public final class TicTacToeMove implements GameMove {
     public final PlayerSymbol playerSymbol;
     public final int row;
     public final int column;
