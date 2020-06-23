@@ -74,7 +74,7 @@ public class TicTacToeBoardTest {
     }
 
     @ParameterizedTest
-    @MethodSource("winningMoves")
+    @MethodSource("provideWinningMoves")
     public void winningGames(final List<TicTacToeMove> moves, final GameResult expectedResult) {
 
         final TicTacToeBoard board = new TicTacToeBoard();
@@ -87,7 +87,7 @@ public class TicTacToeBoardTest {
         assertThat(board.getGameResult()).isEqualTo(expectedResult);
     }
 
-    private static Stream<Arguments> winningMoves() {
+    private static Stream<Arguments> provideWinningMoves() {
         return Stream.of(
                 // win in a row
                 Arguments.of(
