@@ -8,9 +8,9 @@ public final class MonteCarloTreeSearch {
     public static void run(final Tree tree, final int rounds) {
         for (int i = 0; i < rounds; i++) {
             final TreeNode leafNode = traverseTree(tree);
-            final TreeNode rolloutNode = expandTree(leafNode);
-            final double result = rollout(rolloutNode);
-            backPropagation(rolloutNode, result);
+            final TreeNode rollOutNode = expandTree(leafNode);
+            final double result = rollOut(rollOutNode);
+            backPropagation(rollOutNode, result);
         }
     }
 
@@ -47,7 +47,7 @@ public final class MonteCarloTreeSearch {
         return node.getChildren().get(0);
     }
 
-    private static double rollout(final TreeNode node) {
+    private static double rollOut(final TreeNode node) {
         GameState currentState = node.getGameState();
         while (!currentState.isGameFinished()) {
             final List<GameMove> possibleMoves = currentState.getPossibleMoves();
