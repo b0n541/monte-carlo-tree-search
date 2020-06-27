@@ -1,6 +1,5 @@
 package org.b0n541.pmcts.game.tictactoe;
 
-import org.b0n541.pmcts.mcts.GameMove;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -15,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class TicTacToeBoardTest {
     @Test
     public void emptyBoard() {
-        final TicTacToeBoard board = new TicTacToeBoard();
+        final TicTacToeBoard board = new TicTacToeBoard(PlayerSymbol.O);
 
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 3; column++) {
@@ -28,7 +27,7 @@ public class TicTacToeBoardTest {
 
     @Test
     public void addMove() {
-        final TicTacToeBoard board = new TicTacToeBoard();
+        final TicTacToeBoard board = new TicTacToeBoard(PlayerSymbol.X);
         board.addMove(new TicTacToeMove(PlayerSymbol.X, 0, 0));
 
         assertThat(board.get(0, 0)).isEqualTo(PlayerSymbol.X);
@@ -36,7 +35,7 @@ public class TicTacToeBoardTest {
 
     @Test
     public void addMoveFieldAlreadyOccupied() {
-        final TicTacToeBoard board = new TicTacToeBoard();
+        final TicTacToeBoard board = new TicTacToeBoard(PlayerSymbol.X);
         board.addMove(new TicTacToeMove(PlayerSymbol.X, 0, 0));
 
         assertThrows(IllegalArgumentException.class, () -> board.addMove(new TicTacToeMove(PlayerSymbol.O, 0, 0)));
@@ -45,19 +44,19 @@ public class TicTacToeBoardTest {
 
     @Test
     public void possibleMoves() {
-        final TicTacToeBoard board = new TicTacToeBoard();
+        final TicTacToeBoard board = new TicTacToeBoard(PlayerSymbol.X);
 
-        assertThat(board.getPossibleMoves(PlayerSymbol.X)).hasSize(9);
+        assertThat(board.getPossibleMoves()).hasSize(9);
 
         board.addMove(new TicTacToeMove(PlayerSymbol.X, 0, 0));
 
-        List<GameMove> possibleMoves = board.getPossibleMoves(PlayerSymbol.O);
+        List<TicTacToeMove> possibleMoves = board.getPossibleMoves();
         assertThat(possibleMoves).hasSize(8);
         assertThat(possibleMoves).doesNotContain(new TicTacToeMove(PlayerSymbol.O, 0, 0));
 
         board.addMove(new TicTacToeMove(PlayerSymbol.O, 1, 1));
 
-        possibleMoves = board.getPossibleMoves(PlayerSymbol.X);
+        possibleMoves = board.getPossibleMoves();
         assertThat(possibleMoves).hasSize(7);
         assertThat(possibleMoves).doesNotContain(
                 new TicTacToeMove(PlayerSymbol.X, 0, 0),
@@ -65,7 +64,7 @@ public class TicTacToeBoardTest {
 
         board.addMove(new TicTacToeMove(PlayerSymbol.X, 2, 2));
 
-        possibleMoves = board.getPossibleMoves(PlayerSymbol.O);
+        possibleMoves = board.getPossibleMoves();
         assertThat(possibleMoves).hasSize(6);
         assertThat(possibleMoves).doesNotContain(
                 new TicTacToeMove(PlayerSymbol.O, 0, 0),
@@ -75,9 +74,9 @@ public class TicTacToeBoardTest {
 
     @ParameterizedTest
     @MethodSource("provideWinningMoves")
-    public void winningGames(final List<TicTacToeMove> moves, final GameResult expectedResult) {
+    public void winningGames(final List<TicTacToeMove> moves, final TicTacToeGameResult expectedResult) {
 
-        final TicTacToeBoard board = new TicTacToeBoard();
+        final TicTacToeBoard board = new TicTacToeBoard(PlayerSymbol.X);
 
         for (final TicTacToeMove move : moves) {
             board.addMove(new TicTacToeMove(move.playerSymbol, move.row, move.column));
@@ -94,44 +93,44 @@ public class TicTacToeBoardTest {
                         List.of(
                                 new TicTacToeMove(PlayerSymbol.X, 0, 0),
                                 new TicTacToeMove(PlayerSymbol.X, 0, 1),
-                                new TicTacToeMove(PlayerSymbol.X, 0, 2)), GameResult.X_WON),
+                                new TicTacToeMove(PlayerSymbol.X, 0, 2)), TicTacToeGameResult.X_WON),
                 Arguments.of(
                         List.of(
                                 new TicTacToeMove(PlayerSymbol.X, 1, 0),
                                 new TicTacToeMove(PlayerSymbol.X, 1, 1),
-                                new TicTacToeMove(PlayerSymbol.X, 1, 2)), GameResult.X_WON),
+                                new TicTacToeMove(PlayerSymbol.X, 1, 2)), TicTacToeGameResult.X_WON),
                 Arguments.of(
                         List.of(
                                 new TicTacToeMove(PlayerSymbol.X, 2, 0),
                                 new TicTacToeMove(PlayerSymbol.X, 2, 1),
-                                new TicTacToeMove(PlayerSymbol.X, 2, 2)), GameResult.X_WON),
+                                new TicTacToeMove(PlayerSymbol.X, 2, 2)), TicTacToeGameResult.X_WON),
                 // win in a column
                 Arguments.of(
                         List.of(
                                 new TicTacToeMove(PlayerSymbol.O, 0, 0),
                                 new TicTacToeMove(PlayerSymbol.O, 1, 0),
-                                new TicTacToeMove(PlayerSymbol.O, 2, 0)), GameResult.O_WON),
+                                new TicTacToeMove(PlayerSymbol.O, 2, 0)), TicTacToeGameResult.O_WON),
                 Arguments.of(
                         List.of(
                                 new TicTacToeMove(PlayerSymbol.O, 0, 1),
                                 new TicTacToeMove(PlayerSymbol.O, 1, 1),
-                                new TicTacToeMove(PlayerSymbol.O, 2, 1)), GameResult.O_WON),
+                                new TicTacToeMove(PlayerSymbol.O, 2, 1)), TicTacToeGameResult.O_WON),
                 Arguments.of(
                         List.of(
                                 new TicTacToeMove(PlayerSymbol.O, 0, 2),
                                 new TicTacToeMove(PlayerSymbol.O, 1, 2),
-                                new TicTacToeMove(PlayerSymbol.O, 2, 2)), GameResult.O_WON),
+                                new TicTacToeMove(PlayerSymbol.O, 2, 2)), TicTacToeGameResult.O_WON),
                 // win in a diagonal
                 Arguments.of(
                         List.of(
                                 new TicTacToeMove(PlayerSymbol.X, 0, 0),
                                 new TicTacToeMove(PlayerSymbol.X, 1, 1),
-                                new TicTacToeMove(PlayerSymbol.X, 2, 2)), GameResult.X_WON),
+                                new TicTacToeMove(PlayerSymbol.X, 2, 2)), TicTacToeGameResult.X_WON),
                 Arguments.of(
                         List.of(
                                 new TicTacToeMove(PlayerSymbol.O, 0, 2),
                                 new TicTacToeMove(PlayerSymbol.O, 1, 1),
-                                new TicTacToeMove(PlayerSymbol.O, 2, 0)), GameResult.O_WON),
+                                new TicTacToeMove(PlayerSymbol.O, 2, 0)), TicTacToeGameResult.O_WON),
                 // draw  game
                 Arguments.of(
                         List.of(
@@ -143,7 +142,7 @@ public class TicTacToeBoardTest {
                                 new TicTacToeMove(PlayerSymbol.X, 1, 2),
                                 new TicTacToeMove(PlayerSymbol.X, 2, 0),
                                 new TicTacToeMove(PlayerSymbol.X, 2, 1),
-                                new TicTacToeMove(PlayerSymbol.O, 2, 2)), GameResult.DRAW)
+                                new TicTacToeMove(PlayerSymbol.O, 2, 2)), TicTacToeGameResult.DRAW)
         );
     }
 }

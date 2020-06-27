@@ -1,6 +1,6 @@
 package org.b0n541.pmcts.game.tictactoe;
 
-public enum GameResult {
+public enum TicTacToeGameResult {
     X_WON,
     O_WON,
     DRAW

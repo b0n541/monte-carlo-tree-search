@@ -5,13 +5,13 @@ import java.util.List;
 /**
  * Interface for all game state implementations to be used in the {@link MonteCarloTreeSearch}.
  */
-public interface GameState {
+public interface GameState<M extends GameMove> {
     /**
      * Gets all possible moves from the current game state.
      *
      * @return All possible moves
      */
-    List<GameMove> getPossibleMoves();
+    List<M> getPossibleMoves();
 
     /**
      * Adds a move to the game state and returns the resulting game state.
@@ -19,7 +19,7 @@ public interface GameState {
      * @param move Move to make
      * @return Resulting game state
      */
-    GameState addMove(GameMove move);
+    GameState<M> addMove(M move);
 
     /**
      * Checks whether the game is finished.

@@ -33,4 +33,13 @@ public final class TicTacToeMove implements GameMove {
     public int hashCode() {
         return Objects.hash(playerSymbol, row, column);
     }
+
+    @Override
+    public String toString() {
+        return "TicTacToeMove{" +
+                "playerSymbol=" + playerSymbol +
+                ", row=" + row +
+                ", column=" + column +
+                '}';
+    }
 }

@@ -1,22 +1,43 @@
 package org.b0n541.pmcts.game.tictactoe;
 
-import org.b0n541.pmcts.mcts.GameMove;
 import org.b0n541.pmcts.mcts.GameState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public final class TicTacToeGameState implements GameState {
+public final class TicTacToeGameState implements GameState<TicTacToeMove> {
 
-    private final TicTacToeBoard board = new TicTacToeBoard();
+    private static final Logger LOG = LoggerFactory.getLogger(TicTacToeGameState.class);
 
-    @Override
-    public List<GameMove> getPossibleMoves() {
-        return board.getPossibleMoves(PlayerSymbol.X);
+    private final PlayerSymbol gameStatePlayer;
+    private final PlayerSymbol firstPlayer;
+    private final TicTacToeBoard board;
+
+    public TicTacToeGameState(final PlayerSymbol gameStatePlayer, final PlayerSymbol firstPlayer) {
+        this.gameStatePlayer = gameStatePlayer;
+        this.firstPlayer = firstPlayer;
+        board = new TicTacToeBoard(firstPlayer);
+    }
+
+    private TicTacToeGameState(final PlayerSymbol gameStatePlayer, final TicTacToeBoard oldBoard, final TicTacToeMove nextMove) {
+        this(gameStatePlayer, oldBoard.getMoves().size() > 0 ? oldBoard.getMoves().get(0).playerSymbol : oldBoard.getNextPlayer());
+        oldBoard.getMoves().forEach(move -> board.addMove(move));
+        board.addMove(nextMove);
+    }
+
+    public PlayerSymbol getNextPlayer() {
+        return board.getNextPlayer();
     }
 
     @Override
-    public GameState addMove(final GameMove move) {
-        return null;
+    public List<TicTacToeMove> getPossibleMoves() {
+        return board.getPossibleMoves();
+    }
+
+    @Override
+    public TicTacToeGameState addMove(final TicTacToeMove move) {
+        return new TicTacToeGameState(gameStatePlayer, board, move);
     }
 
     @Override
@@ -26,6 +47,28 @@ public final class TicTacToeGameState implements GameState {
 
     @Override
     public double getGameResult() {
-        return 0;
+        final TicTacToeGameResult gameResult = board.getGameResult();
+        switch (board.getGameResult()) {
+            case O_WON:
+                LOG.info("Noughts won.");
+                if (gameStatePlayer == PlayerSymbol.O) {
+                    return 1.0;
+                }
+                return -1.0;
+            case X_WON:
+                LOG.info("Crosses won.");
+                if (gameStatePlayer == PlayerSymbol.X) {
+                    return 1.0;
+                }
+                return -1.0;
+            default:
+                LOG.info("It's a draw.");
+                return 0.0;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return board.format();
     }
 }

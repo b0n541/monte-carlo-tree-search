@@ -1,6 +1,5 @@
 package org.b0n541.pmcts.game.tictactoe;
 
-import org.b0n541.pmcts.mcts.GameMove;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +19,8 @@ public final class TicTacToeBoard {
     private int noughts;
     private int crosses;
 
+    private PlayerSymbol nextPlayer;
+
     private final List<TicTacToeMove> moves = new ArrayList<>();
 
     private final TicTacToeRules rules = new TicTacToeRules();
@@ -28,27 +29,43 @@ public final class TicTacToeBoard {
     private boolean crossesWon;
     private boolean isDraw;
 
+    public TicTacToeBoard(final PlayerSymbol firstPlayer) {
+        nextPlayer = firstPlayer;
+    }
+
     public PlayerSymbol get(final int row, final int column) {
         return board[row][column];
+    }
+
+    public PlayerSymbol getNextPlayer() {
+        return nextPlayer;
     }
 
     public List<TicTacToeMove> getMoves() {
         return Collections.unmodifiableList(moves);
     }
 
-    public List<GameMove> getPossibleMoves(final PlayerSymbol player) {
-        return Collections.unmodifiableList(TicTacToeRules.getPossibleMoves(player, noughts, crosses));
+    public List<TicTacToeMove> getPossibleMoves() {
+        if (isFinished()) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(TicTacToeRules.getPossibleMoves(nextPlayer, noughts, crosses));
     }
 
     public void addMove(final TicTacToeMove move) {
 
+        addMoveInternal(move);
+        switchPlayer();
+    }
+
+    private void addMoveInternal(final TicTacToeMove move) {
         if (board[move.row][move.column] != null) {
             throw new IllegalArgumentException("Board position already occupied.");
         }
 
         board[move.row][move.column] = move.playerSymbol;
-        moves.add(move);
         updateNoughtsAndCrosses(move.playerSymbol, move.row, move.column);
+        moves.add(move);
 
         if (move.playerSymbol == PlayerSymbol.O) {
             noughtsWon = TicTacToeRules.hasWon(noughts);
@@ -59,8 +76,14 @@ public final class TicTacToeBoard {
         if (TicTacToeRules.isBoardFull(noughts, crosses)) {
             isDraw = rules.isDraw(noughts, crosses);
         }
+    }
 
-        LOG.info(format());
+    private void switchPlayer() {
+        if (nextPlayer == PlayerSymbol.O) {
+            nextPlayer = PlayerSymbol.X;
+        } else if (nextPlayer == PlayerSymbol.X) {
+            nextPlayer = PlayerSymbol.O;
+        }
     }
 
     private void updateNoughtsAndCrosses(final PlayerSymbol playerSymbol, final int row, final int column) {
@@ -77,13 +100,13 @@ public final class TicTacToeBoard {
         return noughtsWon || crossesWon || isDraw;
     }
 
-    public GameResult getGameResult() {
+    public TicTacToeGameResult getGameResult() {
         if (noughtsWon) {
-            return GameResult.O_WON;
+            return TicTacToeGameResult.O_WON;
         } else if (crossesWon) {
-            return GameResult.X_WON;
+            return TicTacToeGameResult.X_WON;
         }
-        return GameResult.DRAW;
+        return TicTacToeGameResult.DRAW;
     }
 
     public String format() {

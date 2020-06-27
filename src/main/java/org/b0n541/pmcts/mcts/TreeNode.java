@@ -63,9 +63,10 @@ public final class TreeNode {
     }
 
     public void expandPossibleMoves() {
-        for (final GameMove move : gameState.getPossibleMoves()) {
-            children.put(move, new TreeNode(this, gameState.addMove(move)));
-        }
+
+        final List<GameMove> possibleMoves = gameState.getPossibleMoves();
+
+        possibleMoves.forEach(move -> children.put(move, new TreeNode(this, gameState.addMove(move))));
     }
 
     public GameState getGameState() {
