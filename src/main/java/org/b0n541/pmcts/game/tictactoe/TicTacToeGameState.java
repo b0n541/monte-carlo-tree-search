@@ -13,17 +13,20 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
     private final PlayerSymbol gameStatePlayer;
     private final PlayerSymbol firstPlayer;
     private final TicTacToeBoard board;
+    private boolean isMax;
 
     public TicTacToeGameState(final PlayerSymbol gameStatePlayer, final PlayerSymbol firstPlayer) {
         this.gameStatePlayer = gameStatePlayer;
         this.firstPlayer = firstPlayer;
         board = new TicTacToeBoard(firstPlayer);
+        isMax = true;
     }
 
     private TicTacToeGameState(final PlayerSymbol gameStatePlayer, final TicTacToeBoard oldBoard, final TicTacToeMove nextMove) {
         this(gameStatePlayer, oldBoard.getMoves().size() > 0 ? oldBoard.getMoves().get(0).playerSymbol : oldBoard.getNextPlayer());
         oldBoard.getMoves().forEach(move -> board.addMove(move));
         board.addMove(nextMove);
+        isMax = board.getNextPlayer() == firstPlayer;
     }
 
     public PlayerSymbol getNextPlayer() {
@@ -62,6 +65,11 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
             default:
                 return 0.0;
         }
+    }
+
+    @Override
+    public boolean isMax() {
+        return isMax;
     }
 
     @Override

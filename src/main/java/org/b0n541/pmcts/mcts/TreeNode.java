@@ -1,9 +1,14 @@
 package org.b0n541.pmcts.mcts;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 
 public final class TreeNode {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TreeNode.class);
 
     private final static double EXPLORATION_FACTOR = 2.0;
 
@@ -74,16 +79,25 @@ public final class TreeNode {
     }
 
     public GameMove getBestMove() {
-        double highestScore = Double.MIN_VALUE;
+        double highestScore = -2.0;
         GameMove bestMove = null;
         for (final Map.Entry<GameMove, TreeNode> entry : children.entrySet()) {
             final TreeNode child = entry.getValue();
             final double childScore = child.totalScore / child.visits;
+            LOG.info("Move {} got visits {} and score {}", entry.getKey(), child.visits, childScore);
             if (childScore > highestScore) {
                 highestScore = childScore;
                 bestMove = entry.getKey();
             }
         }
+
+        LOG.info("Best move {} with highest score {}", bestMove, highestScore);
+
         return bestMove;
+    }
+
+    @Override
+    public String toString() {
+        return "Visits: " + visits + " Total score: " + totalScore + " Score: " + totalScore / visits + " UCB1: " + getUcb1Value();
     }
 }

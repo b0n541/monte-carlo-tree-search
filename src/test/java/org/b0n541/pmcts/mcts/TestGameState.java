@@ -37,4 +37,9 @@ public class TestGameState implements GameState {
                 .filter(move -> move == TestGameMove.TAILS)
                 .count();
     }
+
+    @Override
+    public boolean isMax() {
+        return true;
+    }
 }

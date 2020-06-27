@@ -34,4 +34,11 @@ public interface GameState<M extends GameMove> {
      * @return Game result
      */
     double getGameResult();
+
+    /**
+     * Checks whether the game state is maximizing.
+     *
+     * @return True, if maximizing game state
+     */
+    boolean isMax();
 }

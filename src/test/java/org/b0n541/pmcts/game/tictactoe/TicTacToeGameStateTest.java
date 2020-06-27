@@ -28,7 +28,7 @@ public class TicTacToeGameStateTest {
     }
 
     @Test
-    public void testWinningGame() {
+    public void testWinningGameFirstPlayerWin() {
         final TicTacToeGameState state = new TicTacToeGameState(PlayerSymbol.O, PlayerSymbol.O);
 
         final TicTacToeGameState newState = state
@@ -44,7 +44,7 @@ public class TicTacToeGameStateTest {
     }
 
     @Test
-    public void testLoosingGame() {
+    public void testLoosingGameCurrentPlayerLoose() {
         final TicTacToeGameState state = new TicTacToeGameState(PlayerSymbol.X, PlayerSymbol.O);
 
         final TicTacToeGameState newState = state
@@ -57,5 +57,39 @@ public class TicTacToeGameStateTest {
         assertThat(newState.isGameFinished()).isTrue();
         assertThat(newState.getPossibleMoves()).hasSize(0);
         assertThat(newState.getGameResult()).isEqualTo(-1.0);
+    }
+
+    @Test
+    public void testWinningGameFirstPlayerLoose() {
+        final TicTacToeGameState state = new TicTacToeGameState(PlayerSymbol.O, PlayerSymbol.O);
+
+        final TicTacToeGameState newState = state
+                .addMove(new TicTacToeMove(PlayerSymbol.O, 0, 0))
+                .addMove(new TicTacToeMove(PlayerSymbol.X, 1, 0))
+                .addMove(new TicTacToeMove(PlayerSymbol.O, 0, 1))
+                .addMove(new TicTacToeMove(PlayerSymbol.X, 1, 1))
+                .addMove(new TicTacToeMove(PlayerSymbol.O, 2, 0))
+                .addMove(new TicTacToeMove(PlayerSymbol.X, 1, 2));
+
+        assertThat(newState.isGameFinished()).isTrue();
+        assertThat(newState.getPossibleMoves()).hasSize(0);
+        assertThat(newState.getGameResult()).isEqualTo(-1.0);
+    }
+
+    @Test
+    public void testWinningGameCurrentPlayerWin() {
+        final TicTacToeGameState state = new TicTacToeGameState(PlayerSymbol.X, PlayerSymbol.O);
+
+        final TicTacToeGameState newState = state
+                .addMove(new TicTacToeMove(PlayerSymbol.O, 0, 0))
+                .addMove(new TicTacToeMove(PlayerSymbol.X, 1, 0))
+                .addMove(new TicTacToeMove(PlayerSymbol.O, 0, 1))
+                .addMove(new TicTacToeMove(PlayerSymbol.X, 1, 1))
+                .addMove(new TicTacToeMove(PlayerSymbol.O, 2, 0))
+                .addMove(new TicTacToeMove(PlayerSymbol.X, 1, 2));
+
+        assertThat(newState.isGameFinished()).isTrue();
+        assertThat(newState.getPossibleMoves()).hasSize(0);
+        assertThat(newState.getGameResult()).isEqualTo(1.0);
     }
 }
