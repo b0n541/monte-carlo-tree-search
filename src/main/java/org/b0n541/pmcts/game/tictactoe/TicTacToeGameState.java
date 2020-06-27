@@ -50,19 +50,16 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
         final TicTacToeGameResult gameResult = board.getGameResult();
         switch (board.getGameResult()) {
             case O_WON:
-                LOG.info("Noughts won.");
                 if (gameStatePlayer == PlayerSymbol.O) {
                     return 1.0;
                 }
                 return -1.0;
             case X_WON:
-                LOG.info("Crosses won.");
                 if (gameStatePlayer == PlayerSymbol.X) {
                     return 1.0;
                 }
                 return -1.0;
             default:
-                LOG.info("It's a draw.");
                 return 0.0;
         }
     }

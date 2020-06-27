@@ -72,4 +72,18 @@ public final class TreeNode {
     public GameState getGameState() {
         return gameState;
     }
+
+    public GameMove getBestMove() {
+        double highestScore = Double.MIN_VALUE;
+        GameMove bestMove = null;
+        for (final Map.Entry<GameMove, TreeNode> entry : children.entrySet()) {
+            final TreeNode child = entry.getValue();
+            final double childScore = child.totalScore / child.visits;
+            if (childScore > highestScore) {
+                highestScore = childScore;
+                bestMove = entry.getKey();
+            }
+        }
+        return bestMove;
+    }
 }

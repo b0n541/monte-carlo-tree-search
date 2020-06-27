@@ -1,7 +1,9 @@
 package org.b0n541.pmcts.game.tictactoe;
 
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import org.b0n541.pmcts.mcts.MonteCarloTreeSearch;
+import org.b0n541.pmcts.mcts.Tree;
+
+import java.time.Duration;
 
 public final class TicTacToePlayer {
 
@@ -14,8 +16,14 @@ public final class TicTacToePlayer {
     }
 
     public TicTacToeMove play() {
-        final List<TicTacToeMove> possibleMoves = gameState.getPossibleMoves();
-        return possibleMoves.get(ThreadLocalRandom.current().nextInt(possibleMoves.size()));
+        final Tree tree = new Tree(gameState);
+
+        final Long finishTime = System.nanoTime() + Duration.ofSeconds(2).toNanos();
+        do {
+            MonteCarloTreeSearch.run(tree, 1);
+        } while (System.nanoTime() < finishTime);
+
+        return (TicTacToeMove) tree.getRootNode().getBestMove();
     }
 
     public void addMove(final TicTacToeMove move) {
