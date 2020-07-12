@@ -50,20 +50,19 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
 
     @Override
     public double getGameResult() {
-        final TicTacToeGameResult gameResult = board.getGameResult();
         switch (board.getGameResult()) {
             case O_WON:
                 if (gameStatePlayer == PlayerSymbol.O) {
                     return 1.0;
                 }
-                return -1.0;
+                return 0.0;
             case X_WON:
                 if (gameStatePlayer == PlayerSymbol.X) {
                     return 1.0;
                 }
-                return -1.0;
-            default:
                 return 0.0;
+            default:
+                return 0.5;
         }
     }
 

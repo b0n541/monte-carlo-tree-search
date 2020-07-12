@@ -11,7 +11,7 @@ public class TicTacToeGameStateTest {
 
         assertThat(state.isGameFinished()).isFalse();
         assertThat(state.getPossibleMoves()).hasSize(9);
-        assertThat(state.getGameResult()).isEqualTo(0.0);
+        assertThat(state.getGameResult()).isEqualTo(0.5);
     }
 
     @Test
@@ -24,7 +24,7 @@ public class TicTacToeGameStateTest {
 
         assertThat(newState.isGameFinished()).isFalse();
         assertThat(newState.getPossibleMoves()).hasSize(7);
-        assertThat(newState.getGameResult()).isEqualTo(0.0);
+        assertThat(newState.getGameResult()).isEqualTo(0.5);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class TicTacToeGameStateTest {
 
         assertThat(newState.isGameFinished()).isTrue();
         assertThat(newState.getPossibleMoves()).hasSize(0);
-        assertThat(newState.getGameResult()).isEqualTo(-1.0);
+        assertThat(newState.getGameResult()).isEqualTo(0.0);
     }
 
     @Test
@@ -73,7 +73,7 @@ public class TicTacToeGameStateTest {
 
         assertThat(newState.isGameFinished()).isTrue();
         assertThat(newState.getPossibleMoves()).hasSize(0);
-        assertThat(newState.getGameResult()).isEqualTo(-1.0);
+        assertThat(newState.getGameResult()).isEqualTo(0.0);
     }
 
     @Test
