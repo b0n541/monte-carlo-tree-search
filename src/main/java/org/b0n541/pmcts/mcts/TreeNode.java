@@ -79,7 +79,7 @@ public final class TreeNode {
     }
 
     public GameMove getBestMove() {
-        double highestScore = -2.0;
+        double highestScore = -1 * Double.MAX_VALUE;
         GameMove bestMove = null;
         for (final Map.Entry<GameMove, TreeNode> entry : children.entrySet()) {
             final TreeNode child = entry.getValue();
