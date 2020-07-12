@@ -22,10 +22,9 @@ public class TicTacToePlayer {
     public TicTacToeMove play() {
         final Tree tree = new Tree(gameState);
 
-        //play(tree, 1000);
         play(tree, Duration.ofSeconds(2));
 
-        return (TicTacToeMove) tree.getRootNode().getBestMove();
+        return (TicTacToeMove) tree.getRootNode().getBestMove(0);
     }
 
     private static void play(final Tree tree, final int maxRounds) {

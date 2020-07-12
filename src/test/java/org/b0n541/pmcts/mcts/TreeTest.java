@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TreeTest {
     @Test
     public void emptyTree() {
-        final Tree tree = new Tree(new TestGameState());
+        final Tree tree = new Tree(new TestGameState(2));
 
         assertThat(tree.getSize()).isEqualTo(1);
 

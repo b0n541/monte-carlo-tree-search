@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MonteCarloTreeSearchTest {
     @Test
     public void multipleRuns() {
-        final Tree tree = new Tree(new TestGameState());
+        final Tree tree = new Tree(new TestGameState(2));
 
         assertThat(tree.getSize()).isEqualTo(1);
 
@@ -52,7 +52,7 @@ public class MonteCarloTreeSearchTest {
         final long finishTime = System.nanoTime() + duration.toNanos();
 
         long rounds = 0;
-        final Tree tree = new Tree(new TestGameState());
+        final Tree tree = new Tree(new TestGameState(2));
         do {
             MonteCarloTreeSearch.run(tree, 1);
             rounds++;
@@ -64,7 +64,7 @@ public class MonteCarloTreeSearchTest {
     }
 
     private static void runSimulation(final int noOfRounds) {
-        final Tree tree = new Tree(new TestGameState());
+        final Tree tree = new Tree(new TestGameState(2));
         MonteCarloTreeSearch.run(tree, noOfRounds);
     }
 }

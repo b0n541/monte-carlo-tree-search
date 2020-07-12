@@ -7,11 +7,14 @@ import java.util.List;
 public class TestGameState implements GameState {
 
     private final List<GameMove> moves = new ArrayList<>();
+    private final int playerCount;
 
-    public TestGameState() {
+    public TestGameState(final int playerCount) {
+        this.playerCount = playerCount;
     }
 
-    private TestGameState(final List<GameMove> moves, final GameMove move) {
+    private TestGameState(final int playerCount, final List<GameMove> moves, final GameMove move) {
+        this.playerCount = playerCount;
         this.moves.addAll(moves);
         this.moves.add(move);
     }
@@ -23,7 +26,7 @@ public class TestGameState implements GameState {
 
     @Override
     public GameState addMove(final GameMove move) {
-        return new TestGameState(moves, move);
+        return new TestGameState(playerCount, moves, move);
     }
 
     @Override
@@ -39,7 +42,7 @@ public class TestGameState implements GameState {
     }
 
     @Override
-    public boolean isMax() {
-        return true;
+    public int getPlayerCount() {
+        return playerCount;
     }
 }

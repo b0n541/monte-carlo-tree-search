@@ -17,7 +17,7 @@ public final class TreeNode {
     private final TreeNode parent;
     private final Map<GameMove, TreeNode> children = new HashMap<>();
 
-    private double totalScore;
+    private final double[] totalScores;
     private long visits;
 
     public TreeNode(final GameState gameState) {
@@ -27,6 +27,7 @@ public final class TreeNode {
     public TreeNode(final TreeNode parent, final GameState gameState) {
         this.parent = parent;
         this.gameState = gameState;
+        totalScores = new double[gameState.getPlayerCount()];
     }
 
     public boolean isRootNode() {
@@ -41,16 +42,20 @@ public final class TreeNode {
         return parent;
     }
 
-    public double getTotalScore() {
-        return totalScore;
+    public double[] getTotalScores() {
+        return totalScores;
     }
 
     public long getVisits() {
         return visits;
     }
 
-    public void addVisit(final double gameStateValue) {
-        totalScore += gameStateValue;
+    public void addVisit(final double... gameValues) {
+        int index = 0;
+        for (final double gameValue : gameValues) {
+            totalScores[index] += gameValue;
+            index++;
+        }
         visits++;
     }
 
@@ -58,11 +63,11 @@ public final class TreeNode {
         return Collections.unmodifiableList(new ArrayList<>(children.values()));
     }
 
-    public double getUcb1Value() {
+    public double getUcb1Value(final int playerIndex) {
         if (isRootNode() || visits == 0) {
             return Double.MAX_VALUE;
         } else {
-            return (totalScore / visits) + EXPLORATION_FACTOR * Math.sqrt((Math.log(parent.visits) / visits));
+            return (totalScores[playerIndex] / visits) + EXPLORATION_FACTOR * Math.sqrt((Math.log(parent.visits) / visits));
         }
 
     }
@@ -78,12 +83,12 @@ public final class TreeNode {
         return gameState;
     }
 
-    public GameMove getBestMove() {
+    public GameMove getBestMove(final int playerIndex) {
         double highestScore = -1 * Double.MAX_VALUE;
         GameMove bestMove = null;
         for (final Map.Entry<GameMove, TreeNode> entry : children.entrySet()) {
             final TreeNode child = entry.getValue();
-            final double childScore = child.totalScore / child.visits;
+            final double childScore = child.totalScores[playerIndex] / child.visits;
             LOG.info("Move {} got visits {} and score {}", entry.getKey(), child.visits, childScore);
             if (childScore > highestScore) {
                 highestScore = childScore;
@@ -98,6 +103,9 @@ public final class TreeNode {
 
     @Override
     public String toString() {
-        return "Visits: " + visits + " Total score: " + totalScore + " Score: " + totalScore / visits + " UCB1: " + getUcb1Value();
+        return "Visits: " + visits +
+                " Total scores: " + totalScores[0] +
+                " Score: " + totalScores[0] / visits +
+                " UCB1: " + getUcb1Value(0);
     }
 }

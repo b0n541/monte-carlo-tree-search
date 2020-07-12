@@ -25,9 +25,10 @@ public final class MonteCarloTreeSearch {
             TreeNode bestChildNode = null;
             double bestUcb1Value = -1 * Double.MAX_VALUE;
             for (final TreeNode node : nextNode.getChildren()) {
-                if (node.getUcb1Value() > bestUcb1Value) {
+                final double ucb1Value = node.getUcb1Value(0);
+                if (ucb1Value > bestUcb1Value) {
                     bestChildNode = node;
-                    bestUcb1Value = node.getUcb1Value();
+                    bestUcb1Value = ucb1Value;
                 }
             }
             nextNode = bestChildNode;
@@ -63,16 +64,12 @@ public final class MonteCarloTreeSearch {
         return currentState.getGameResult();
     }
 
-    private static void backPropagation(final TreeNode node, final double gameValue) {
+    private static void backPropagation(final TreeNode node, final double... gameValues) {
         TreeNode currentNode = node;
         do {
-            if (currentNode.getGameState().isMax()) {
-                currentNode.addVisit(gameValue);
-            } else {
-                currentNode.addVisit(-1 * gameValue);
-            }
+            currentNode.addVisit(gameValues);
             currentNode = currentNode.getParent();
         } while (!currentNode.isRootNode());
-        currentNode.addVisit(gameValue);
+        currentNode.addVisit(gameValues);
     }
 }

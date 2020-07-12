@@ -36,9 +36,9 @@ public interface GameState<M extends GameMove> {
     double getGameResult();
 
     /**
-     * Checks whether the game state is maximizing.
+     * Gets the number of players.
      *
-     * @return True, if maximizing game state
+     * @return
      */
-    boolean isMax();
+    int getPlayerCount();
 }
