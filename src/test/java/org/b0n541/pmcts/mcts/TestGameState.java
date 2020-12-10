@@ -45,4 +45,14 @@ public class TestGameState implements GameState {
     public int getPlayerCount() {
         return playerCount;
     }
+
+    @Override
+    public int getRootPlayerIndex() {
+        return 0;
+    }
+
+    @Override
+    public int getPlayerIndex() {
+        return 0;
+    }
 }

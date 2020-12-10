@@ -15,7 +15,8 @@ public final class MonteCarloTreeSearch {
             final TreeNode leafNode = traverseTree(tree);
             final TreeNode rollOutNode = expandTree(leafNode);
             final double result = rollOut(rollOutNode);
-            backPropagation(rollOutNode, result);
+            backPropagation(rollOutNode, result, 1.0 - result);
+            //tree.printDigraph();
         }
     }
 
@@ -25,7 +26,7 @@ public final class MonteCarloTreeSearch {
             TreeNode bestChildNode = null;
             double bestUcb1Value = -1 * Double.MAX_VALUE;
             for (final TreeNode node : nextNode.getChildren()) {
-                final double ucb1Value = node.getUcb1Value(0);
+                final double ucb1Value = node.getUcb1Value(node.getGameState().getPlayerIndex());
                 if (ucb1Value > bestUcb1Value) {
                     bestChildNode = node;
                     bestUcb1Value = ucb1Value;

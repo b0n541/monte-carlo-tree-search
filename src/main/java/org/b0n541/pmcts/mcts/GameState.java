@@ -41,4 +41,18 @@ public interface GameState<M extends GameMove> {
      * @return
      */
     int getPlayerCount();
+
+    /**
+     * Gets the position of the root player.
+     *
+     * @return Index of the root player
+     */
+    int getRootPlayerIndex();
+
+    /**
+     * Gets the position of the current player.
+     *
+     * @return Index of the currrent player
+     */
+    int getPlayerIndex();
 }

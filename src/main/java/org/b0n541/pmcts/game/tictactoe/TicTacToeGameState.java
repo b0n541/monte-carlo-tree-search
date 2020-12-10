@@ -10,16 +10,16 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
 
     private static final Logger LOG = LoggerFactory.getLogger(TicTacToeGameState.class);
 
-    private final PlayerSymbol gameStatePlayer;
+    private final PlayerSymbol firstPlayer;
     private final TicTacToeBoard board;
 
-    public TicTacToeGameState(final PlayerSymbol gameStatePlayer, final PlayerSymbol firstPlayer) {
-        this.gameStatePlayer = gameStatePlayer;
+    public TicTacToeGameState(final PlayerSymbol firstPlayer) {
+        this.firstPlayer = firstPlayer;
         board = new TicTacToeBoard(firstPlayer);
     }
 
-    private TicTacToeGameState(final PlayerSymbol gameStatePlayer, final TicTacToeBoard oldBoard, final TicTacToeMove nextMove) {
-        this(gameStatePlayer, oldBoard.getMoves().size() > 0 ? oldBoard.getMoves().get(0).playerSymbol : oldBoard.getNextPlayer());
+    private TicTacToeGameState(final TicTacToeBoard oldBoard, final TicTacToeMove nextMove) {
+        this(oldBoard.getMoves().size() > 0 ? oldBoard.getMoves().get(0).playerSymbol : oldBoard.getNextPlayer());
         oldBoard.getMoves().forEach(move -> board.addMove(move));
         board.addMove(nextMove);
     }
@@ -35,7 +35,7 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
 
     @Override
     public TicTacToeGameState addMove(final TicTacToeMove move) {
-        return new TicTacToeGameState(gameStatePlayer, board, move);
+        return new TicTacToeGameState(board, move);
     }
 
     @Override
@@ -45,25 +45,41 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
 
     @Override
     public double getGameResult() {
+        double result = 0.0;
         switch (board.getGameResult()) {
             case O_WON:
-                if (gameStatePlayer == PlayerSymbol.O) {
-                    return 1.0;
+                if (PlayerSymbol.O == firstPlayer) {
+                    result = 1.0;
+                } else {
+                    result = 0.0;
                 }
-                return 0.0;
+                break;
             case X_WON:
-                if (gameStatePlayer == PlayerSymbol.X) {
-                    return 1.0;
+                if (PlayerSymbol.X == firstPlayer) {
+                    result = 1.0;
+                } else {
+                    result = 0.0;
                 }
-                return 0.0;
+                break;
             default:
-                return 0.5;
+                result = 0.5;
         }
+        return result;
     }
 
     @Override
     public int getPlayerCount() {
         return 2;
+    }
+
+    @Override
+    public int getRootPlayerIndex() {
+        return firstPlayer.ordinal();
+    }
+
+    @Override
+    public int getPlayerIndex() {
+        return board.getMoves().size() == 0 ? board.getNextPlayer().ordinal() : board.getMoves().get(0).playerSymbol.ordinal();
     }
 
     @Override

@@ -9,7 +9,7 @@ public class TicTacToe {
 
     public static void playGame() {
 
-        TicTacToeGameState gameState = new TicTacToeGameState(PlayerSymbol.O, PlayerSymbol.O);
+        TicTacToeGameState gameState = new TicTacToeGameState(PlayerSymbol.O);
         final TicTacToePlayer noughtsPlayer = new TicTacToePlayer(PlayerSymbol.O, PlayerSymbol.O);
         final TicTacToePlayer crossesPlayer = new TicTacToePlayer(PlayerSymbol.X, PlayerSymbol.O);
 

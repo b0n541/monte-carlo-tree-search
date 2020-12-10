@@ -16,6 +16,11 @@ public final class TicTacToeMove implements GameMove {
     }
 
     @Override
+    public String toShortString() {
+        return "[" + row + "," + column + "]";
+    }
+
+    @Override
     public boolean equals(final Object o) {
         if (this == o) {
             return true;

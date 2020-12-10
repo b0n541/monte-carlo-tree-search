@@ -16,7 +16,7 @@ public class TicTacToePlayer {
 
     public TicTacToePlayer(final PlayerSymbol playerSymbol, final PlayerSymbol firstPlayer) {
         this.playerSymbol = playerSymbol;
-        gameState = new TicTacToeGameState(playerSymbol, firstPlayer);
+        gameState = new TicTacToeGameState(firstPlayer);
     }
 
     public TicTacToeMove play() {
@@ -24,7 +24,9 @@ public class TicTacToePlayer {
 
         play(tree, Duration.ofSeconds(2));
 
-        return (TicTacToeMove) tree.getRootNode().getBestMove(0);
+        //tree.printDigraph();
+
+        return (TicTacToeMove) tree.getRootNode().getBestMove(gameState.getRootPlayerIndex());
     }
 
     private static void play(final Tree tree, final int maxRounds) {

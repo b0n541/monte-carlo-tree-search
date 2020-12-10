@@ -5,12 +5,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 public final class TreeNode {
 
     private static final Logger LOG = LoggerFactory.getLogger(TreeNode.class);
 
     private final static double EXPLORATION_FACTOR = 2.0;
+
+    private static final AtomicLong nodeCounter = new AtomicLong();
+
+    private final long nodeId = nodeCounter.incrementAndGet();
 
     private final GameState gameState;
 
@@ -28,6 +33,10 @@ public final class TreeNode {
         this.parent = parent;
         this.gameState = gameState;
         totalScores = new double[gameState.getPlayerCount()];
+    }
+
+    public String getNodeId() {
+        return Long.toString(nodeId);
     }
 
     public boolean isRootNode() {
@@ -63,13 +72,16 @@ public final class TreeNode {
         return Collections.unmodifiableList(new ArrayList<>(children.values()));
     }
 
+    public Map<GameMove, TreeNode> getMovesAndChildren() {
+        return Collections.unmodifiableMap(children);
+    }
+
     public double getUcb1Value(final int playerIndex) {
         if (isRootNode() || visits == 0) {
             return Double.MAX_VALUE;
         } else {
             return (totalScores[playerIndex] / visits) + EXPLORATION_FACTOR * Math.sqrt((Math.log(parent.visits) / visits));
         }
-
     }
 
     public void expandPossibleMoves() {
