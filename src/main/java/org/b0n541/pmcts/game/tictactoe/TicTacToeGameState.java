@@ -79,7 +79,7 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
 
     @Override
     public int getPlayerIndex() {
-        return board.getMoves().size() == 0 ? board.getNextPlayer().ordinal() : board.getMoves().get(0).playerSymbol.ordinal();
+        return board.getNextPlayer().ordinal();
     }
 
     @Override
