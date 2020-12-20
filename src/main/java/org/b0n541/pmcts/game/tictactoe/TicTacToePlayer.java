@@ -16,17 +16,18 @@ public class TicTacToePlayer {
 
     public TicTacToePlayer(final PlayerSymbol playerSymbol, final PlayerSymbol firstPlayer) {
         this.playerSymbol = playerSymbol;
-        gameState = new TicTacToeGameState(firstPlayer);
+        gameState = new TicTacToeGameState(playerSymbol, playerSymbol == PlayerSymbol.O ? PlayerSymbol.X : PlayerSymbol.O, firstPlayer);
     }
 
     public TicTacToeMove play() {
         final Tree tree = new Tree(gameState);
 
-        play(tree, Duration.ofSeconds(2));
+        //play(tree, Duration.ofSeconds(2));
+        play(tree, 200);
 
         //tree.printDigraph();
 
-        return (TicTacToeMove) tree.getRootNode().getBestMove(gameState.getRootPlayerIndex());
+        return (TicTacToeMove) tree.getRootNode().getBestMove(playerSymbol.ordinal());
     }
 
     private static void play(final Tree tree, final int maxRounds) {

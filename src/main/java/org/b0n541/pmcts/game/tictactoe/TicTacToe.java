@@ -9,12 +9,13 @@ public class TicTacToe {
 
     public static void playGame() {
 
-        TicTacToeGameState gameState = new TicTacToeGameState(PlayerSymbol.O);
+        TicTacToeGameState gameState = new TicTacToeGameState(PlayerSymbol.O, PlayerSymbol.X, PlayerSymbol.O);
         final TicTacToePlayer noughtsPlayer = new TicTacToePlayer(PlayerSymbol.O, PlayerSymbol.O);
         final TicTacToePlayer crossesPlayer = new TicTacToePlayer(PlayerSymbol.X, PlayerSymbol.O);
 
         do {
             final PlayerSymbol nextPlayer = gameState.getNextPlayer();
+            LOG.info("Next player: {}", nextPlayer);
 
             TicTacToeMove move = null;
             if (nextPlayer == PlayerSymbol.O) {

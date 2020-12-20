@@ -4,7 +4,10 @@ package org.b0n541.pmcts.mcts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 public final class TreeNode {
@@ -69,7 +72,7 @@ public final class TreeNode {
     }
 
     public List<TreeNode> getChildren() {
-        return Collections.unmodifiableList(new ArrayList<>(children.values()));
+        return List.copyOf(children.values());
     }
 
     public Map<GameMove, TreeNode> getMovesAndChildren() {
@@ -96,19 +99,25 @@ public final class TreeNode {
     }
 
     public GameMove getBestMove(final int playerIndex) {
-        double highestScore = -1 * Double.MAX_VALUE;
+        final double highestScore = -1 * Double.MAX_VALUE;
+        long highestVisits = 0;
         GameMove bestMove = null;
         for (final Map.Entry<GameMove, TreeNode> entry : children.entrySet()) {
             final TreeNode child = entry.getValue();
             final double childScore = child.totalScores[playerIndex] / child.visits;
             LOG.info("Move {} got visits {} and score {}", entry.getKey(), child.visits, childScore);
-            if (childScore > highestScore) {
-                highestScore = childScore;
+//            if (childScore > highestScore) {
+//                highestScore = childScore;
+//                bestMove = entry.getKey();
+//            }
+            if (child.visits > highestVisits) {
+                highestVisits = child.visits;
                 bestMove = entry.getKey();
             }
         }
 
-        LOG.info("Best move {} with highest score {}", bestMove, highestScore);
+//        LOG.info("Best move {} with highest score {}", bestMove, highestScore);
+        LOG.info("Best move {} with highest visits {}", bestMove, highestVisits);
 
         return bestMove;
     }

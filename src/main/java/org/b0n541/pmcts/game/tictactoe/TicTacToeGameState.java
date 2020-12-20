@@ -10,16 +10,21 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
 
     private static final Logger LOG = LoggerFactory.getLogger(TicTacToeGameState.class);
 
+    private final PlayerSymbol gameStatePlayer;
+    private final PlayerSymbol opponentPlayer;
     private final PlayerSymbol firstPlayer;
     private final TicTacToeBoard board;
 
-    public TicTacToeGameState(final PlayerSymbol firstPlayer) {
+    public TicTacToeGameState(final PlayerSymbol gameStatePlayer, final PlayerSymbol opponentPlayer, final PlayerSymbol firstPlayer) {
+
+        this.gameStatePlayer = gameStatePlayer;
+        this.opponentPlayer = opponentPlayer;
         this.firstPlayer = firstPlayer;
         board = new TicTacToeBoard(firstPlayer);
     }
 
-    private TicTacToeGameState(final TicTacToeBoard oldBoard, final TicTacToeMove nextMove) {
-        this(oldBoard.getMoves().size() > 0 ? oldBoard.getMoves().get(0).playerSymbol : oldBoard.getNextPlayer());
+    private TicTacToeGameState(final PlayerSymbol gameStatePlayer, final PlayerSymbol opponentPlayer, final PlayerSymbol firstPlayer, final TicTacToeBoard oldBoard, final TicTacToeMove nextMove) {
+        this(gameStatePlayer, opponentPlayer, firstPlayer);
         oldBoard.getMoves().forEach(move -> board.addMove(move));
         board.addMove(nextMove);
     }
@@ -35,7 +40,7 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
 
     @Override
     public TicTacToeGameState addMove(final TicTacToeMove move) {
-        return new TicTacToeGameState(board, move);
+        return new TicTacToeGameState(gameStatePlayer, opponentPlayer, firstPlayer, board, move);
     }
 
     @Override
@@ -48,14 +53,14 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
         double result = 0.0;
         switch (board.getGameResult()) {
             case O_WON:
-                if (PlayerSymbol.O == firstPlayer) {
+                if (PlayerSymbol.O == gameStatePlayer) {
                     result = 1.0;
                 } else {
                     result = 0.0;
                 }
                 break;
             case X_WON:
-                if (PlayerSymbol.X == firstPlayer) {
+                if (PlayerSymbol.X == gameStatePlayer) {
                     result = 1.0;
                 } else {
                     result = 0.0;
@@ -74,7 +79,7 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
 
     @Override
     public int getRootPlayerIndex() {
-        return firstPlayer.ordinal();
+        return gameStatePlayer.ordinal();
     }
 
     @Override

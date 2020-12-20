@@ -36,23 +36,23 @@ public interface GameState<M extends GameMove> {
     double getGameResult();
 
     /**
-     * Gets the number of players.
+     * Gets the position of the root node player.
      *
-     * @return
-     */
-    int getPlayerCount();
-
-    /**
-     * Gets the position of the root player.
-     *
-     * @return Index of the root player
+     * @return Index of the root node player
      */
     int getRootPlayerIndex();
 
     /**
+     * Gets the number of players.
+     *
+     * @return Number of players
+     */
+    int getPlayerCount();
+
+    /*
      * Gets the position of the current player.
      *
-     * @return Index of the currrent player
+     * @return Index of the current player
      */
     int getPlayerIndex();
 }

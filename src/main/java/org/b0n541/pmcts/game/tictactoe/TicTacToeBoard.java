@@ -23,8 +23,6 @@ public final class TicTacToeBoard {
 
     private final List<TicTacToeMove> moves = new ArrayList<>();
 
-    private final TicTacToeRules rules = new TicTacToeRules();
-
     private boolean noughtsWon;
     private boolean crossesWon;
     private boolean isDraw;
@@ -49,7 +47,7 @@ public final class TicTacToeBoard {
         if (isFinished()) {
             return Collections.emptyList();
         }
-        return Collections.unmodifiableList(TicTacToeRules.getPossibleMoves(nextPlayer, noughts, crosses));
+        return TicTacToeRules.getPossibleMoves(nextPlayer, noughts, crosses);
     }
 
     public void addMove(final TicTacToeMove move) {
@@ -74,7 +72,7 @@ public final class TicTacToeBoard {
         }
 
         if (TicTacToeRules.isBoardFull(noughts, crosses)) {
-            isDraw = rules.isDraw(noughts, crosses);
+            isDraw = TicTacToeRules.isDraw(noughts, crosses);
         }
     }
 
