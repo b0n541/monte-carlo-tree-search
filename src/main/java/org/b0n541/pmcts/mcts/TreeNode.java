@@ -98,30 +98,6 @@ public final class TreeNode {
         return gameState;
     }
 
-    public GameMove getBestMove(final int playerIndex) {
-        final double highestScore = -1 * Double.MAX_VALUE;
-        long highestVisits = 0;
-        GameMove bestMove = null;
-        for (final Map.Entry<GameMove, TreeNode> entry : children.entrySet()) {
-            final TreeNode child = entry.getValue();
-            final double childScore = child.totalScores[playerIndex] / child.visits;
-            LOG.info("Move {} got visits {} and score {}", entry.getKey(), child.visits, childScore);
-//            if (childScore > highestScore) {
-//                highestScore = childScore;
-//                bestMove = entry.getKey();
-//            }
-            if (child.visits > highestVisits) {
-                highestVisits = child.visits;
-                bestMove = entry.getKey();
-            }
-        }
-
-//        LOG.info("Best move {} with highest score {}", bestMove, highestScore);
-        LOG.info("Best move {} with highest visits {}", bestMove, highestVisits);
-
-        return bestMove;
-    }
-
     @Override
     public String toString() {
         return "Visits: " + visits +

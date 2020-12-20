@@ -1,7 +1,12 @@
 package org.b0n541.pmcts.mcts;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public final class Tree {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Tree.class);
 
     private final TreeNode rootNode;
 
@@ -54,5 +59,49 @@ public final class Tree {
                         parent.getNodeId() +
                                 " -> " + entry.getValue().getNodeId() +
                                 " [label=\"" + entry.getKey().toShortString() + "\"]"));
+    }
+
+    public GameMove getBestMove(final int playerIndex) {
+
+        long highestVisits = 0;
+        GameMove bestMove = null;
+        for (final TreeNode child : rootNode.getChildren()) {
+            final GameMove move = child.getGameState().getLastMove();
+            final long visits = child.getVisits();
+            final double score0 = child.getTotalScores()[0] / visits;
+            final double score1 = child.getTotalScores()[1] / visits;
+            LOG.info("Move {} got visits {} and scores {} {}", move, visits, score0, score1);
+
+            if (child.getVisits() > highestVisits) {
+                highestVisits = visits;
+                bestMove = move;
+            }
+        }
+
+        LOG.info("Best move {} with highest visits {}", bestMove, highestVisits);
+
+        return bestMove;
+
+//        final double highestScore = -1 * Double.MAX_VALUE;
+//        long highestVisits = 0;
+//        GameMove bestMove = null;
+//        for (final Map.Entry<GameMove, TreeNode> entry : children.entrySet()) {
+//            final TreeNode child = entry.getValue();
+//            final double childScore = child.totalScores[playerIndex] / child.visits;
+//            LOG.info("Move {} got visits {} and score {}", entry.getKey(), child.visits, childScore);
+////            if (childScore > highestScore) {
+////                highestScore = childScore;
+////                bestMove = entry.getKey();
+////            }
+//            if (child.visits > highestVisits) {
+//                highestVisits = child.visits;
+//                bestMove = entry.getKey();
+//            }
+//        }
+//
+////        LOG.info("Best move {} with highest score {}", bestMove, highestScore);
+//        LOG.info("Best move {} with highest visits {}", bestMove, highestVisits);
+//
+//        return bestMove;
     }
 }

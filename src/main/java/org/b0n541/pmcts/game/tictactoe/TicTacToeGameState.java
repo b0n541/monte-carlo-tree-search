@@ -1,5 +1,6 @@
 package org.b0n541.pmcts.game.tictactoe;
 
+import org.b0n541.pmcts.mcts.GameMove;
 import org.b0n541.pmcts.mcts.GameState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,6 +86,11 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
     @Override
     public int getPlayerIndex() {
         return board.getNextPlayer().ordinal();
+    }
+
+    @Override
+    public GameMove getLastMove() {
+        return board.getMoves().get(board.getMoves().size() - 1);
     }
 
     @Override

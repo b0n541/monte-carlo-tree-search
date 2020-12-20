@@ -55,4 +55,9 @@ public class TestGameState implements GameState {
     public int getPlayerIndex() {
         return 0;
     }
+
+    @Override
+    public GameMove getLastMove() {
+        return null;
+    }
 }

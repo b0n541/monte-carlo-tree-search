@@ -12,6 +12,9 @@ public class TicTacToeGameStateTest {
         assertThat(state.isGameFinished()).isFalse();
         assertThat(state.getPossibleMoves()).hasSize(9);
         assertThat(state.getGameResult()).isEqualTo(0.5);
+
+        assertThat(state.getRootPlayerIndex()).isEqualTo(0);
+        assertThat(state.getPlayerIndex()).isEqualTo(0);
     }
 
     @Test
@@ -20,13 +23,13 @@ public class TicTacToeGameStateTest {
 
         final TicTacToeGameState newState = state.addMove(new TicTacToeMove(PlayerSymbol.O, 0, 0));
 
-        assertThat(newState.getRootPlayerIndex()).isEqualTo(1);
-        assertThat(newState.getPlayerIndex()).isEqualTo(0);
+        assertThat(newState.getRootPlayerIndex()).isEqualTo(0);
+        assertThat(newState.getPlayerIndex()).isEqualTo(1);
 
         final TicTacToeGameState newState2 = newState.addMove(new TicTacToeMove(PlayerSymbol.X, 1, 1));
 
-        assertThat(newState2.getRootPlayerIndex()).isEqualTo(1);
-        assertThat(newState2.getPlayerIndex()).isEqualTo(1);
+        assertThat(newState2.getRootPlayerIndex()).isEqualTo(0);
+        assertThat(newState2.getPlayerIndex()).isEqualTo(0);
 
         assertThat(newState2.isGameFinished()).isFalse();
         assertThat(newState2.getPossibleMoves()).hasSize(7);

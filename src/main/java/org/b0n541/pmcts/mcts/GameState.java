@@ -55,4 +55,6 @@ public interface GameState<M extends GameMove> {
      * @return Index of the current player
      */
     int getPlayerIndex();
+
+    GameMove getLastMove();
 }
