@@ -89,8 +89,18 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
     }
 
     @Override
+    public boolean isNextPlayerSameParty() {
+        return getNextPlayer() == gameStatePlayer;
+    }
+
+    @Override
     public GameMove getLastMove() {
         return board.getMoves().get(board.getMoves().size() - 1);
+    }
+
+    @Override
+    public String getPlayerString() {
+        return getNextPlayer().toString();
     }
 
     @Override

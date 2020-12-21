@@ -1,7 +1,6 @@
 package org.b0n541.pmcts.mcts;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TestGameState implements GameState {
@@ -21,7 +20,7 @@ public class TestGameState implements GameState {
 
     @Override
     public List<GameMove> getPossibleMoves() {
-        return Arrays.asList(TestGameMove.HEADS, TestGameMove.TAILS);
+        return List.of(TestGameMove.HEADS, TestGameMove.TAILS);
     }
 
     @Override
@@ -57,7 +56,17 @@ public class TestGameState implements GameState {
     }
 
     @Override
+    public boolean isNextPlayerSameParty() {
+        return true;
+    }
+
+    @Override
     public GameMove getLastMove() {
+        return moves.get(moves.size() - 1);
+    }
+
+    @Override
+    public String getPlayerString() {
         return null;
     }
 }

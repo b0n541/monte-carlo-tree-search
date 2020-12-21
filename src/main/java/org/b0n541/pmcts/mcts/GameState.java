@@ -36,18 +36,18 @@ public interface GameState<M extends GameMove> {
     double getGameResult();
 
     /**
-     * Gets the position of the root node player.
-     *
-     * @return Index of the root node player
-     */
-    int getRootPlayerIndex();
-
-    /**
      * Gets the number of players.
      *
      * @return Number of players
      */
     int getPlayerCount();
+
+    /**
+     * Gets the position of the root node player.
+     *
+     * @return Index of the root node player
+     */
+    int getRootPlayerIndex();
 
     /*
      * Gets the position of the current player.
@@ -56,5 +56,24 @@ public interface GameState<M extends GameMove> {
      */
     int getPlayerIndex();
 
+    /**
+     * Checks whether the next player belongs to the party of the game state player.
+     *
+     * @return True, if the next player belongs to the party of the game state player
+     */
+    boolean isNextPlayerSameParty();
+
+    /**
+     * Gets the last move done.
+     *
+     * @return Last move
+     */
     GameMove getLastMove();
+
+    /**
+     * Gets the string representing the player at the current game state.
+     *
+     * @return String representing the current player
+     */
+    String getPlayerString();
 }

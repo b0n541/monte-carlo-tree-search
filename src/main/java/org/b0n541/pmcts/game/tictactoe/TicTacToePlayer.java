@@ -1,5 +1,6 @@
 package org.b0n541.pmcts.game.tictactoe;
 
+import org.b0n541.pmcts.mcts.GamePlayer;
 import org.b0n541.pmcts.mcts.MonteCarloTreeSearch;
 import org.b0n541.pmcts.mcts.Tree;
 import org.slf4j.Logger;
@@ -7,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
-public class TicTacToePlayer {
+public class TicTacToePlayer implements GamePlayer {
 
     private static final Logger LOG = LoggerFactory.getLogger(TicTacToePlayer.class);
 
@@ -53,5 +54,10 @@ public class TicTacToePlayer {
 
     public void addMove(final TicTacToeMove move) {
         gameState = gameState.addMove(move);
+    }
+
+    @Override
+    public String toShortString() {
+        return playerSymbol.toString();
     }
 }

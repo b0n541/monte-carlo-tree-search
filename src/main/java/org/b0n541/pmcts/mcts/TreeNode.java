@@ -79,10 +79,15 @@ public final class TreeNode {
         return Collections.unmodifiableMap(children);
     }
 
-    public double getUcb1Value(final int playerIndex) {
+    public double getUcb1Value() {
         if (isRootNode() || visits == 0) {
             return Double.MAX_VALUE;
         } else {
+            int playerIndex = 0;
+            if (!parent.gameState.isNextPlayerSameParty()) {
+                playerIndex = 1;
+            }
+
             return (totalScores[playerIndex] / visits) + EXPLORATION_FACTOR * Math.sqrt((Math.log(parent.visits) / visits));
         }
     }
@@ -103,6 +108,6 @@ public final class TreeNode {
         return "Visits: " + visits +
                 " Total scores: " + totalScores[0] +
                 " Score: " + totalScores[0] / visits +
-                " UCB1: " + getUcb1Value(0);
+                " UCB1: " + getUcb1Value();
     }
 }

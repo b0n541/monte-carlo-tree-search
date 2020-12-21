@@ -46,7 +46,7 @@ public final class Tree {
     private static void printNodeLabel(final TreeNode node) {
         System.out.println(
                 node.getNodeId() +
-                        " [label=\"" + node.getGameState().getPlayerIndex() + "\\n" +
+                        " [label=\"" + node.getGameState().getPlayerString() + "\\n" +
                         " v=" + node.getVisits() +
                         " s=" + node.getTotalScores()[0] + " " + node.getTotalScores()[1] + "\"" +
                         "]");

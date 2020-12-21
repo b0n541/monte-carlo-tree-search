@@ -26,7 +26,7 @@ public final class MonteCarloTreeSearch {
             TreeNode bestChildNode = null;
             double bestUcb1Value = -1 * Double.MAX_VALUE;
             for (final TreeNode node : nextNode.getChildren()) {
-                final double ucb1Value = node.getUcb1Value(node.getGameState().getPlayerIndex());
+                final double ucb1Value = node.getUcb1Value();
                 if (ucb1Value > bestUcb1Value) {
                     bestChildNode = node;
                     bestUcb1Value = ucb1Value;
