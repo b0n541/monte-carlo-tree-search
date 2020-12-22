@@ -32,6 +32,6 @@ public class TicTacToe {
 
         } while (!gameState.isGameFinished());
 
-        LOG.info("--> {}", gameState.getGameResult());
+        LOG.info("--> {}", gameState.getGameValues());
     }
 }

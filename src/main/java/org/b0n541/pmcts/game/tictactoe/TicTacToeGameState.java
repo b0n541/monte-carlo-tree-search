@@ -5,7 +5,9 @@ import org.b0n541.pmcts.mcts.GameState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class TicTacToeGameState implements GameState<TicTacToeMove> {
 
@@ -35,6 +37,11 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
     }
 
     @Override
+    public List<String> getPlayers() {
+        return List.of(PlayerSymbol.O.toString(), PlayerSymbol.X.toString());
+    }
+
+    @Override
     public List<TicTacToeMove> getPossibleMoves() {
         return board.getPossibleMoves();
     }
@@ -50,47 +57,24 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
     }
 
     @Override
-    public double getGameResult() {
-        double result = 0.0;
+    public Map<String, Double> getGameValues() {
+        final double playerOResult;
         switch (board.getGameResult()) {
             case O_WON:
-                if (PlayerSymbol.O == gameStatePlayer) {
-                    result = 1.0;
-                } else {
-                    result = 0.0;
-                }
+                playerOResult = 1.0;
                 break;
             case X_WON:
-                if (PlayerSymbol.X == gameStatePlayer) {
-                    result = 1.0;
-                } else {
-                    result = 0.0;
-                }
+                playerOResult = 0.0;
                 break;
             default:
-                result = 0.5;
+                playerOResult = 0.5;
         }
+
+        final Map<String, Double> result = new HashMap<>();
+        result.put(PlayerSymbol.O.toString(), playerOResult);
+        result.put(PlayerSymbol.X.toString(), 1.0 - playerOResult);
+
         return result;
-    }
-
-    @Override
-    public int getPlayerCount() {
-        return 2;
-    }
-
-    @Override
-    public int getRootPlayerIndex() {
-        return gameStatePlayer.ordinal();
-    }
-
-    @Override
-    public int getPlayerIndex() {
-        return board.getNextPlayer().ordinal();
-    }
-
-    @Override
-    public boolean isNextPlayerSameParty() {
-        return getNextPlayer() == gameStatePlayer;
     }
 
     @Override
@@ -99,7 +83,7 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
     }
 
     @Override
-    public String getPlayerString() {
+    public String getPlayer() {
         return getNextPlayer().toString();
     }
 

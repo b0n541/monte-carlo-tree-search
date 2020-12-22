@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class MonteCarloTreeSearch {
@@ -14,8 +15,8 @@ public final class MonteCarloTreeSearch {
         for (int i = 0; i < rounds; i++) {
             final TreeNode leafNode = traverseTree(tree);
             final TreeNode rollOutNode = expandTree(leafNode);
-            final double result = rollOut(rollOutNode);
-            backPropagation(rollOutNode, result, 1.0 - result);
+            final Map<String, Double> gameValues = rollOut(rollOutNode);
+            backPropagation(rollOutNode, gameValues);
             //tree.printDigraph();
         }
     }
@@ -54,7 +55,7 @@ public final class MonteCarloTreeSearch {
         return node.getChildren().get(0);
     }
 
-    private static double rollOut(final TreeNode node) {
+    private static Map<String, Double> rollOut(final TreeNode node) {
         GameState currentState = node.getGameState();
         while (!currentState.isGameFinished()) {
             final List<GameMove> possibleMoves = currentState.getPossibleMoves();
@@ -62,10 +63,10 @@ public final class MonteCarloTreeSearch {
             final GameMove nextMove = possibleMoves.get(randomIndex);
             currentState = currentState.addMove(nextMove);
         }
-        return currentState.getGameResult();
+        return currentState.getGameValues();
     }
 
-    private static void backPropagation(final TreeNode node, final double... gameValues) {
+    private static void backPropagation(final TreeNode node, final Map<String, Double> gameValues) {
         TreeNode currentNode = node;
         do {
             currentNode.addVisit(gameValues);

@@ -2,12 +2,14 @@ package org.b0n541.pmcts.mcts;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TreeTest {
     @Test
     public void emptyTree() {
-        final Tree tree = new Tree(new TestGameState(2));
+        final Tree tree = new Tree(new TestGameState(List.of("HEADS", "TAILS")));
 
         assertThat(tree.getSize()).isEqualTo(1);
 

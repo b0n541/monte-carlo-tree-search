@@ -1,21 +1,28 @@
 package org.b0n541.pmcts.mcts;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class TestGameState implements GameState {
 
     private final List<GameMove> moves = new ArrayList<>();
-    private final int playerCount;
+    private final List<String> players;
 
-    public TestGameState(final int playerCount) {
-        this.playerCount = playerCount;
+    public TestGameState(final List<String> players) {
+        this.players = Collections.unmodifiableList(players);
     }
 
-    private TestGameState(final int playerCount, final List<GameMove> moves, final GameMove move) {
-        this.playerCount = playerCount;
+    private TestGameState(final List<String> players, final List<GameMove> moves, final GameMove move) {
+        this(players);
         this.moves.addAll(moves);
         this.moves.add(move);
+    }
+
+    @Override
+    public List<String> getPlayers() {
+        return players;
     }
 
     @Override
@@ -25,7 +32,7 @@ public class TestGameState implements GameState {
 
     @Override
     public GameState addMove(final GameMove move) {
-        return new TestGameState(playerCount, moves, move);
+        return new TestGameState(players, moves, move);
     }
 
     @Override
@@ -34,30 +41,12 @@ public class TestGameState implements GameState {
     }
 
     @Override
-    public double getGameResult() {
-        return moves.stream()
-                .filter(move -> move == TestGameMove.TAILS)
-                .count();
-    }
-
-    @Override
-    public int getPlayerCount() {
-        return playerCount;
-    }
-
-    @Override
-    public int getRootPlayerIndex() {
-        return 0;
-    }
-
-    @Override
-    public int getPlayerIndex() {
-        return 0;
-    }
-
-    @Override
-    public boolean isNextPlayerSameParty() {
-        return true;
+    public Map<String, Double> getGameValues() {
+        final double headsGameValue = 1.0 *
+                moves.stream()
+                        .filter(move -> move == TestGameMove.HEADS)
+                        .count();
+        return Map.of(TestGameMove.HEADS.toString(), headsGameValue, TestGameMove.TAILS.toString(), 100 - headsGameValue);
     }
 
     @Override
@@ -66,7 +55,7 @@ public class TestGameState implements GameState {
     }
 
     @Override
-    public String getPlayerString() {
-        return null;
+    public String getPlayer() {
+        return players.get(0);
     }
 }

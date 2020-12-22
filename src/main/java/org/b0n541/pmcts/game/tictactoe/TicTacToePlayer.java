@@ -28,7 +28,7 @@ public class TicTacToePlayer implements GamePlayer {
 
         //tree.printDigraph();
 
-        return (TicTacToeMove) tree.getBestMove(playerSymbol.ordinal());
+        return (TicTacToeMove) tree.getBestMove();
     }
 
     private static void play(final Tree tree, final int maxRounds) {

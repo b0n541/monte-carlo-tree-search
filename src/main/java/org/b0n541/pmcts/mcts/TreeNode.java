@@ -16,17 +16,16 @@ public final class TreeNode {
 
     private final static double EXPLORATION_FACTOR = 2.0;
 
-    private static final AtomicLong nodeCounter = new AtomicLong();
+    private static final AtomicLong NODE_COUNTER = new AtomicLong();
 
-    private final long nodeId = nodeCounter.incrementAndGet();
+    private final long nodeId = NODE_COUNTER.incrementAndGet();
 
     private final GameState gameState;
 
     private final TreeNode parent;
     private final Map<GameMove, TreeNode> children = new HashMap<>();
 
-    private final double[] totalScores;
-    private long visits;
+    private final TreeNodeStatistics statistics;
 
     public TreeNode(final GameState gameState) {
         this(null, gameState);
@@ -35,7 +34,7 @@ public final class TreeNode {
     public TreeNode(final TreeNode parent, final GameState gameState) {
         this.parent = parent;
         this.gameState = gameState;
-        totalScores = new double[gameState.getPlayerCount()];
+        statistics = new TreeNodeStatistics(gameState.getPlayers());
     }
 
     public String getNodeId() {
@@ -54,25 +53,28 @@ public final class TreeNode {
         return parent;
     }
 
-    public double[] getTotalScores() {
-        return totalScores;
+    public Map<String, Double> getTotalScores() {
+        return statistics.getTotalScores();
+    }
+
+    public double getTotalScore(final String player) {
+        return statistics.getTotalScore(player);
     }
 
     public long getVisits() {
-        return visits;
+        return statistics.getVisits();
     }
 
-    public void addVisit(final double... gameValues) {
-        int index = 0;
-        for (final double gameValue : gameValues) {
-            totalScores[index] += gameValue;
-            index++;
-        }
-        visits++;
+    public void addVisit(final Map<String, Double> scores) {
+        statistics.addScores(scores);
     }
 
     public List<TreeNode> getChildren() {
         return List.copyOf(children.values());
+    }
+
+    public String getPlayerString() {
+        return gameState.getPlayer();
     }
 
     public Map<GameMove, TreeNode> getMovesAndChildren() {
@@ -80,15 +82,10 @@ public final class TreeNode {
     }
 
     public double getUcb1Value() {
-        if (isRootNode() || visits == 0) {
+        if (isRootNode() || statistics.getVisits() == 0) {
             return Double.MAX_VALUE;
         } else {
-            int playerIndex = 0;
-            if (!parent.gameState.isNextPlayerSameParty()) {
-                playerIndex = 1;
-            }
-
-            return (totalScores[playerIndex] / visits) + EXPLORATION_FACTOR * Math.sqrt((Math.log(parent.visits) / visits));
+            return (statistics.getTotalScore(parent.getPlayerString()) / statistics.getVisits()) + EXPLORATION_FACTOR * Math.sqrt((Math.log(parent.getVisits()) / statistics.getVisits()));
         }
     }
 
@@ -105,9 +102,8 @@ public final class TreeNode {
 
     @Override
     public String toString() {
-        return "Visits: " + visits +
-                " Total scores: " + totalScores[0] +
-                " Score: " + totalScores[0] / visits +
+        return "Visits: " + statistics.getVisits() +
+                " Total scores: " + statistics.getTotalScores() +
                 " UCB1: " + getUcb1Value();
     }
 }

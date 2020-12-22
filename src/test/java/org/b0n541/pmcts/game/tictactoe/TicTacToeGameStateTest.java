@@ -2,6 +2,8 @@ package org.b0n541.pmcts.game.tictactoe;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TicTacToeGameStateTest {
@@ -11,10 +13,8 @@ public class TicTacToeGameStateTest {
 
         assertThat(state.isGameFinished()).isFalse();
         assertThat(state.getPossibleMoves()).hasSize(9);
-        assertThat(state.getGameResult()).isEqualTo(0.5);
-
-        assertThat(state.getRootPlayerIndex()).isEqualTo(0);
-        assertThat(state.getPlayerIndex()).isEqualTo(0);
+        assertThat(state.getGameValues()).isEqualTo(Map.of("O", 0.5, "X", 0.5));
+        assertThat(state.getPlayer()).isEqualTo("O");
     }
 
     @Test
@@ -23,17 +23,15 @@ public class TicTacToeGameStateTest {
 
         final TicTacToeGameState newState = state.addMove(new TicTacToeMove(PlayerSymbol.O, 0, 0));
 
-        assertThat(newState.getRootPlayerIndex()).isEqualTo(0);
-        assertThat(newState.getPlayerIndex()).isEqualTo(1);
+        assertThat(newState.getPlayer()).isEqualTo("X");
 
         final TicTacToeGameState newState2 = newState.addMove(new TicTacToeMove(PlayerSymbol.X, 1, 1));
 
-        assertThat(newState2.getRootPlayerIndex()).isEqualTo(0);
-        assertThat(newState2.getPlayerIndex()).isEqualTo(0);
+        assertThat(newState2.getPlayer()).isEqualTo("O");
 
         assertThat(newState2.isGameFinished()).isFalse();
         assertThat(newState2.getPossibleMoves()).hasSize(7);
-        assertThat(newState2.getGameResult()).isEqualTo(0.5);
+        assertThat(newState2.getGameValues()).isEqualTo(Map.of("O", 0.5, "X", 0.5));
     }
 
     @Test
@@ -49,7 +47,7 @@ public class TicTacToeGameStateTest {
 
         assertThat(newState.isGameFinished()).isTrue();
         assertThat(newState.getPossibleMoves()).hasSize(0);
-        assertThat(newState.getGameResult()).isEqualTo(1.0);
+        assertThat(newState.getGameValues()).isEqualTo(Map.of("O", 1.0, "X", 0.0));
     }
 
     @Test
@@ -66,6 +64,6 @@ public class TicTacToeGameStateTest {
 
         assertThat(newState.isGameFinished()).isTrue();
         assertThat(newState.getPossibleMoves()).hasSize(0);
-        assertThat(newState.getGameResult()).isEqualTo(0.0);
+        assertThat(newState.getGameValues()).isEqualTo(Map.of("O", 0.0, "X", 1.0));
     }
 }

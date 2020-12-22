@@ -1,11 +1,27 @@
 package org.b0n541.pmcts.mcts;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Interface for all game state implementations to be used in the {@link MonteCarloTreeSearch}.
  */
 public interface GameState<M extends GameMove> {
+
+    /**
+     * Gets all player identifications.
+     * <p>
+     * return List of player identifications
+     */
+    List<String> getPlayers();
+
+    /**
+     * Gets the identification of the player at the current game state.
+     *
+     * @return String representing the current player
+     */
+    String getPlayer();
+
     /**
      * Gets all possible moves from the current game state.
      *
@@ -29,39 +45,11 @@ public interface GameState<M extends GameMove> {
     boolean isGameFinished();
 
     /**
-     * Gets the game result.
+     * Gets the game value for each player.
      *
-     * @return Game result
+     * @return Game result for each player
      */
-    double getGameResult();
-
-    /**
-     * Gets the number of players.
-     *
-     * @return Number of players
-     */
-    int getPlayerCount();
-
-    /**
-     * Gets the position of the root node player.
-     *
-     * @return Index of the root node player
-     */
-    int getRootPlayerIndex();
-
-    /*
-     * Gets the position of the current player.
-     *
-     * @return Index of the current player
-     */
-    int getPlayerIndex();
-
-    /**
-     * Checks whether the next player belongs to the party of the game state player.
-     *
-     * @return True, if the next player belongs to the party of the game state player
-     */
-    boolean isNextPlayerSameParty();
+    Map<String, Double> getGameValues();
 
     /**
      * Gets the last move done.
@@ -69,11 +57,4 @@ public interface GameState<M extends GameMove> {
      * @return Last move
      */
     GameMove getLastMove();
-
-    /**
-     * Gets the string representing the player at the current game state.
-     *
-     * @return String representing the current player
-     */
-    String getPlayerString();
 }

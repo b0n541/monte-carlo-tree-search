@@ -4,13 +4,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MonteCarloTreeSearchTest {
     @Test
     public void multipleRuns() {
-        final Tree tree = new Tree(new TestGameState(2));
+        final Tree tree = new Tree(new TestGameState(List.of("HEADS", "TAILS")));
 
         assertThat(tree.getSize()).isEqualTo(1);
 
@@ -52,7 +53,7 @@ public class MonteCarloTreeSearchTest {
         final long finishTime = System.nanoTime() + duration.toNanos();
 
         long rounds = 0;
-        final Tree tree = new Tree(new TestGameState(2));
+        final Tree tree = new Tree(new TestGameState(List.of("HEADS", "TAILS")));
         do {
             MonteCarloTreeSearch.run(tree, 1);
             rounds++;
@@ -64,7 +65,7 @@ public class MonteCarloTreeSearchTest {
     }
 
     private static void runSimulation(final int noOfRounds) {
-        final Tree tree = new Tree(new TestGameState(2));
+        final Tree tree = new Tree(new TestGameState(List.of("HEADS", "TAILS")));
         MonteCarloTreeSearch.run(tree, noOfRounds);
     }
 }
