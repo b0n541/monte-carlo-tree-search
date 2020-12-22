@@ -15,7 +15,7 @@ public class TicTacToe {
 
         do {
             final PlayerSymbol nextPlayer = gameState.getNextPlayer();
-            LOG.info("Next player: {} index {}", nextPlayer, nextPlayer.ordinal());
+            LOG.info("Next player: {}", nextPlayer);
 
             TicTacToeMove move = null;
             if (nextPlayer == PlayerSymbol.O) {
