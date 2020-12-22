@@ -19,6 +19,7 @@ public final class TicTacToeBoard {
     private int noughts;
     private int crosses;
 
+    private final PlayerSymbol firstPlayer;
     private PlayerSymbol nextPlayer;
 
     private final List<TicTacToeMove> moves = new ArrayList<>();
@@ -28,11 +29,16 @@ public final class TicTacToeBoard {
     private boolean isDraw;
 
     public TicTacToeBoard(final PlayerSymbol firstPlayer) {
+        this.firstPlayer = firstPlayer;
         nextPlayer = firstPlayer;
     }
 
     public PlayerSymbol get(final int row, final int column) {
         return board[row][column];
+    }
+
+    public PlayerSymbol getFirstPlayer() {
+        return firstPlayer;
     }
 
     public PlayerSymbol getNextPlayer() {

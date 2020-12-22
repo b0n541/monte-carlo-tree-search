@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TicTacToeGameStateTest {
     @Test
     public void testNewGameState() {
-        final TicTacToeGameState state = new TicTacToeGameState(PlayerSymbol.O, PlayerSymbol.X, PlayerSymbol.O);
+        final TicTacToeGameState state = new TicTacToeGameState(PlayerSymbol.O);
 
         assertThat(state.isGameFinished()).isFalse();
         assertThat(state.getPossibleMoves()).hasSize(9);
@@ -19,7 +19,7 @@ public class TicTacToeGameStateTest {
 
     @Test
     public void testAddMoves() {
-        final TicTacToeGameState state = new TicTacToeGameState(PlayerSymbol.O, PlayerSymbol.X, PlayerSymbol.O);
+        final TicTacToeGameState state = new TicTacToeGameState(PlayerSymbol.O);
 
         final TicTacToeGameState newState = state.addMove(new TicTacToeMove(PlayerSymbol.O, 0, 0));
 
@@ -36,7 +36,7 @@ public class TicTacToeGameStateTest {
 
     @Test
     public void testWinningGameFirstPlayerWin() {
-        final TicTacToeGameState state = new TicTacToeGameState(PlayerSymbol.O, PlayerSymbol.X, PlayerSymbol.O);
+        final TicTacToeGameState state = new TicTacToeGameState(PlayerSymbol.O);
 
         final TicTacToeGameState newState = state
                 .addMove(new TicTacToeMove(PlayerSymbol.O, 0, 0))
@@ -52,7 +52,7 @@ public class TicTacToeGameStateTest {
 
     @Test
     public void testWinningGameFirstPlayerLoose() {
-        final TicTacToeGameState state = new TicTacToeGameState(PlayerSymbol.O, PlayerSymbol.X, PlayerSymbol.O);
+        final TicTacToeGameState state = new TicTacToeGameState(PlayerSymbol.O);
 
         final TicTacToeGameState newState = state
                 .addMove(new TicTacToeMove(PlayerSymbol.O, 0, 0))

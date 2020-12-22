@@ -13,21 +13,15 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
 
     private static final Logger LOG = LoggerFactory.getLogger(TicTacToeGameState.class);
 
-    private final PlayerSymbol gameStatePlayer;
-    private final PlayerSymbol opponentPlayer;
-    private final PlayerSymbol firstPlayer;
     private final TicTacToeBoard board;
 
-    public TicTacToeGameState(final PlayerSymbol gameStatePlayer, final PlayerSymbol opponentPlayer, final PlayerSymbol firstPlayer) {
+    public TicTacToeGameState(final PlayerSymbol firstPlayer) {
 
-        this.gameStatePlayer = gameStatePlayer;
-        this.opponentPlayer = opponentPlayer;
-        this.firstPlayer = firstPlayer;
         board = new TicTacToeBoard(firstPlayer);
     }
 
-    private TicTacToeGameState(final PlayerSymbol gameStatePlayer, final PlayerSymbol opponentPlayer, final PlayerSymbol firstPlayer, final TicTacToeBoard oldBoard, final TicTacToeMove nextMove) {
-        this(gameStatePlayer, opponentPlayer, firstPlayer);
+    private TicTacToeGameState(final TicTacToeBoard oldBoard, final TicTacToeMove nextMove) {
+        this(oldBoard.getFirstPlayer());
         oldBoard.getMoves().forEach(move -> board.addMove(move));
         board.addMove(nextMove);
     }
@@ -48,7 +42,7 @@ public final class TicTacToeGameState implements GameState<TicTacToeMove> {
 
     @Override
     public TicTacToeGameState addMove(final TicTacToeMove move) {
-        return new TicTacToeGameState(gameStatePlayer, opponentPlayer, firstPlayer, board, move);
+        return new TicTacToeGameState(board, move);
     }
 
     @Override

@@ -73,7 +73,7 @@ public final class TreeNode {
         return List.copyOf(children.values());
     }
 
-    public String getPlayerString() {
+    public String getPlayer() {
         return gameState.getPlayer();
     }
 
@@ -85,7 +85,7 @@ public final class TreeNode {
         if (isRootNode() || statistics.getVisits() == 0) {
             return Double.MAX_VALUE;
         } else {
-            return (statistics.getTotalScore(parent.getPlayerString()) / statistics.getVisits()) + EXPLORATION_FACTOR * Math.sqrt((Math.log(parent.getVisits()) / statistics.getVisits()));
+            return (statistics.getTotalScore(parent.getPlayer()) / getVisits()) + EXPLORATION_FACTOR * Math.sqrt((Math.log(parent.getVisits()) / getVisits()));
         }
     }
 

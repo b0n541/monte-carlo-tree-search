@@ -17,13 +17,13 @@ public class TicTacToePlayer implements GamePlayer {
 
     public TicTacToePlayer(final PlayerSymbol playerSymbol, final PlayerSymbol firstPlayer) {
         this.playerSymbol = playerSymbol;
-        gameState = new TicTacToeGameState(playerSymbol, playerSymbol == PlayerSymbol.O ? PlayerSymbol.X : PlayerSymbol.O, firstPlayer);
+        gameState = new TicTacToeGameState(firstPlayer);
     }
 
     public TicTacToeMove play() {
         final Tree tree = new Tree(gameState);
 
-        play(tree, Duration.ofSeconds(2));
+        play(tree, Duration.ofSeconds(1));
         //play(tree, 200);
 
         //tree.printDigraph();
