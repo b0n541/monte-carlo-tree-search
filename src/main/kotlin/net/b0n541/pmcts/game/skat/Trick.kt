@@ -4,6 +4,8 @@ class Trick(
     private val trickForeHand: PlayerPosition,
     private val cards: MutableList<SkatGameMove> = mutableListOf(),
 ) {
+    var cardValues: Int = 0
+        private set
     var trickWinner: PlayerPosition? = null
         private set
 
@@ -12,9 +14,10 @@ class Trick(
 
     fun addMove(move: SkatGameMove) {
 
-        require(cards.size != 3) { "Trick is already completed." }
+        require(cards.size < 3) { "Trick is already completed." }
 
         cards.add(move)
+        cardValues += move.card.value
 
         if (cards.size == 3) {
             trickWinner = trickForeHand
@@ -33,6 +36,7 @@ class Trick(
         val copy = Trick(trickForeHand)
         copy.cards.addAll(cards)
         copy.trickWinner = trickWinner
+        copy.cardValues = cardValues
         return copy
     }
 }

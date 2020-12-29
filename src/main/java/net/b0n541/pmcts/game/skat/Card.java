@@ -139,6 +139,10 @@ public enum Card {
         this.rank = rank;
     }
 
+    public int getValue() {
+        return rank.value;
+    }
+
     @Override
     public String toString() {
         return suit.symbol + rank.symbol;

@@ -3,11 +3,17 @@ package net.b0n541.pmcts.game.skat
 import net.b0n541.pmcts.mcts.GameMove
 import net.b0n541.pmcts.mcts.GameState
 
-class SkatGameState(val gameType: SkatGameType, private var nextPlayerPosition: PlayerPosition) :
+class SkatGameState(
+    val gameType: SkatGameType,
+    val declarer: PlayerPosition,
+    var nextPlayerPosition: PlayerPosition
+) :
     GameState<SkatGameMove> {
 
     private val gameMoves: MutableList<GameMove> = mutableListOf()
     private val tricks: MutableList<Trick> = mutableListOf()
+    private var declarerPoints: Int = 0
+    private var opponentPoints: Int = 0
 
     init {
         tricks.add(Trick(nextPlayerPosition))
@@ -28,26 +34,43 @@ class SkatGameState(val gameType: SkatGameType, private var nextPlayerPosition: 
         TODO("Not yet implemented")
     }
 
-    override fun addMove(move: SkatGameMove): GameState<SkatGameMove> {
+    override fun addMove(move: SkatGameMove): SkatGameState {
 
-        val newState = SkatGameState(gameType, nextPlayerPosition)
-        newState.gameMoves.clear()
-        newState.gameMoves.addAll(gameMoves)
+        require(nextPlayerPosition == move.player)
+
+        val newState = copy()
+
         newState.gameMoves.add(move)
-        newState.tricks.clear()
-        for (trick: Trick in tricks) {
-            newState.tricks.add(trick.copy())
-        }
 
-        val lastTrick = newState.tricks.last()
+        var lastTrick = newState.getLastTrick()
         lastTrick.addMove(move)
-        if (lastTrick.isFinished) {
-            tricks.add(Trick(lastTrick.trickWinner!!))
-            newState.nextPlayerPosition = lastTrick.trickWinner!!
+
+        if (lastTrick.isFinished && newState.tricks.size < 10) {
+            val trickWinner = lastTrick.trickWinner!!
+            if (trickWinner == declarer) {
+                newState.declarerPoints += lastTrick.cardValues
+            } else {
+                newState.opponentPoints += lastTrick.cardValues
+            }
+            newState.tricks.add(Trick(trickWinner))
+            newState.nextPlayerPosition = trickWinner
         } else {
             newState.nextPlayerPosition = move.player.nextPlayer
         }
 
+        return newState
+    }
+
+    private fun copy(): SkatGameState {
+        val newState = SkatGameState(gameType, declarer, nextPlayerPosition)
+        newState.gameMoves.clear()
+        newState.gameMoves.addAll(gameMoves)
+        newState.tricks.clear()
+        for (trick: Trick in tricks) {
+            newState.tricks.add(trick.copy())
+        }
+        newState.declarerPoints = declarerPoints
+        newState.opponentPoints = opponentPoints
         return newState
     }
 
@@ -56,8 +79,14 @@ class SkatGameState(val gameType: SkatGameType, private var nextPlayerPosition: 
     }
 
     override fun getGameValues(): Map<String, Double> {
-        TODO("Not yet implemented")
+        return mapOf(
+            declarer.toString() to declarerPoints.toDouble(),
+            declarer.nextPlayer.toString() to opponentPoints.toDouble(),
+            declarer.nextPlayer.nextPlayer.toString() to opponentPoints.toDouble()
+        )
     }
 
     override fun getLastMove(): GameMove = gameMoves.last()
+
+    fun getLastTrick(): Trick = tricks.last()
 }
