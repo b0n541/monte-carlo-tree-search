@@ -11,7 +11,16 @@ class SkatGameState(
     GameState<SkatGameMove> {
 
     private val gameMoves: MutableList<GameMove> = mutableListOf()
+
+    private val skatCards = Hand()
+    private val playerCards = mapOf(
+        PlayerPosition.FOREHAND to Hand(),
+        PlayerPosition.MIDDLEHAND to Hand(),
+        PlayerPosition.REARHAND to Hand()
+    )
+
     private val tricks: MutableList<Trick> = mutableListOf()
+
     private var declarerPoints: Int = 0
     private var opponentPoints: Int = 0
 
@@ -42,20 +51,26 @@ class SkatGameState(
 
         newState.gameMoves.add(move)
 
-        var lastTrick = newState.getLastTrick()
+        var lastTrick = newState.lastTrick
         lastTrick.addMove(move)
 
-        if (lastTrick.isFinished && newState.tricks.size < 10) {
+        if (lastTrick.isFinished) {
             val trickWinner = lastTrick.trickWinner!!
             if (trickWinner == declarer) {
                 newState.declarerPoints += lastTrick.cardValues
             } else {
                 newState.opponentPoints += lastTrick.cardValues
             }
-            newState.tricks.add(Trick(trickWinner))
+            if (newState.tricks.size < 10) {
+                newState.tricks.add(Trick(trickWinner))
+            }
             newState.nextPlayerPosition = trickWinner
         } else {
             newState.nextPlayerPosition = move.player.nextPlayer
+        }
+
+        if (newState.isGameFinished) {
+            newState.declarerPoints += skatCards.cardValues
         }
 
         return newState
@@ -71,11 +86,15 @@ class SkatGameState(
         }
         newState.declarerPoints = declarerPoints
         newState.opponentPoints = opponentPoints
+        newState.skatCards.takeCards(skatCards.cards)
+        newState.playerCards[PlayerPosition.FOREHAND]!!.takeCards(playerCards[PlayerPosition.FOREHAND]!!.cards)
+        newState.playerCards[PlayerPosition.MIDDLEHAND]!!.takeCards(playerCards[PlayerPosition.MIDDLEHAND]!!.cards)
+        newState.playerCards[PlayerPosition.REARHAND]!!.takeCards(playerCards[PlayerPosition.REARHAND]!!.cards)
         return newState
     }
 
     override fun isGameFinished(): Boolean {
-        return tricks.size == 10 && tricks.last().isFinished
+        return tricks.size == 10 && lastTrick.isFinished
     }
 
     override fun getGameValues(): Map<String, Double> {
@@ -88,5 +107,14 @@ class SkatGameState(
 
     override fun getLastMove(): GameMove = gameMoves.last()
 
-    fun getLastTrick(): Trick = tricks.last()
+    val lastTrick
+        get() = tricks.last()
+
+    fun dealPlayerCards(player: PlayerPosition, cards: List<Card>) {
+        playerCards[player]!!.takeCards(cards)
+    }
+
+    fun dealSkat(cards: List<Card>) {
+        skatCards.takeCards(cards)
+    }
 }

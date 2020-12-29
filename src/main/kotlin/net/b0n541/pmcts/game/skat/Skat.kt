@@ -19,7 +19,7 @@ object Skat {
 
         var gameState = SkatGameState(SkatGameType.CLUBS, PlayerPosition.FOREHAND, PlayerPosition.FOREHAND)
 
-        dealCards(cardDeck, players)
+        dealCards(cardDeck, players, gameState)
 
         var trickForeHand = gameState.nextPlayerPosition
         do {
@@ -37,22 +37,27 @@ object Skat {
             trickForeHand = gameState.nextPlayerPosition
 
         } while (!gameState.isGameFinished)
+
+        LOG.info("Game finished: ${gameState.gameValues}")
     }
 
-    private fun dealCards(cardDeck: List<OpenCard>, players: Map<PlayerPosition, SkatPlayer>) {
+    private fun dealCards(
+        cardDeck: List<OpenCard>,
+        players: Map<PlayerPosition, SkatPlayer>,
+        gameState: SkatGameState
+    ) {
+        val foreHandCards = cardDeck.subList(0, 10)
+        players[PlayerPosition.FOREHAND]?.takeCards(foreHandCards)
+        gameState.dealPlayerCards(PlayerPosition.FOREHAND, foreHandCards)
 
-        players[PlayerPosition.FOREHAND]?.takeCards(cardDeck.subList(0, 3))
-        players[PlayerPosition.MIDDLEHAND]?.takeCards(cardDeck.subList(10, 13))
-        players[PlayerPosition.REARHAND]?.takeCards(cardDeck.subList(20, 23))
+        val middleHandCards = cardDeck.subList(10, 20)
+        players[PlayerPosition.MIDDLEHAND]?.takeCards(middleHandCards)
+        gameState.dealPlayerCards(PlayerPosition.MIDDLEHAND, middleHandCards)
 
-        // TODO deal skat cards
+        val rearHandCards = cardDeck.subList(20, 30)
+        players[PlayerPosition.REARHAND]?.takeCards(rearHandCards)
+        gameState.dealPlayerCards(PlayerPosition.REARHAND, rearHandCards)
 
-        players[PlayerPosition.FOREHAND]?.takeCards(cardDeck.subList(3, 7))
-        players[PlayerPosition.MIDDLEHAND]?.takeCards(cardDeck.subList(13, 17))
-        players[PlayerPosition.REARHAND]?.takeCards(cardDeck.subList(23, 27))
-
-        players[PlayerPosition.FOREHAND]?.takeCards(cardDeck.subList(7, 10))
-        players[PlayerPosition.MIDDLEHAND]?.takeCards(cardDeck.subList(17, 20))
-        players[PlayerPosition.REARHAND]?.takeCards(cardDeck.subList(27, 30))
+        gameState.dealSkat(cardDeck.subList(30, 32))
     }
 }

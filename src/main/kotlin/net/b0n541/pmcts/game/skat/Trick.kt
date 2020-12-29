@@ -34,7 +34,7 @@ class Trick(
                 trickWinner = cards[2].player
             }
 
-            LOG.info("Trick finished: cards $cards trick winner $trickWinner")
+            LOG.info("Trick finished: cards $cards trick winner $trickWinner value $cardValues")
         }
     }
 
