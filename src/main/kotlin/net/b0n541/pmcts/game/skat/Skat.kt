@@ -3,55 +3,56 @@ package net.b0n541.pmcts.game.skat
 import org.slf4j.LoggerFactory
 
 object Skat {
-    private val LOG = LoggerFactory.getLogger(Skat::class.java)
+
+    private val LOG = LoggerFactory.getLogger(javaClass)
 
     @JvmStatic
     fun playGame() {
 
-        val cardDeck = listOf(CJ, SJ, HJ, DJ)
+        val cardDeck = CardDeck().shuffle()
 
-        //        final Map<PlayerPosition, SkatPlayer> players = Map.of(
-//                PlayerPosition.FOREHAND, new SkatPlayer(),
-//                PlayerPosition.MIDDLEHAND, new SkatPlayer(),
-//                PlayerPosition.REARHAND, new SkatPlayer());
-//
-//        final List<Trick> tricks = new ArrayList<>();
-//
-//        dealCards(cardDeck, players);
-//
-//        final SkatGameState gameState = new SkatGameState(SkatGameType.CLUBS, PlayerPosition.FOREHAND);
-//
-//        final PlayerPosition trickForeHand = PlayerPosition.FOREHAND;
-//        do {
-//            final Card firstCard = players.get(trickForeHand).playCard();
-//            gameState.addMove(new SkatGameMove(trickForeHand, firstCard));
-//
-//            final PlayerPosition trickMiddleHand = trickForeHand.getNextPlayer();
-//            final Card secondCard = players.get(trickMiddleHand).playCard();
-//            gameState.addMove(new SkatGameMove(trickMiddleHand, secondCard));
-//
-//            final PlayerPosition trickRearHand = trickMiddleHand.getNextPlayer();
-//            final Card thirdCard = players.get(trickRearHand).playCard();
-//            gameState.addMove(new SkatGameMove(trickRearHand, thirdCard));
-//
-//            LOG.info("Trick finished {}, cards {}, trick winner {}", trick.isFinished(), trick.getCards(), trick.getTrickWinner());
-//
-//            trickForeHand = trick.getTrickWinner();
+        val players = mapOf(
+            PlayerPosition.FOREHAND to SkatPlayer(),
+            PlayerPosition.MIDDLEHAND to SkatPlayer(),
+            PlayerPosition.REARHAND to SkatPlayer()
+        )
 
-//        } while (!gameState.isGameFinished());
+        var gameState = SkatGameState(SkatGameType.CLUBS, PlayerPosition.FOREHAND, PlayerPosition.FOREHAND)
+
+        dealCards(cardDeck, players)
+
+        var trickForeHand = gameState.nextPlayerPosition
+        do {
+            val firstCard = players[trickForeHand]!!.playCard()
+            gameState = gameState.addMove(SkatGameMove(trickForeHand, firstCard))
+
+            val trickMiddleHand = trickForeHand.nextPlayer
+            val secondCard = players[trickMiddleHand]!!.playCard()
+            gameState = gameState.addMove(SkatGameMove(trickMiddleHand, secondCard))
+
+            val trickRearHand = trickMiddleHand.nextPlayer
+            val thirdCard = players[trickRearHand]!!.playCard()
+            gameState = gameState.addMove(SkatGameMove(trickRearHand, thirdCard))
+
+            trickForeHand = gameState.nextPlayerPosition
+
+        } while (!gameState.isGameFinished)
     }
 
-    private fun dealCards(cardDeck: List<Card>, players: Map<PlayerPosition, SkatPlayer>) {
-        players[PlayerPosition.FOREHAND]!!.takeCards(cardDeck.subList(0, 3))
-        players[PlayerPosition.MIDDLEHAND]!!.takeCards(cardDeck.subList(10, 13))
-        players[PlayerPosition.REARHAND]!!.takeCards(cardDeck.subList(20, 23))
+    private fun dealCards(cardDeck: List<OpenCard>, players: Map<PlayerPosition, SkatPlayer>) {
+
+        players[PlayerPosition.FOREHAND]?.takeCards(cardDeck.subList(0, 3))
+        players[PlayerPosition.MIDDLEHAND]?.takeCards(cardDeck.subList(10, 13))
+        players[PlayerPosition.REARHAND]?.takeCards(cardDeck.subList(20, 23))
 
         // TODO deal skat cards
-        players[PlayerPosition.FOREHAND]!!.takeCards(cardDeck.subList(3, 7))
-        players[PlayerPosition.MIDDLEHAND]!!.takeCards(cardDeck.subList(13, 17))
-        players[PlayerPosition.REARHAND]!!.takeCards(cardDeck.subList(23, 27))
-        players[PlayerPosition.FOREHAND]!!.takeCards(cardDeck.subList(7, 10))
-        players[PlayerPosition.MIDDLEHAND]!!.takeCards(cardDeck.subList(17, 20))
-        players[PlayerPosition.REARHAND]!!.takeCards(cardDeck.subList(27, 30))
+
+        players[PlayerPosition.FOREHAND]?.takeCards(cardDeck.subList(3, 7))
+        players[PlayerPosition.MIDDLEHAND]?.takeCards(cardDeck.subList(13, 17))
+        players[PlayerPosition.REARHAND]?.takeCards(cardDeck.subList(23, 27))
+
+        players[PlayerPosition.FOREHAND]?.takeCards(cardDeck.subList(7, 10))
+        players[PlayerPosition.MIDDLEHAND]?.takeCards(cardDeck.subList(17, 20))
+        players[PlayerPosition.REARHAND]?.takeCards(cardDeck.subList(27, 30))
     }
 }

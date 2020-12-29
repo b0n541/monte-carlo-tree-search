@@ -1,9 +1,13 @@
 package net.b0n541.pmcts.game.skat
 
+import org.slf4j.LoggerFactory
+
 class Trick(
     private val trickForeHand: PlayerPosition,
     private val cards: MutableList<SkatGameMove> = mutableListOf(),
 ) {
+    private val LOG = LoggerFactory.getLogger(javaClass)
+
     var cardValues: Int = 0
         private set
     var trickWinner: PlayerPosition? = null
@@ -19,7 +23,7 @@ class Trick(
         cards.add(move)
         cardValues += move.card.value
 
-        if (cards.size == 3) {
+        if (isFinished) {
             trickWinner = trickForeHand
             if (cards[1].beats(cards[0])) {
                 trickWinner = cards[1].player
@@ -29,6 +33,8 @@ class Trick(
             } else if (cards[2].beats(cards[0])) {
                 trickWinner = cards[2].player
             }
+
+            LOG.info("Trick finished: cards $cards trick winner $trickWinner")
         }
     }
 
