@@ -59,6 +59,4 @@ internal class TrickTest {
 
         assertThat(trick.cardValues).isEqualTo(15)
     }
-
-
 }

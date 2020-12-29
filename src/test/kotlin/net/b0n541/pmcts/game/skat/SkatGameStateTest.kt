@@ -71,6 +71,7 @@ internal class SkatGameStateTest {
         assertThat(state.isGameFinished).isTrue
 
         assertThat(state.gameValues.maxOfOrNull { it.value }).isLessThanOrEqualTo(120.0)
+        assertThat(state.gameValues.map { it.value }.sum()).isGreaterThanOrEqualTo(120.0)
     }
 
     private fun randomCard(cardDeck: MutableList<OpenCard>): OpenCard {
