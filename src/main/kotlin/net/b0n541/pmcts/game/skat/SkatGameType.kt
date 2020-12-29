@@ -1,10 +1,5 @@
-package net.b0n541.pmcts.game.skat;
+package net.b0n541.pmcts.game.skat
 
-public enum SkatGameType {
-    CLUBS,
-    SPADES,
-    HEARTS,
-    DIAMONDS,
-    GRAND,
-    NULL;
+enum class SkatGameType {
+    CLUBS, SPADES, HEARTS, DIAMONDS, GRAND, NULL
 }

@@ -33,23 +33,23 @@ internal class SkatGameStateTest {
     @Test
     fun addMoves() {
         val state0 = SkatGameState(SkatGameType.CLUBS, PlayerPosition.FOREHAND, PlayerPosition.FOREHAND)
-        val state1 = state0.addMove(SkatGameMove(PlayerPosition.FOREHAND, Card.HJ))
-        val state2 = state1.addMove(SkatGameMove(PlayerPosition.MIDDLEHAND, Card.CJ))
-        val state3 = state2.addMove(SkatGameMove(PlayerPosition.REARHAND, Card.SJ))
+        val state1 = state0.addMove(SkatGameMove(PlayerPosition.FOREHAND, HJ))
+        val state2 = state1.addMove(SkatGameMove(PlayerPosition.MIDDLEHAND, CJ))
+        val state3 = state2.addMove(SkatGameMove(PlayerPosition.REARHAND, SJ))
 
         Assertions.assertThrows(NoSuchElementException::class.java) { state0.lastMove }
         assertThat(state0.nextPlayer).isEqualTo("FOREHAND")
         assertThat(state0.isGameFinished).isFalse
 
-        assertThat(state1.lastMove).isEqualTo(SkatGameMove(PlayerPosition.FOREHAND, Card.HJ))
+        assertThat(state1.lastMove).isEqualTo(SkatGameMove(PlayerPosition.FOREHAND, HJ))
         assertThat(state1.nextPlayer).isEqualTo("MIDDLEHAND")
         assertThat(state1.isGameFinished).isFalse
 
-        assertThat(state2.lastMove).isEqualTo(SkatGameMove(PlayerPosition.MIDDLEHAND, Card.CJ))
+        assertThat(state2.lastMove).isEqualTo(SkatGameMove(PlayerPosition.MIDDLEHAND, CJ))
         assertThat(state2.nextPlayer).isEqualTo("REARHAND")
         assertThat(state2.isGameFinished).isFalse
 
-        assertThat(state3.lastMove).isEqualTo(SkatGameMove(PlayerPosition.REARHAND, Card.SJ))
+        assertThat(state3.lastMove).isEqualTo(SkatGameMove(PlayerPosition.REARHAND, SJ))
         assertThat(state3.nextPlayer).isEqualTo("MIDDLEHAND")
         assertThat(state3.isGameFinished).isFalse
     }
@@ -57,16 +57,15 @@ internal class SkatGameStateTest {
     @Test
     fun finishGame() {
 
-        val cardDeck = mutableSetOf<Card>()
-        cardDeck.addAll(Card.values())
+        val cards = CardDeck().shuffle()
 
         var state = SkatGameState(SkatGameType.CLUBS, PlayerPosition.FOREHAND, PlayerPosition.FOREHAND)
 
         for (i in 1..10) {
             val trickForeHand = state.nextPlayerPosition
-            state = state.addMove(SkatGameMove(trickForeHand, randomCard(cardDeck)))
-                .addMove(SkatGameMove(trickForeHand.nextPlayer, randomCard(cardDeck)))
-                .addMove(SkatGameMove(trickForeHand.nextPlayer.nextPlayer, randomCard(cardDeck)))
+            state = state.addMove(SkatGameMove(trickForeHand, randomCard(cards)))
+                .addMove(SkatGameMove(trickForeHand.nextPlayer, randomCard(cards)))
+                .addMove(SkatGameMove(trickForeHand.nextPlayer.nextPlayer, randomCard(cards)))
         }
 
         assertThat(state.isGameFinished).isTrue
@@ -74,7 +73,7 @@ internal class SkatGameStateTest {
         assertThat(state.gameValues.maxOfOrNull { it.value }).isLessThanOrEqualTo(120.0)
     }
 
-    private fun randomCard(cardDeck: MutableSet<Card>): Card {
+    private fun randomCard(cardDeck: MutableList<OpenCard>): OpenCard {
         val card = cardDeck.random()
         cardDeck.remove(card)
         return card

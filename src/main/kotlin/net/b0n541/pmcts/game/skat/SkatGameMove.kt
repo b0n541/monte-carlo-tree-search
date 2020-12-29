@@ -2,7 +2,7 @@ package net.b0n541.pmcts.game.skat
 
 import net.b0n541.pmcts.mcts.GameMove
 
-data class SkatGameMove(val player: PlayerPosition, val card: Card) : GameMove {
+data class SkatGameMove(val player: PlayerPosition, val card: OpenCard) : GameMove {
 
     fun beats(move: SkatGameMove): Boolean {
         val otherCard = move.card
@@ -14,9 +14,9 @@ data class SkatGameMove(val player: PlayerPosition, val card: Card) : GameMove {
     }
 
     companion object {
-        private fun beats(leadingCard: Card, followingCard: Card): Boolean {
+        private fun beats(leadingCard: OpenCard, followingCard: OpenCard): Boolean {
             if (isTrumpCard(leadingCard)) {
-                if (followingCard.rank == Card.Rank.JACK && leadingCard.rank == Card.Rank.JACK) {
+                if (followingCard.rank == Rank.JACK && leadingCard.rank == Rank.JACK) {
                     return followingCard.suit.rank > leadingCard.suit.rank
                 }
             } else {
@@ -27,13 +27,13 @@ data class SkatGameMove(val player: PlayerPosition, val card: Card) : GameMove {
             return followsSuitAndBeats(leadingCard, followingCard)
         }
 
-        private fun followsSuitAndBeats(leadingCard: Card, followingCard: Card): Boolean {
+        private fun followsSuitAndBeats(leadingCard: OpenCard, followingCard: OpenCard): Boolean {
             return followingCard.suit == leadingCard.suit && followingCard.rank.suitGameRank > leadingCard.rank.suitGameRank
         }
 
-        private fun isTrumpCard(card: Card): Boolean {
+        private fun isTrumpCard(card: OpenCard): Boolean {
             // TODO this needs to be parameterizable
-            return card.suit == Card.Suit.CLUBS
+            return card.suit == Suit.CLUBS
         }
     }
 }

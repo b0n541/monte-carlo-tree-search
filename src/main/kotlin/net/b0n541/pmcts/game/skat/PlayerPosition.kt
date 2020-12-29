@@ -1,25 +1,14 @@
-package net.b0n541.pmcts.game.skat;
+package net.b0n541.pmcts.game.skat
 
-public enum PlayerPosition {
-    FOREHAND,
-    MIDDLEHAND,
-    REARHAND;
+enum class PlayerPosition {
+    FOREHAND, MIDDLEHAND, REARHAND;
 
-    public PlayerPosition getNextPlayer() {
-        final PlayerPosition result;
-        switch (this) {
-            case FOREHAND:
-                result = MIDDLEHAND;
-                break;
-            case MIDDLEHAND:
-                result = REARHAND;
-                break;
-            case REARHAND:
-                result = FOREHAND;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + this);
+    val nextPlayer: PlayerPosition
+        get() {
+            return when (this) {
+                FOREHAND -> MIDDLEHAND
+                MIDDLEHAND -> REARHAND
+                REARHAND -> FOREHAND
+            }
         }
-        return result;
-    }
 }
