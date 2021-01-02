@@ -24,6 +24,9 @@ class SkatGameState(
     private var declarerPoints: Int = 0
     private var opponentPoints: Int = 0
 
+    val lastTrick
+        get() = tricks.last()
+
     init {
         tricks.add(Trick(nextPlayerPosition))
     }
@@ -106,9 +109,6 @@ class SkatGameState(
     }
 
     override fun getLastMove(): GameMove = gameMoves.last()
-
-    val lastTrick
-        get() = tricks.last()
 
     fun dealPlayerCards(player: PlayerPosition, cards: List<Card>) {
         playerCards[player]!!.takeCards(cards)

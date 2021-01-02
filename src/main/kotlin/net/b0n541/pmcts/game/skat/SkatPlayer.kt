@@ -6,7 +6,6 @@ class SkatPlayer {
 
     private val hand: MutableList<OpenCard> = ArrayList()
 
-
     fun takeCards(cards: List<OpenCard>) {
         hand.addAll(cards)
     }
