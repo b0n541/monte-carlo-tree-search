@@ -24,7 +24,7 @@ class SkatGameState(
     private var declarerPoints: Int = 0
     private var opponentPoints: Int = 0
 
-    val lastTrick
+    private val lastTrick
         get() = tricks.last()
 
     init {
@@ -43,7 +43,18 @@ class SkatGameState(
     }
 
     override fun getPossibleMoves(): List<SkatGameMove> {
-        TODO("Not yet implemented")
+        val allCards = playerCards[nextPlayerPosition]!!
+
+        return if (lastTrick.leadingCard == null) {
+            allCards.openCards.map { SkatGameMove(nextPlayerPosition, it) }
+        } else {
+            val leadingCard = lastTrick.leadingCard!!
+            val trumpCards = playerCards[nextPlayerPosition]!!.getTrumpCards(gameType)
+
+            allCards.openCards
+                .filter { it.isAllowedOn(leadingCard, gameType, allCards) }
+                .map { SkatGameMove(nextPlayerPosition, it) }
+        }
     }
 
     override fun addMove(move: SkatGameMove): SkatGameState {
@@ -52,6 +63,7 @@ class SkatGameState(
 
         val newState = copy()
 
+        // TODO use return newState.apply { ... }
         newState.gameMoves.add(move)
 
         var lastTrick = newState.lastTrick

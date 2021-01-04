@@ -1,7 +1,7 @@
 package net.b0n541.pmcts.game.skat
 
 class Hand(initialCards: List<Card> = listOf()) {
-    val cards = mutableListOf<Card>()
+    private val handCards = mutableListOf<Card>()
     var cardValues = 0
         private set
 
@@ -9,11 +9,34 @@ class Hand(initialCards: List<Card> = listOf()) {
         takeCards(initialCards)
     }
 
-    val containsHiddenCards
-        get() = cards.contains(HiddenCard)
+    /**
+     * Returns all cards on the hand.
+     */
+    val cards: List<Card>
+        get() = handCards.toList()
 
+    /**
+     * Returns all open cards on the hand.
+     */
+    val openCards: Set<OpenCard>
+        get() = handCards.filterIsInstance<OpenCard>().toSet()
+
+    /**
+     * Returns true if the hand hold hidden cards.
+     */
+    val holdsHiddenCards
+        get() = handCards.contains(HiddenCard)
+
+    /**
+     * Gets all trump cards for [gameType].
+     */
+    fun getTrumpCards(gameType: SkatGameType): Set<OpenCard> = openCards.filter { it.isTrump(gameType) }.toSet()
+
+    /**
+     * Takes a list of [newCards] and adjusts the [cardValues] of the hand.
+     */
     fun takeCards(newCards: List<Card>) {
-        cards.addAll(newCards)
+        handCards.addAll(newCards)
 
         newCards.forEach {
             if (it is OpenCard) {
@@ -22,8 +45,11 @@ class Hand(initialCards: List<Card> = listOf()) {
         }
     }
 
+    /**
+     * Removes a [card] and adjusts the [cardValues] of the hand.
+     */
     fun removeCard(card: Card) {
-        cards.remove(card)
+        handCards.remove(card)
 
         if (card is OpenCard) {
             cardValues -= card.value

@@ -99,4 +99,48 @@ internal class CardTest {
         assertThrows<IllegalArgumentException> { card("XJ") }
         assertThrows<IllegalArgumentException> { card("CX") }
     }
+
+    @Test
+    fun isTrump() {
+        checkIsTrump(setOf(CJ, SJ, HJ, DJ), SkatGameType.GRAND)
+        checkIsNotTrump(setOf(CA, CT, CK, CQ, C9, C8, C7), SkatGameType.GRAND)
+        checkIsNotTrump(setOf(SA, ST, SK, SQ, S9, S8, S7), SkatGameType.GRAND)
+        checkIsNotTrump(setOf(HA, HT, HK, HQ, H9, H8, H7), SkatGameType.GRAND)
+        checkIsNotTrump(setOf(DA, DT, DK, DQ, D9, D8, D7), SkatGameType.GRAND)
+
+        checkIsTrump(setOf(CJ, SJ, HJ, DJ, CA, CT, CK, CQ, C9, C8, C7), SkatGameType.CLUBS)
+        checkIsNotTrump(setOf(SA, ST, SK, SQ, S9, S8, S7), SkatGameType.CLUBS)
+        checkIsNotTrump(setOf(HA, HT, HK, HQ, H9, H8, H7), SkatGameType.CLUBS)
+        checkIsNotTrump(setOf(DA, DT, DK, DQ, D9, D8, D7), SkatGameType.CLUBS)
+
+        checkIsNotTrump(setOf(CA, CT, CK, CQ, C9, C8, C7), SkatGameType.SPADES)
+        checkIsTrump(setOf(CJ, SJ, HJ, DJ, SA, ST, SK, SQ, S9, S8, S7), SkatGameType.SPADES)
+        checkIsNotTrump(setOf(HA, HT, HK, HQ, H9, H8, H7), SkatGameType.SPADES)
+        checkIsNotTrump(setOf(DA, DT, DK, DQ, D9, D8, D7), SkatGameType.SPADES)
+
+        checkIsNotTrump(setOf(CA, CT, CK, CQ, C9, C8, C7), SkatGameType.HEARTS)
+        checkIsNotTrump(setOf(SA, ST, SK, SQ, S9, S8, S7), SkatGameType.HEARTS)
+        checkIsTrump(setOf(CJ, SJ, HJ, DJ, HA, HT, HK, HQ, H9, H8, H7), SkatGameType.HEARTS)
+        checkIsNotTrump(setOf(DA, DT, DK, DQ, D9, D8, D7), SkatGameType.HEARTS)
+
+        checkIsNotTrump(setOf(CA, CT, CK, CQ, C9, C8, C7), SkatGameType.DIAMONDS)
+        checkIsNotTrump(setOf(SA, ST, SK, SQ, S9, S8, S7), SkatGameType.DIAMONDS)
+        checkIsNotTrump(setOf(HA, HT, HK, HQ, H9, H8, H7), SkatGameType.DIAMONDS)
+        checkIsTrump(setOf(CJ, SJ, HJ, DJ, DA, DT, DK, DQ, D9, D8, D7), SkatGameType.DIAMONDS)
+
+        checkIsNotTrump(PERFECT_CARD_DISTRIBUTION.sortedCards.toSet(), SkatGameType.NULL)
+    }
+
+    private fun checkIsTrump(cards: Set<OpenCard>, gameType: SkatGameType) {
+        cards.forEach { assertThat(it.isTrump(gameType)).isTrue }
+    }
+
+    private fun checkIsNotTrump(cards: Set<OpenCard>, gameType: SkatGameType) {
+        cards.forEach { assertThat(it.isTrump(gameType)).isFalse }
+    }
+
+    @Test
+    fun isAllowedOn() {
+        assertThat(SJ.isAllowedOn(CJ, SkatGameType.CLUBS, Hand())).isTrue
+    }
 }

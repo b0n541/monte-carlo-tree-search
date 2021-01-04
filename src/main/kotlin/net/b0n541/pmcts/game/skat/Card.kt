@@ -5,8 +5,35 @@ import net.b0n541.pmcts.game.skat.Suit.Companion.suitOf
 
 sealed class Card
 data class OpenCard(val suit: Suit, val rank: Rank) : Card() {
-    override fun toString() = suit.toString() + rank.toString()
+    // TODO use delegate by Rank.value?
     val value = rank.value
+
+    fun isAllowedOn(leadingCard: OpenCard, gameType: SkatGameType, hand: Hand): Boolean {
+        return when (gameType) {
+            SkatGameType.GRAND -> (leadingCard.isTrump(gameType) and isTrump(gameType)) or !leadingCard.isTrump(gameType)
+            SkatGameType.CLUBS -> isFollowingSuit(leadingCard) or (leadingCard.isTrump(gameType) and isTrump(
+                gameType
+            ))
+            else -> false
+        }
+    }
+
+    fun isFollowingSuit(leadingCard: OpenCard) = leadingCard.suit == suit
+
+    fun isTrump(gameType: SkatGameType): Boolean {
+        return when (gameType) {
+            SkatGameType.GRAND -> isJack()
+            SkatGameType.CLUBS -> isJack() or (suit == Suit.CLUBS)
+            SkatGameType.SPADES -> isJack() or (suit == Suit.SPADES)
+            SkatGameType.HEARTS -> isJack() or (suit == Suit.HEARTS)
+            SkatGameType.DIAMONDS -> isJack() or (suit == Suit.DIAMONDS)
+            SkatGameType.NULL -> false
+        }
+    }
+
+    private fun isJack() = JACKS.contains(this)
+
+    override fun toString() = suit.toString() + rank.toString()
 }
 
 object HiddenCard : Card() {
@@ -80,3 +107,5 @@ val DT = OpenCard(Suit.DIAMONDS, Rank.TEN)
 val D9 = OpenCard(Suit.DIAMONDS, Rank.NINE)
 val D8 = OpenCard(Suit.DIAMONDS, Rank.EIGHT)
 val D7 = OpenCard(Suit.DIAMONDS, Rank.SEVEN)
+
+val JACKS = setOf(CJ, SJ, HJ, DJ)

@@ -8,9 +8,6 @@ object Skat {
 
     @JvmStatic
     fun playGame() {
-
-        val cardDeck = CardDeck().shuffle()
-
         val players = mapOf(
             PlayerPosition.FOREHAND to SkatPlayer(),
             PlayerPosition.MIDDLEHAND to SkatPlayer(),
@@ -18,6 +15,9 @@ object Skat {
         )
 
         var gameState = SkatGameState(SkatGameType.CLUBS, PlayerPosition.FOREHAND, PlayerPosition.FOREHAND)
+
+        val cardDeck = CardDeck()
+        cardDeck.shuffle()
 
         dealCards(cardDeck, players, gameState)
 
@@ -42,22 +42,22 @@ object Skat {
     }
 
     private fun dealCards(
-        cardDeck: List<OpenCard>,
+        cardDeck: CardDeck,
         players: Map<PlayerPosition, SkatPlayer>,
         gameState: SkatGameState
     ) {
-        val foreHandCards = cardDeck.subList(0, 10)
+        val foreHandCards = cardDeck.dealCards(PlayerPosition.FOREHAND)
         players[PlayerPosition.FOREHAND]?.takeCards(foreHandCards)
-        gameState.dealPlayerCards(PlayerPosition.FOREHAND, foreHandCards)
+        gameState.dealPlayerCards(PlayerPosition.FOREHAND, foreHandCards.toList())
 
-        val middleHandCards = cardDeck.subList(10, 20)
+        val middleHandCards = cardDeck.dealCards(PlayerPosition.MIDDLEHAND)
         players[PlayerPosition.MIDDLEHAND]?.takeCards(middleHandCards)
-        gameState.dealPlayerCards(PlayerPosition.MIDDLEHAND, middleHandCards)
+        gameState.dealPlayerCards(PlayerPosition.MIDDLEHAND, middleHandCards.toList())
 
-        val rearHandCards = cardDeck.subList(20, 30)
+        val rearHandCards = cardDeck.dealCards(PlayerPosition.REARHAND)
         players[PlayerPosition.REARHAND]?.takeCards(rearHandCards)
-        gameState.dealPlayerCards(PlayerPosition.REARHAND, rearHandCards)
+        gameState.dealPlayerCards(PlayerPosition.REARHAND, rearHandCards.toList())
 
-        gameState.dealSkat(cardDeck.subList(30, 32))
+        gameState.dealSkat(cardDeck.dealSkat().toMutableList())
     }
 }

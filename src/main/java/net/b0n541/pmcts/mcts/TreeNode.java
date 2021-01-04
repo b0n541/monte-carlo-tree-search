@@ -77,6 +77,7 @@ public final class TreeNode {
         return Collections.unmodifiableMap(children);
     }
 
+    // TODO use better versions like UCB1-Tuned algorithm
     public double getUcb1Value() {
         if (isRootNode() || statistics.getVisits() == 0) {
             return Double.MAX_VALUE;

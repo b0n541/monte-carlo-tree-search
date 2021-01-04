@@ -10,7 +10,8 @@ internal class HandTest {
 
         assertThat(hand.cards).isEmpty()
         assertThat(hand.cardValues).isEqualTo(0)
-        assertThat(hand.containsHiddenCards).isFalse
+        assertThat(hand.holdsHiddenCards).isFalse
+        assertThat(hand.openCards).isEmpty()
     }
 
     @Test
@@ -21,7 +22,8 @@ internal class HandTest {
 
         assertThat(hand.cards).containsExactlyInAnyOrder(CJ, SJ, HJ)
         assertThat(hand.cardValues).isEqualTo(6)
-        assertThat(hand.containsHiddenCards).isFalse
+        assertThat(hand.holdsHiddenCards).isFalse
+        assertThat(hand.openCards).containsExactlyInAnyOrder(CJ, SJ, HJ)
     }
 
     @Test
@@ -30,7 +32,8 @@ internal class HandTest {
 
         assertThat(hand.cards).hasSize(2)
         assertThat(hand.cardValues).isEqualTo(0)
-        assertThat(hand.containsHiddenCards).isTrue
+        assertThat(hand.holdsHiddenCards).isTrue
+        assertThat(hand.openCards).isEmpty()
     }
 
     @Test
@@ -41,7 +44,8 @@ internal class HandTest {
 
         assertThat(hand.cards).containsExactlyInAnyOrder(SJ, HJ)
         assertThat(hand.cardValues).isEqualTo(4)
-        assertThat(hand.containsHiddenCards).isFalse
+        assertThat(hand.holdsHiddenCards).isFalse
+        assertThat(hand.openCards).containsExactlyInAnyOrder(SJ, HJ)
     }
 
     @Test
@@ -52,7 +56,8 @@ internal class HandTest {
 
         assertThat(hand.cards).containsExactlyInAnyOrder(HiddenCard)
         assertThat(hand.cardValues).isEqualTo(0)
-        assertThat(hand.containsHiddenCards).isTrue
+        assertThat(hand.holdsHiddenCards).isTrue
+        assertThat(hand.openCards).isEmpty()
     }
 
     @Test
@@ -63,24 +68,28 @@ internal class HandTest {
 
         assertThat(hand.cards).containsExactlyInAnyOrder(CJ, SJ, HiddenCard, HiddenCard)
         assertThat(hand.cardValues).isEqualTo(4)
-        assertThat(hand.containsHiddenCards).isTrue
+        assertThat(hand.holdsHiddenCards).isTrue
+        assertThat(hand.openCards).containsExactlyInAnyOrder(CJ, SJ)
 
         hand.removeCard(HiddenCard)
 
         assertThat(hand.cards).containsExactlyInAnyOrder(CJ, SJ, HiddenCard)
         assertThat(hand.cardValues).isEqualTo(4)
-        assertThat(hand.containsHiddenCards).isTrue
+        assertThat(hand.holdsHiddenCards).isTrue
+        assertThat(hand.openCards).containsExactlyInAnyOrder(CJ, SJ)
 
         hand.removeCard(CJ)
 
         assertThat(hand.cards).containsExactlyInAnyOrder(SJ, HiddenCard)
         assertThat(hand.cardValues).isEqualTo(2)
-        assertThat(hand.containsHiddenCards).isTrue
+        assertThat(hand.holdsHiddenCards).isTrue
+        assertThat(hand.openCards).containsExactlyInAnyOrder(SJ)
 
         hand.removeCard(HiddenCard)
 
         assertThat(hand.cards).containsExactlyInAnyOrder(SJ)
         assertThat(hand.cardValues).isEqualTo(2)
-        assertThat(hand.containsHiddenCards).isFalse
+        assertThat(hand.holdsHiddenCards).isFalse
+        assertThat(hand.openCards).containsExactlyInAnyOrder(SJ)
     }
 }

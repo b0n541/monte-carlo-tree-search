@@ -8,6 +8,8 @@ class Trick(
 ) {
     private val LOG = LoggerFactory.getLogger(javaClass)
 
+    val leadingCard: OpenCard?
+        get() = cards.getOrNull(0)?.card
     var cardValues: Int = 0
         private set
     var trickWinner: PlayerPosition? = null

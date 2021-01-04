@@ -1,18 +1,16 @@
 package net.b0n541.pmcts.game.skat
 
-import java.util.*
-
 class SkatPlayer {
 
-    private val hand: MutableList<OpenCard> = ArrayList()
+    private val hand: Hand = Hand()
 
-    fun takeCards(cards: List<OpenCard>) {
-        hand.addAll(cards)
+    fun takeCards(cards: Set<OpenCard>) {
+        hand.takeCards(cards.toList())
     }
 
     fun playCard(): OpenCard {
-        val card = hand.random()
-        hand.remove(card)
+        val card = hand.openCards.random()
+        hand.removeCard(card)
         return card
     }
 }

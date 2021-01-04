@@ -56,16 +56,17 @@ internal class SkatGameStateTest {
 
     @Test
     fun finishGame() {
-
-        val cards = CardDeck().shuffle()
-
         var state = SkatGameState(SkatGameType.CLUBS, PlayerPosition.FOREHAND, PlayerPosition.FOREHAND)
+
+        val cards = CardDeck()
+        cards.shuffle()
+        val unplayedCards = cards.sortedCards.toMutableList()
 
         for (i in 1..10) {
             val trickForeHand = state.nextPlayerPosition
-            state = state.addMove(SkatGameMove(trickForeHand, randomCard(cards)))
-                .addMove(SkatGameMove(trickForeHand.nextPlayer, randomCard(cards)))
-                .addMove(SkatGameMove(trickForeHand.nextPlayer.nextPlayer, randomCard(cards)))
+            state = state.addMove(SkatGameMove(trickForeHand, randomCard(unplayedCards)))
+                .addMove(SkatGameMove(trickForeHand.nextPlayer, randomCard(unplayedCards)))
+                .addMove(SkatGameMove(trickForeHand.nextPlayer.nextPlayer, randomCard(unplayedCards)))
         }
 
         assertThat(state.isGameFinished).isTrue
@@ -78,5 +79,36 @@ internal class SkatGameStateTest {
         val card = cardDeck.random()
         cardDeck.remove(card)
         return card
+    }
+
+    @Test
+    fun getPossibleMoves() {
+        val cards = PERFECT_CARD_DISTRIBUTION
+        var state = SkatGameState(SkatGameType.CLUBS, PlayerPosition.FOREHAND, PlayerPosition.FOREHAND)
+
+        state.dealPlayerCards(PlayerPosition.FOREHAND, cards.dealCards(PlayerPosition.FOREHAND).toList())
+        state.dealPlayerCards(PlayerPosition.MIDDLEHAND, cards.dealCards(PlayerPosition.MIDDLEHAND).toList())
+        state.dealPlayerCards(PlayerPosition.REARHAND, cards.dealCards(PlayerPosition.REARHAND).toList())
+        state.dealSkat(cards.dealSkat().toList())
+
+        assertThat(state.possibleMoves).containsExactlyInAnyOrder(
+            SkatGameMove(PlayerPosition.FOREHAND, CJ),
+            SkatGameMove(PlayerPosition.FOREHAND, SJ),
+            SkatGameMove(PlayerPosition.FOREHAND, HJ),
+            SkatGameMove(PlayerPosition.FOREHAND, DJ),
+            SkatGameMove(PlayerPosition.FOREHAND, CA),
+            SkatGameMove(PlayerPosition.FOREHAND, CT),
+            SkatGameMove(PlayerPosition.FOREHAND, C9),
+            SkatGameMove(PlayerPosition.FOREHAND, SA),
+            SkatGameMove(PlayerPosition.FOREHAND, ST),
+            SkatGameMove(PlayerPosition.FOREHAND, S9)
+        )
+
+        state = state.addMove(SkatGameMove(PlayerPosition.FOREHAND, CJ))
+
+        assertThat(state.possibleMoves).containsExactlyInAnyOrder(
+            SkatGameMove(PlayerPosition.MIDDLEHAND, CK),
+            SkatGameMove(PlayerPosition.MIDDLEHAND, CQ)
+        )
     }
 }
