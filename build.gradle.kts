@@ -24,6 +24,8 @@ repositories {
 }
 
 dependencies {
+    implementation(kotlin("stdlib-jdk8"))
+
     // Guava
     implementation("com.google.guava:guava:29.0-jre")
 
@@ -35,23 +37,24 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter:5.7.0")
-    implementation(kotlin("stdlib-jdk8"))
 }
 
 application {
     // Define the main class for the application.
-    mainClassName = "org.b0n541.pmcts.App"
+    mainClassName = "org.b0n541.ai.App"
+}
+
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    jvmTarget = "11"
+}
+
+val compileTestKotlin: KotlinCompile by tasks
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "11"
 }
 
 val test by tasks.getting(Test::class) {
     // Use junit platform for unit tests
     useJUnitPlatform()
-}
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    jvmTarget = "11"
-}
-val compileTestKotlin: KotlinCompile by tasks
-compileTestKotlin.kotlinOptions {
-    jvmTarget = "11"
 }
