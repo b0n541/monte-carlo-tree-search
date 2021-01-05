@@ -9,7 +9,7 @@ import net.b0n541.ai.mcts.Tree
 import org.slf4j.LoggerFactory
 import java.time.Duration
 
-open class MctsTicTacToePlayer(playerSymbol: PlayerSymbol, firstPlayer: PlayerSymbol) :
+class MctsTicTacToePlayer(playerSymbol: PlayerSymbol, firstPlayer: PlayerSymbol) :
     AbstractTicTacToePlayer(playerSymbol, firstPlayer) {
 
 

@@ -1,5 +1,6 @@
 package net.b0n541.ai.game.tictactoe
 
+import net.b0n541.ai.game.tictactoe.player.AlphaZeroTicTacToePlayer
 import net.b0n541.ai.game.tictactoe.player.MctsTicTacToePlayer
 import org.slf4j.LoggerFactory
 
@@ -10,10 +11,10 @@ object TicTacToe {
     @JvmStatic
     fun playGame() {
         var gameState = TicTacToeGameState(PlayerSymbol.O)
-        val noughtsPlayer = MctsTicTacToePlayer(PlayerSymbol.O, PlayerSymbol.O)
+        val noughtsPlayer = AlphaZeroTicTacToePlayer(PlayerSymbol.O, PlayerSymbol.O)
         val crossesPlayer = MctsTicTacToePlayer(PlayerSymbol.X, PlayerSymbol.O)
+        var nextPlayer = PlayerSymbol.O
         do {
-            val nextPlayer = PlayerSymbol.O
             LOG.info("Next player: {}", nextPlayer)
             var move: TicTacToeMove? = null
             if (nextPlayer == PlayerSymbol.O) {
@@ -24,6 +25,11 @@ object TicTacToe {
             gameState = gameState.addMove(move!!)
             noughtsPlayer.addMove(move)
             crossesPlayer.addMove(move)
+            if (nextPlayer == PlayerSymbol.O) {
+                nextPlayer = PlayerSymbol.X
+            } else if (nextPlayer == PlayerSymbol.X) {
+                nextPlayer = PlayerSymbol.O
+            }
             LOG.info(gameState.toString())
         } while (!gameState.isGameFinished)
         LOG.info("--> {}", gameState.gameValues)
