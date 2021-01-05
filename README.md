@@ -13,7 +13,7 @@ Status:
 - Simple Monte Carlo Tree Search ✅
 - Parallel Monte Carlo Tree Search with Virtual Losses 🚧
 - Monte Carlo Tree Search with Neural Networks (AlphaZero) 🗓️
-- Perfect Information Monte Carlo (PIMCTS) 🗓️
+- Perfect Information Monte Carlo Tree Search (PIMCTS) 🗓️
 
 ## Games
 
