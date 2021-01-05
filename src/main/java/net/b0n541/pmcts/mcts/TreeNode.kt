@@ -1,106 +1,56 @@
-package net.b0n541.pmcts.mcts;
+package net.b0n541.pmcts.mcts
 
+import org.slf4j.LoggerFactory
+import java.util.concurrent.atomic.AtomicLong
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+class TreeNode(val parent: TreeNode? = null, val gameState: GameState<GameMove>) {
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+    val nodeId = NODE_COUNTER.incrementAndGet().toString()
 
-public final class TreeNode {
+    private val children: MutableMap<GameMove, TreeNode> = mutableMapOf()
+    fun children() = children.values.toList()
 
-    private static final Logger LOG = LoggerFactory.getLogger(TreeNode.class);
+    private val statistics: TreeNodeStatistics = TreeNodeStatistics(gameState.players)
 
-    private final static double EXPLORATION_FACTOR = 2.0;
-
-    private static final AtomicLong NODE_COUNTER = new AtomicLong();
-
-    private final long nodeId = NODE_COUNTER.incrementAndGet();
-
-    private final GameState gameState;
-
-    private final TreeNode parent;
-    private final Map<GameMove, TreeNode> children = new HashMap<>();
-
-    private final TreeNodeStatistics statistics;
-
-    public TreeNode(final GameState gameState) {
-        this(null, gameState);
+    companion object {
+        private val LOG = LoggerFactory.getLogger(TreeNode::class.java)
+        private const val EXPLORATION_FACTOR = 2.0
+        private val NODE_COUNTER = AtomicLong()
     }
 
-    public TreeNode(final TreeNode parent, final GameState gameState) {
-        this.parent = parent;
-        this.gameState = gameState;
-        statistics = new TreeNodeStatistics(gameState.getPlayers());
+    val isRootNode = parent == null
+
+    val isLeafNode: Boolean
+        get() = children.isEmpty()
+
+    val totalScores: Map<String, Double>
+        get() = statistics.totalScores()
+
+    val visits: Long
+        get() = statistics.visits
+
+    fun addVisit(scores: Map<String, Double>) {
+        statistics.addScores(scores)
     }
 
-    public String getNodeId() {
-        return Long.toString(nodeId);
-    }
-
-    public boolean isRootNode() {
-        return parent == null;
-    }
-
-    public boolean isLeafNode() {
-        return children.isEmpty();
-    }
-
-    public TreeNode getParent() {
-        return parent;
-    }
-
-    public Map<String, Double> getTotalScores() {
-        return statistics.getTotalScores();
-    }
-
-    public long getVisits() {
-        return statistics.getVisits();
-    }
-
-    public void addVisit(final Map<String, Double> scores) {
-        statistics.addScores(scores);
-    }
-
-    public List<TreeNode> getChildren() {
-        return List.copyOf(children.values());
-    }
-
-    public String getPlayer() {
-        return gameState.getNextPlayer();
-    }
-
-    public Map<GameMove, TreeNode> getMovesAndChildren() {
-        return Collections.unmodifiableMap(children);
-    }
+    val player: String
+        get() = gameState.nextPlayer
 
     // TODO use better versions like UCB1-Tuned algorithm
-    public double getUcb1Value() {
-        if (isRootNode() || statistics.getVisits() == 0) {
-            return Double.MAX_VALUE;
+    val ucb1Value: Double
+        get() = if (isRootNode || statistics.visits == 0L) {
+            Double.MAX_VALUE
         } else {
-            return (statistics.getTotalScore(parent.getPlayer()) / getVisits()) + EXPLORATION_FACTOR * Math.sqrt((Math.log(parent.getVisits()) / getVisits()));
+            statistics.getTotalScore(parent!!.player) / visits +
+                    EXPLORATION_FACTOR * Math.sqrt(Math.log(parent.visits.toDouble()) / visits)
         }
+
+    fun expandPossibleMoves() {
+        val possibleMoves = gameState.possibleMoves
+        possibleMoves.forEach { children[it] = TreeNode(this, gameState.addMove(it)) }
     }
 
-    public void expandPossibleMoves() {
-
-        final List<GameMove> possibleMoves = gameState.getPossibleMoves();
-
-        possibleMoves.forEach(move -> children.put(move, new TreeNode(this, gameState.addMove(move))));
-    }
-
-    public GameState getGameState() {
-        return gameState;
-    }
-
-    @Override
-    public String toString() {
-        return "Visits: " + statistics.getVisits() +
-                " Total scores: " + statistics.getTotalScores() +
-                " UCB1: " + getUcb1Value();
+    override fun toString(): String {
+        return "Visits: $visits Total scores: $totalScores UCB1: $ucb1Value"
     }
 }

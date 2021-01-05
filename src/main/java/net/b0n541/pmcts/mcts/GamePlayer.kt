@@ -1,5 +1,5 @@
-package net.b0n541.pmcts.mcts;
+package net.b0n541.pmcts.mcts
 
-public interface GamePlayer {
-    String toShortString();
+interface GamePlayer {
+    fun toShortString(): String
 }

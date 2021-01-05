@@ -1,77 +1,69 @@
-package net.b0n541.pmcts.mcts;
+package net.b0n541.pmcts.mcts
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.LoggerFactory
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
+object MonteCarloTreeSearch {
+    private val LOG = LoggerFactory.getLogger(MonteCarloTreeSearch::class.java)
 
-public final class MonteCarloTreeSearch {
-
-    private static final Logger LOG = LoggerFactory.getLogger(MonteCarloTreeSearch.class);
-
-    public static void run(final Tree tree, final int rounds) {
-        for (int i = 0; i < rounds; i++) {
-            final TreeNode leafNode = traverseTree(tree);
-            final TreeNode rollOutNode = expandTree(leafNode);
-            final Map<String, Double> gameValues = rollOut(rollOutNode);
-            backPropagation(rollOutNode, gameValues);
+    @JvmStatic
+    fun run(tree: Tree, rounds: Int) {
+        for (i in 0 until rounds) {
+            val leafNode = traverseTree(tree)
+            val rollOutNode = expandTree(leafNode)
+            val gameValues = rollOut(rollOutNode)
+            backPropagation(rollOutNode, gameValues)
             //tree.printDigraph();
         }
     }
 
-    private static TreeNode traverseTree(final Tree tree) {
-        TreeNode nextNode = tree.getRootNode();
-        while (!nextNode.isLeafNode()) {
-            TreeNode bestChildNode = null;
-            double bestUcb1Value = -1 * Double.MAX_VALUE;
-            for (final TreeNode node : nextNode.getChildren()) {
-                final double ucb1Value = node.getUcb1Value();
+    private fun traverseTree(tree: Tree): TreeNode {
+        var nextNode = tree.rootNode
+        while (!nextNode.isLeafNode) {
+            var bestChildNode: TreeNode? = null
+            var bestUcb1Value = -1 * Double.MAX_VALUE
+            for (node in nextNode.children()) {
+                val ucb1Value = node.ucb1Value
                 if (ucb1Value > bestUcb1Value) {
-                    bestChildNode = node;
-                    bestUcb1Value = ucb1Value;
+                    bestChildNode = node
+                    bestUcb1Value = ucb1Value
                 }
             }
-            nextNode = bestChildNode;
+            nextNode = bestChildNode!!
         }
-        return nextNode;
+        return nextNode
     }
 
-    private static TreeNode expandTree(final TreeNode node) {
-        if (node.isRootNode() && node.isLeafNode()) {
-            return expandPossibleMoves(node);
+    private fun expandTree(node: TreeNode): TreeNode {
+        if (node.isRootNode && node.isLeafNode) {
+            return expandPossibleMoves(node)
         }
 
-        if (node.getVisits() == 0 || node.getGameState().isGameFinished()) {
-            return node;
+        return if (node.visits == 0L || node.gameState.isGameFinished) {
+            node
+        } else {
+            expandPossibleMoves(node)
         }
-
-        return expandPossibleMoves(node);
     }
 
-    private static TreeNode expandPossibleMoves(final TreeNode node) {
-        node.expandPossibleMoves();
-        return node.getChildren().get(0);
+    private fun expandPossibleMoves(node: TreeNode): TreeNode {
+        node.expandPossibleMoves()
+        return node.children()[0]!!
     }
 
-    private static Map<String, Double> rollOut(final TreeNode node) {
-        GameState currentState = node.getGameState();
-        while (!currentState.isGameFinished()) {
-            final List<GameMove> possibleMoves = currentState.getPossibleMoves();
-            final int randomIndex = ThreadLocalRandom.current().nextInt(possibleMoves.size());
-            final GameMove nextMove = possibleMoves.get(randomIndex);
-            currentState = currentState.addMove(nextMove);
+    private fun rollOut(node: TreeNode): Map<String, Double> {
+        var currentState = node.gameState
+        while (!currentState.isGameFinished) {
+            currentState = currentState.addMove(currentState.possibleMoves.random())
         }
-        return currentState.getGameValues();
+        return currentState.gameValues
     }
 
-    private static void backPropagation(final TreeNode node, final Map<String, Double> gameValues) {
-        TreeNode currentNode = node;
+    private fun backPropagation(node: TreeNode, gameValues: Map<String, Double>) {
+        var currentNode = node
         do {
-            currentNode.addVisit(gameValues);
-            currentNode = currentNode.getParent();
-        } while (!currentNode.isRootNode());
-        currentNode.addVisit(gameValues);
+            currentNode.addVisit(gameValues)
+            currentNode = currentNode.parent!!
+        } while (!currentNode.isRootNode)
+        currentNode.addVisit(gameValues)
     }
 }

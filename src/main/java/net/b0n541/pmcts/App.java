@@ -3,7 +3,7 @@
  */
 package net.b0n541.pmcts;
 
-import net.b0n541.pmcts.game.skat.Skat;
+import net.b0n541.pmcts.game.tictactoe.TicTacToe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +12,7 @@ public class App {
     private static final Logger LOG = LoggerFactory.getLogger(App.class);
 
     public static void main(final String[] args) {
-        //TicTacToe.playGame();
-        Skat.playGame();
+        TicTacToe.playGame();
+        //Skat.playGame();
     }
 }

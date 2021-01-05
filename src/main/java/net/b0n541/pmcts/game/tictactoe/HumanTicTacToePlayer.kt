@@ -1,22 +1,16 @@
-package net.b0n541.pmcts.game.tictactoe;
+package net.b0n541.pmcts.game.tictactoe
 
-import java.util.Scanner;
+import java.util.*
 
-public final class HumanTicTacToePlayer extends TicTacToePlayer {
-
-    public HumanTicTacToePlayer(final PlayerSymbol playerSymbol, final PlayerSymbol firstPlayer) {
-        super(playerSymbol, firstPlayer);
-    }
-
-    @Override
-    public TicTacToeMove play() {
-        System.out.println("Your move...");
-        System.out.print("Row: ");
-        final Scanner scanner = new Scanner(System.in);
-        final int row = scanner.nextInt();
-        System.out.print("Column: ");
-        final int column = scanner.nextInt();
-
-        return new TicTacToeMove(playerSymbol, row, column);
+class HumanTicTacToePlayer(playerSymbol: PlayerSymbol, firstPlayer: PlayerSymbol) :
+    TicTacToePlayer(playerSymbol, firstPlayer) {
+    override fun play(): TicTacToeMove {
+        println("Your move...")
+        print("Row: ")
+        val scanner = Scanner(System.`in`)
+        val row = scanner.nextInt()
+        print("Column: ")
+        val column = scanner.nextInt()
+        return TicTacToeMove(playerSymbol, row, column)
     }
 }

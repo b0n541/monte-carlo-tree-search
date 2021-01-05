@@ -1,37 +1,30 @@
-package net.b0n541.pmcts.game.tictactoe;
+package net.b0n541.pmcts.game.tictactoe
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.LoggerFactory
 
-public class TicTacToe {
+object TicTacToe {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TicTacToe.class);
+    private val LOG = LoggerFactory.getLogger(TicTacToe::class.java)
 
-    public static void playGame() {
-
-        TicTacToeGameState gameState = new TicTacToeGameState(PlayerSymbol.O);
-        final TicTacToePlayer noughtsPlayer = new TicTacToePlayer(PlayerSymbol.O, PlayerSymbol.O);
-        final TicTacToePlayer crossesPlayer = new TicTacToePlayer(PlayerSymbol.X, PlayerSymbol.O);
-
+    @JvmStatic
+    fun playGame() {
+        var gameState = TicTacToeGameState(PlayerSymbol.O)
+        val noughtsPlayer = TicTacToePlayer(PlayerSymbol.O, PlayerSymbol.O)
+        val crossesPlayer = TicTacToePlayer(PlayerSymbol.X, PlayerSymbol.O)
         do {
-            final PlayerSymbol nextPlayer = PlayerSymbol.O;
-            LOG.info("Next player: {}", nextPlayer);
-
-            TicTacToeMove move = null;
+            val nextPlayer = PlayerSymbol.O
+            LOG.info("Next player: {}", nextPlayer)
+            var move: TicTacToeMove? = null
             if (nextPlayer == PlayerSymbol.O) {
-                move = noughtsPlayer.play();
+                move = noughtsPlayer.play()
             } else if (nextPlayer == PlayerSymbol.X) {
-                move = crossesPlayer.play();
+                move = crossesPlayer.play()
             }
-
-            gameState = gameState.addMove(move);
-            noughtsPlayer.addMove(move);
-            crossesPlayer.addMove(move);
-
-            LOG.info(gameState.toString());
-
-        } while (!gameState.isGameFinished());
-
-        LOG.info("--> {}", gameState.getGameValues());
+            gameState = gameState.addMove(move!!)
+            noughtsPlayer.addMove(move)
+            crossesPlayer.addMove(move)
+            LOG.info(gameState.toString())
+        } while (!gameState.isGameFinished)
+        LOG.info("--> {}", gameState.gameValues)
     }
 }

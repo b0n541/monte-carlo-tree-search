@@ -1,85 +1,69 @@
-package net.b0n541.pmcts.mcts;
+package net.b0n541.pmcts.mcts
 
+import org.slf4j.LoggerFactory
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+class Tree(gameState: GameState<GameMove>) {
 
-import java.util.Map;
+    val rootNode: TreeNode = TreeNode(null, gameState)
 
-public final class Tree {
+    val size: Long
+        get() = getSize(rootNode)
 
-    private static final Logger LOG = LoggerFactory.getLogger(Tree.class);
-
-    private final TreeNode rootNode;
-
-    public Tree(final GameState gameState) {
-        rootNode = new TreeNode(gameState);
+    fun printDigraph() {
+        println("======================================")
+        printTreeLevel(rootNode)
+        println("======================================")
     }
 
-    public TreeNode getRootNode() {
-        return rootNode;
-    }
+    val bestMove: GameMove
+        get() {
+            var highestVisits: Long = 0
+            var bestMove: GameMove? = null
 
-    public long getSize() {
-        return getSize(rootNode);
-    }
+            rootNode.children()
+                .forEach {
+                    val move = it.gameState.lastMove
+                    val visits = it.visits
+                    val scores = it.totalScores
+                    LOG.info("Move {} got visits {} and scores {}", move, visits, scores)
+                    if (it.visits > highestVisits) {
+                        highestVisits = visits
+                        bestMove = move
+                    }
+                }
 
-    private static long getSize(final TreeNode node) {
-        return 1 + node.getChildren().stream()
-                .map(child -> getSize(child))
-                .reduce(0L, Long::sum);
-    }
-
-    public void printDigraph() {
-        System.out.println("======================================");
-        printTreeLevel(rootNode);
-        System.out.println("======================================");
-    }
-
-    private static void printTreeLevel(final TreeNode node) {
-        printNodeLabel(node);
-        printNodeMoves(node);
-
-        if (!node.isLeafNode()) {
-            node.getChildren().stream().filter(child -> child.getVisits() > 0).forEach(Tree::printTreeLevel);
+            LOG.info("Best move {} with highest visits {}", bestMove, highestVisits)
+            return bestMove!!
         }
-    }
 
-    private static void printNodeLabel(final TreeNode node) {
-        System.out.println(
-                node.getNodeId() +
-                        " [label=\"" + node.getPlayer() + "\\n" +
-                        " v=" + node.getVisits() +
-                        " s=" + node.getTotalScores() + "\"" +
-                        "]");
-    }
+    companion object {
+        private val LOG = LoggerFactory.getLogger(Tree::class.java)
+        private fun getSize(node: TreeNode): Long {
+            return 1 + node.children()
+                .map { getSize(it) }
+                .sum()
+        }
 
-    private static void printNodeMoves(final TreeNode parent) {
-        parent.getMovesAndChildren().entrySet().stream()
-                .filter(entry -> entry.getValue().getVisits() > 0)
-                .forEach(entry -> System.out.println(
-                        parent.getNodeId() +
-                                " -> " + entry.getValue().getNodeId() +
-                                " [label=\"" + entry.getKey().toShortString() + "\"]"));
-    }
-
-    public GameMove getBestMove() {
-        long highestVisits = 0;
-        GameMove bestMove = null;
-        for (final TreeNode child : rootNode.getChildren()) {
-            final GameMove move = child.getGameState().getLastMove();
-            final long visits = child.getVisits();
-            final Map<String, Double> scores = child.getTotalScores();
-            LOG.info("Move {} got visits {} and scores {}", move, visits, scores);
-
-            if (child.getVisits() > highestVisits) {
-                highestVisits = visits;
-                bestMove = move;
+        private fun printTreeLevel(node: TreeNode) {
+            printNodeLabel(node)
+            printNodeMoves(node)
+            if (!node.isLeafNode) {
+                node.children()
+                    .filter { it.visits > 0 }
+                    .forEach { printTreeLevel(it) }
             }
         }
 
-        LOG.info("Best move {} with highest visits {}", bestMove, highestVisits);
+        private fun printNodeLabel(node: TreeNode) {
+            println("$node.nodeId [label=\"$node.player\n v=$node.visits s=$node.totalScores\"]")
+        }
 
-        return bestMove;
+        private fun printNodeMoves(parent: TreeNode) {
+            parent.children()
+                .filter { it.visits > 0 }
+                .forEach {
+                    println("$parent.nodeId -> $it.value.nodeId [label=\"$it.key.toShortString()\"]")
+                }
+        }
     }
 }

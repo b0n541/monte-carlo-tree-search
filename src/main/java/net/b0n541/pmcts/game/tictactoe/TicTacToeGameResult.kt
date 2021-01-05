@@ -1,7 +1,5 @@
-package net.b0n541.pmcts.game.tictactoe;
+package net.b0n541.pmcts.game.tictactoe
 
-public enum TicTacToeGameResult {
-    X_WON,
-    O_WON,
-    DRAW
+enum class TicTacToeGameResult {
+    X_WON, O_WON, DRAW
 }

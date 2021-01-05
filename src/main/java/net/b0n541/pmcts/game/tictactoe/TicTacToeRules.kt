@@ -1,69 +1,64 @@
-package net.b0n541.pmcts.game.tictactoe;
+package net.b0n541.pmcts.game.tictactoe
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.LoggerFactory
+import java.util.*
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-public final class TicTacToeRules {
-
-    private static final Logger LOG = LoggerFactory.getLogger(TicTacToeRules.class);
+object TicTacToeRules {
+    private val LOG = LoggerFactory.getLogger(TicTacToeRules::class.java)
 
     /**
      * Indices of board cells in the winning patterns.
-     * <p>
+     *
+     *
      * 0 | 1 | 2
      * -----------
      * 3 | 4 | 5
      * -----------
      * 6 | 7 | 8
      */
-    private static final int[] WINNING_PATTERNS = {
-            0b000000111, // row 0
-            0b000111000, // row 1
-            0b111000000, // row 2
-            0b001001001, // column 0
-            0b010010010, // column 1
-            0b100100100, // column 2
-            0b100010001, // diagonal
-            0b001010100  // diagonal reversed
-    };
+    private val WINNING_PATTERNS = intArrayOf(
+        7,  // row 0
+        56,  // row 1
+        448,  // row 2
+        73,  // column 0
+        146,  // column 1
+        292,  // column 2
+        273,  // diagonal
+        84 // diagonal reversed
+    )
+    private const val FULL_FIELD = 511
 
-    private static final int FULL_FIELD = 0b111111111;
-
-    public static boolean hasWon(final int playerPattern) {
-        for (final int winningPattern : WINNING_PATTERNS) {
-            if ((winningPattern & playerPattern) == winningPattern) {
-                return true;
+    @JvmStatic
+    fun hasWon(playerPattern: Int): Boolean {
+        for (winningPattern in WINNING_PATTERNS) {
+            if (winningPattern and playerPattern == winningPattern) {
+                return true
             }
         }
-        return false;
+        return false
     }
 
-    public static boolean isDraw(final int noughts, final int crosses) {
-        return !hasWon(noughts) && !hasWon(crosses);
+    @JvmStatic
+    fun isDraw(noughts: Int, crosses: Int): Boolean {
+        return !hasWon(noughts) && !hasWon(crosses)
     }
 
-    public static boolean isBoardFull(final int noughts, final int crosses) {
-        return ((noughts | crosses) & FULL_FIELD) == FULL_FIELD;
+    @JvmStatic
+    fun isBoardFull(noughts: Int, crosses: Int): Boolean {
+        return noughts or crosses and FULL_FIELD == FULL_FIELD
     }
 
-    public static List<TicTacToeMove> getPossibleMoves(final PlayerSymbol player, final int noughts, final int crosses) {
-
-        final int freeCells = ~((noughts | crosses) & FULL_FIELD);
-
-        final List<TicTacToeMove> result = new ArrayList<>();
-        for (int row = 0; row < 3; row++) {
-            for (int column = 0; column < 3; column++) {
-                final boolean free = (freeCells & (0x1 << row * 3 + column)) != 0;
+    fun getPossibleMoves(player: PlayerSymbol, noughts: Int, crosses: Int): List<TicTacToeMove> {
+        val freeCells = (noughts or crosses and FULL_FIELD).inv()
+        val result: MutableList<TicTacToeMove> = ArrayList()
+        for (row in 0..2) {
+            for (column in 0..2) {
+                val free = freeCells and (0x1 shl row * 3 + column) != 0
                 if (free) {
-                    result.add(new TicTacToeMove(player, row, column));
+                    result.add(TicTacToeMove(player, row, column))
                 }
             }
         }
-
-        return Collections.unmodifiableList(result);
+        return Collections.unmodifiableList(result)
     }
 }

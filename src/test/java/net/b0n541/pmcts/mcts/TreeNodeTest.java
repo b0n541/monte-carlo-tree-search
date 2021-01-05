@@ -11,18 +11,18 @@ import static org.assertj.core.api.Assertions.within;
 public class TreeNodeTest {
     @Test
     public void rootNodeSinglePlayerGame() {
-        final TreeNode rootNode = new TreeNode(new TestGameState(List.of("A")));
+        final TreeNode rootNode = new TreeNode(null, new TestGameState(List.of("A")));
 
         assertThat(rootNode.isRootNode()).isTrue();
         assertThat(rootNode.isLeafNode()).isTrue();
-        assertThat(rootNode.getChildren()).hasSize(0);
+        assertThat(rootNode.children()).hasSize(0);
         assertThat(rootNode.getVisits()).isEqualTo(0);
 
         rootNode.expandPossibleMoves();
 
         assertThat(rootNode.isRootNode()).isTrue();
         assertThat(rootNode.isLeafNode()).isFalse();
-        assertThat(rootNode.getChildren()).hasSize(2);
+        assertThat(rootNode.children()).hasSize(2);
         assertThat(rootNode.getVisits()).isEqualTo(0);
 
         rootNode.addVisit(Map.of("A", 10.0));
@@ -33,16 +33,16 @@ public class TreeNodeTest {
 
     @Test
     public void visitNodesSinglePlayerGame() {
-        final TreeNode rootNode = new TreeNode(new TestGameState(List.of("A")));
+        final TreeNode rootNode = new TreeNode(null, new TestGameState(List.of("A")));
 
         rootNode.expandPossibleMoves();
 
-        final TreeNode leftChildNode = rootNode.getChildren().get(0);
+        final TreeNode leftChildNode = rootNode.children().get(0);
 
         assertThat(leftChildNode.isRootNode()).isFalse();
         assertThat(leftChildNode.isLeafNode()).isTrue();
         assertThat(leftChildNode.getParent()).isEqualTo(rootNode);
-        assertThat(leftChildNode.getChildren()).hasSize(0);
+        assertThat(leftChildNode.children()).hasSize(0);
         assertThat(leftChildNode.getVisits()).isEqualTo(0);
         assertThat(leftChildNode.getUcb1Value()).isEqualTo(Double.MAX_VALUE);
 
@@ -57,7 +57,7 @@ public class TreeNodeTest {
         assertThat(leftChildNode.getVisits()).isEqualTo(1);
         assertThat(leftChildNode.getUcb1Value()).isEqualTo(20.0);
 
-        final TreeNode rightChildNode = rootNode.getChildren().get(1);
+        final TreeNode rightChildNode = rootNode.children().get(1);
 
         assertThat(rightChildNode.getTotalScores()).isEqualTo(Map.of("A", 0.0));
         assertThat(rightChildNode.getVisits()).isEqualTo(0);
@@ -80,7 +80,7 @@ public class TreeNodeTest {
 
         leftChildNode.expandPossibleMoves();
 
-        final TreeNode leftGrandChildNode = leftChildNode.getChildren().get(0);
+        final TreeNode leftGrandChildNode = leftChildNode.children().get(0);
 
         leftGrandChildNode.addVisit(Map.of("A", 15.0));
         leftChildNode.addVisit(Map.of("A", 15.0));
@@ -102,7 +102,7 @@ public class TreeNodeTest {
         assertThat(leftGrandChildNode.getVisits()).isEqualTo(1);
         assertThat(leftGrandChildNode.getUcb1Value()).isCloseTo(16.67, within(0.01));
 
-        final TreeNode rightGrandChildNode = leftChildNode.getChildren().get(1);
+        final TreeNode rightGrandChildNode = leftChildNode.children().get(1);
 
         assertThat(rightGrandChildNode.getTotalScores()).isEqualTo(Map.of("A", 0.0));
         assertThat(rightGrandChildNode.getVisits()).isEqualTo(0);

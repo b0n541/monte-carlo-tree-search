@@ -17,11 +17,11 @@ public class TreeTest {
 
         assertThat(tree.getSize()).isEqualTo(3);
 
-        tree.getRootNode().getChildren().get(0).expandPossibleMoves();
+        tree.getRootNode().children().get(0).expandPossibleMoves();
 
         assertThat(tree.getSize()).isEqualTo(5);
 
-        tree.getRootNode().getChildren().get(1).expandPossibleMoves();
+        tree.getRootNode().children().get(1).expandPossibleMoves();
 
         assertThat(tree.getSize()).isEqualTo(7);
     }

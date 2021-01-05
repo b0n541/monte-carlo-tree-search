@@ -1,49 +1,34 @@
-package net.b0n541.pmcts.mcts;
+package net.b0n541.pmcts.mcts
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+class TreeNodeStatistics(players: List<String>) {
+    private val totalScores: MutableMap<String, Double> = mutableMapOf()
+    fun totalScores() = totalScores.toMap()
 
-public class TreeNodeStatistics {
-    private final Map<String, Double> totalScores = new HashMap<>();
-    private long visits;
+    init {
+        require(players.isNotEmpty()) { "At least one player needs to be defined." }
 
-    public TreeNodeStatistics(final List<String> players) {
-        if (players.size() == 0) {
-            throw new IllegalArgumentException("At least one player needs to be defined.");
-        }
-        for (final String player : players) {
-            totalScores.put(player, 0.0);
+        for (player in players) {
+            totalScores[player] = 0.0
         }
     }
 
-    public void addScores(final Map<String, Double> scores) {
-        for (final String player : scores.keySet()) {
-            checkPlayer(player);
+    var visits: Long = 0
+        private set
+
+    fun addScores(scores: Map<String, Double>) {
+        for (player in scores.keys) {
+            checkPlayer(player)
         }
-
-        visits++;
-        scores.forEach((key, value) -> totalScores.put(key, totalScores.get(key) + value));
+        visits++
+        scores.forEach { (key: String, value: Double) -> totalScores[key] = totalScores[key]!! + value }
     }
 
-    public long getVisits() {
-        return visits;
+    fun getTotalScore(player: String?): Double {
+        checkPlayer(player)
+        return totalScores[player]!!
     }
 
-    public double getTotalScore(final String player) {
-        checkPlayer(player);
-
-        return totalScores.get(player);
-    }
-
-    private void checkPlayer(final String player) {
-        if (!totalScores.containsKey(player)) {
-            throw new IllegalArgumentException("Unknown player " + player);
-        }
-    }
-
-    public Map<String, Double> getTotalScores() {
-        return Collections.unmodifiableMap(totalScores);
+    private fun checkPlayer(player: String?) {
+        require(totalScores.containsKey(player)) { "Unknown player $player" }
     }
 }

@@ -21,19 +21,19 @@ public class MonteCarloTreeSearchTest {
 
         assertThat(tree.getSize()).isEqualTo(3);
         assertThat(rootNode.getVisits()).isEqualTo(1);
-        assertThat(rootNode.getChildren()).hasSize(2);
+        assertThat(rootNode.children()).hasSize(2);
 
         MonteCarloTreeSearch.run(tree, 1);
 
         assertThat(tree.getSize()).isEqualTo(3);
         assertThat(rootNode.getVisits()).isEqualTo(2);
-        assertThat(rootNode.getChildren()).hasSize(2);
+        assertThat(rootNode.children()).hasSize(2);
 
         MonteCarloTreeSearch.run(tree, 1);
 
         assertThat(tree.getSize()).isEqualTo(5);
         assertThat(rootNode.getVisits()).isEqualTo(3);
-        assertThat(rootNode.getChildren()).hasSize(2);
+        assertThat(rootNode.children()).hasSize(2);
     }
 
     @Test

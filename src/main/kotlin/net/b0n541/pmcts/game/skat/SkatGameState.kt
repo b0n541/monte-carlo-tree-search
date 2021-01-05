@@ -31,35 +31,33 @@ class SkatGameState(
         tricks.add(Trick(nextPlayerPosition))
     }
 
-    override fun getPlayers(): List<String> =
-        listOf(
-            PlayerPosition.FOREHAND.toString(),
-            PlayerPosition.MIDDLEHAND.toString(),
-            PlayerPosition.REARHAND.toString()
-        )
+    override val players = listOf(
+        PlayerPosition.FOREHAND.toString(),
+        PlayerPosition.MIDDLEHAND.toString(),
+        PlayerPosition.REARHAND.toString()
+    )
 
-    override fun getNextPlayer(): String {
-        return nextPlayerPosition.toString()
-    }
+    override val nextPlayer
+        get() = nextPlayerPosition.toString()
 
-    override fun getPossibleMoves(): List<SkatGameMove> {
-        val allCards = playerCards[nextPlayerPosition]!!
+    override val possibleMoves: List<SkatGameMove>
+        get() {
+            val allCards = playerCards[nextPlayerPosition]!!
 
-        return if (lastTrick.leadingCard == null) {
-            allCards.openCards.map { SkatGameMove(nextPlayerPosition, it) }
-        } else {
-            val leadingCard = lastTrick.leadingCard!!
-            val trumpCards = playerCards[nextPlayerPosition]!!.getTrumpCards(gameType)
+            return if (lastTrick.leadingCard == null) {
+                allCards.openCards.map { SkatGameMove(nextPlayerPosition, it) }
+            } else {
+                val leadingCard = lastTrick.leadingCard!!
+                val trumpCards = playerCards[nextPlayerPosition]!!.getTrumpCards(gameType)
 
-            allCards.openCards
-                .filter { it.isAllowedOn(leadingCard, gameType, allCards) }
-                .map { SkatGameMove(nextPlayerPosition, it) }
+                allCards.openCards
+                    .filter { it.isAllowedOn(leadingCard, gameType, allCards) }
+                    .map { SkatGameMove(nextPlayerPosition, it) }
+            }
         }
-    }
 
     override fun addMove(move: SkatGameMove): SkatGameState {
-
-        require(nextPlayerPosition == move.player)
+        require(nextPlayerPosition == move.player) { "Move player needs to be $nextPlayerPosition." }
 
         val newState = copy()
 
@@ -93,6 +91,7 @@ class SkatGameState(
 
     private fun copy(): SkatGameState {
         val newState = SkatGameState(gameType, declarer, nextPlayerPosition)
+        // TODO use newState.apply {...}
         newState.gameMoves.clear()
         newState.gameMoves.addAll(gameMoves)
         newState.tricks.clear()
@@ -102,28 +101,27 @@ class SkatGameState(
         newState.declarerPoints = declarerPoints
         newState.opponentPoints = opponentPoints
         newState.skatCards.takeCards(skatCards.cards)
-        newState.playerCards[PlayerPosition.FOREHAND]!!.takeCards(playerCards[PlayerPosition.FOREHAND]!!.cards)
-        newState.playerCards[PlayerPosition.MIDDLEHAND]!!.takeCards(playerCards[PlayerPosition.MIDDLEHAND]!!.cards)
-        newState.playerCards[PlayerPosition.REARHAND]!!.takeCards(playerCards[PlayerPosition.REARHAND]!!.cards)
+        newState.playerCards[PlayerPosition.FOREHAND]?.takeCards(playerCards[PlayerPosition.FOREHAND]!!.cards)
+        newState.playerCards[PlayerPosition.MIDDLEHAND]?.takeCards(playerCards[PlayerPosition.MIDDLEHAND]!!.cards)
+        newState.playerCards[PlayerPosition.REARHAND]?.takeCards(playerCards[PlayerPosition.REARHAND]!!.cards)
         return newState
     }
 
-    override fun isGameFinished(): Boolean {
-        return tricks.size == 10 && lastTrick.isFinished
-    }
+    override val isGameFinished
+        get() = tricks.size == 10 && lastTrick.isFinished
 
-    override fun getGameValues(): Map<String, Double> {
-        return mapOf(
+    override val gameValues: Map<String, Double>
+        get() = mapOf(
             declarer.toString() to declarerPoints.toDouble(),
             declarer.nextPlayer.toString() to opponentPoints.toDouble(),
             declarer.nextPlayer.nextPlayer.toString() to opponentPoints.toDouble()
         )
-    }
 
-    override fun getLastMove(): GameMove = gameMoves.last()
+    override val lastMove
+        get() = gameMoves.last()
 
     fun dealPlayerCards(player: PlayerPosition, cards: List<Card>) {
-        playerCards[player]!!.takeCards(cards)
+        playerCards[player]?.takeCards(cards)
     }
 
     fun dealSkat(cards: List<Card>) {

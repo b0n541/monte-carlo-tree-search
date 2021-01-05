@@ -1,5 +1,5 @@
-package net.b0n541.pmcts.mcts;
+package net.b0n541.pmcts.mcts
 
-public interface GameMove {
-    String toShortString();
+interface GameMove {
+    fun toShortString(): String
 }

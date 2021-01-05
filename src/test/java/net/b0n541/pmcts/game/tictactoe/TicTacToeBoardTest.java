@@ -80,7 +80,7 @@ public class TicTacToeBoardTest {
         final TicTacToeBoard board = new TicTacToeBoard(PlayerSymbol.X);
 
         for (final TicTacToeMove move : moves) {
-            board.addMove(new TicTacToeMove(move.playerSymbol, move.row, move.column));
+            board.addMove(new TicTacToeMove(move.getPlayerSymbol(), move.getRow(), move.getColumn()));
         }
 
         assertThat(board.isFinished()).isTrue();
