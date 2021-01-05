@@ -55,7 +55,7 @@ class Tree(gameState: GameState<GameMove>) {
         }
 
         private fun printNodeLabel(node: TreeNode) {
-            println("${node.nodeId} [label=\"${node.player}\\n v=${node.visits} s=${node.totalScores}\"]")
+            println("${node.nodeId} [label=\"${node.player}\\nv=${node.visits} s=${node.totalScores}\"]")
         }
 
         private fun printNodeMoves(parent: TreeNode) {

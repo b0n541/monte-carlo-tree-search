@@ -14,10 +14,11 @@ open class TicTacToePlayer(val playerSymbol: PlayerSymbol, firstPlayer: PlayerSy
 
     open fun play(): TicTacToeMove {
         val tree = Tree(gameState as GameState<GameMove>)
+
         play(tree, Duration.ofSeconds(1))
 
-        //play(tree, 200)
-        //tree.printDigraph()
+//        play(tree, 200)
+//        tree.printDigraph()
 
         return tree.bestMove as TicTacToeMove
     }
