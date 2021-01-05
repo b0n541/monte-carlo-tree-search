@@ -27,7 +27,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter:5.7.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.0")
-    testImplementation("org.assertj:assertj-core:3.16.1")
+    testImplementation("org.assertj:assertj-core:3.18.1")
 }
 
 application {
