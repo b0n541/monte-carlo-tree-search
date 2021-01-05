@@ -1,11 +1,9 @@
-package net.b0n541.pmcts.mcts;
+package net.b0n541.pmcts.mcts
 
-public enum TestGameMove implements GameMove {
-    HEADS,
-    TAILS;
+enum class TestGameMove : GameMove {
+    HEADS, TAILS;
 
-    @Override
-    public String toShortString() {
-        return name();
+    override fun toShortString(): String {
+        return name
     }
 }

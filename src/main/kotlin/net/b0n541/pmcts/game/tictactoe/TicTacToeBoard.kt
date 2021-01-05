@@ -1,6 +1,5 @@
 package net.b0n541.pmcts.game.tictactoe
 
-import net.b0n541.pmcts.game.tictactoe.TicTacToeBoard
 import org.slf4j.LoggerFactory
 
 class TicTacToeBoard(val firstPlayer: PlayerSymbol) {

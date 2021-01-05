@@ -1,26 +1,31 @@
-package net.b0n541.pmcts.game.tictactoe;
+package net.b0n541.pmcts.game.tictactoe
 
-import org.junit.jupiter.api.Test;
+import net.b0n541.pmcts.game.tictactoe.TicTacToeRules.hasWon
+import net.b0n541.pmcts.game.tictactoe.TicTacToeRules.isBoardFull
+import net.b0n541.pmcts.game.tictactoe.TicTacToeRules.isDraw
+import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Test
 
-import static org.assertj.core.api.Assertions.assertThat;
+internal class TicTacToeRulesTest {
 
-public class TicTacToeRulesTest {
     @Test
-    public void gameStart() {
-        assertThat(TicTacToeRules.isBoardFull(0, 0)).isFalse();
-        assertThat(TicTacToeRules.hasWon(0)).isFalse();
-        assertThat(TicTacToeRules.isDraw(0, 0)).isTrue();
+    fun gameStart() {
+        Assertions.assertThat(isBoardFull(0, 0)).isFalse
+        Assertions.assertThat(hasWon(0)).isFalse
+        Assertions.assertThat(isDraw(0, 0)).isTrue
     }
 
     @Test
-    public void boardFull() {
-        checkBoardFullAndDraw(0b100001110, 0b011110001);
-        checkBoardFullAndDraw(0b010011100, 0b101100011);
-        checkBoardFullAndDraw(0b100011100, 0b011100011);
+    fun boardFull() {
+        checkBoardFullAndDraw(270, 241)
+        checkBoardFullAndDraw(156, 355)
+        checkBoardFullAndDraw(284, 227)
     }
 
-    private static void checkBoardFullAndDraw(final int noughts, final int crosses) {
-        assertThat(TicTacToeRules.isBoardFull(noughts, crosses)).isTrue();
-        assertThat(TicTacToeRules.isDraw(noughts, crosses)).isTrue();
+    companion object {
+        private fun checkBoardFullAndDraw(noughts: Int, crosses: Int) {
+            Assertions.assertThat(isBoardFull(noughts, crosses)).isTrue
+            Assertions.assertThat(isDraw(noughts, crosses)).isTrue
+        }
     }
 }

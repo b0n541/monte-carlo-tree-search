@@ -1,111 +1,80 @@
-package net.b0n541.pmcts.mcts;
+package net.b0n541.pmcts.mcts
 
-import org.junit.jupiter.api.Test;
+import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Test
 
-import java.util.List;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.within;
-
-public class TreeNodeTest {
+internal class TreeNodeTest {
     @Test
-    public void rootNodeSinglePlayerGame() {
-        final TreeNode rootNode = new TreeNode(null, new TestGameState(List.of("A")));
-
-        assertThat(rootNode.isRootNode()).isTrue();
-        assertThat(rootNode.isLeafNode()).isTrue();
-        assertThat(rootNode.children()).hasSize(0);
-        assertThat(rootNode.getVisits()).isEqualTo(0);
-
-        rootNode.expandPossibleMoves();
-
-        assertThat(rootNode.isRootNode()).isTrue();
-        assertThat(rootNode.isLeafNode()).isFalse();
-        assertThat(rootNode.children()).hasSize(2);
-        assertThat(rootNode.getVisits()).isEqualTo(0);
-
-        rootNode.addVisit(Map.of("A", 10.0));
-
-        assertThat(rootNode.getVisits()).isEqualTo(1);
-        assertThat(rootNode.getUcb1Value()).isEqualTo(Double.MAX_VALUE);
+    fun rootNodeSinglePlayerGame() {
+        val rootNode = TreeNode(null, TestGameState(listOf("A")))
+        Assertions.assertThat(rootNode.isRootNode).isTrue
+        Assertions.assertThat(rootNode.isLeafNode).isTrue
+        Assertions.assertThat(rootNode.children()).hasSize(0)
+        Assertions.assertThat(rootNode.visits).isEqualTo(0)
+        rootNode.expandPossibleMoves()
+        Assertions.assertThat(rootNode.isRootNode).isTrue
+        Assertions.assertThat(rootNode.isLeafNode).isFalse
+        Assertions.assertThat(rootNode.children()).hasSize(2)
+        Assertions.assertThat(rootNode.visits).isEqualTo(0)
+        rootNode.addVisit(mapOf("A" to 10.0))
+        Assertions.assertThat(rootNode.visits).isEqualTo(1)
+        Assertions.assertThat(rootNode.ucb1Value).isEqualTo(Double.MAX_VALUE)
     }
 
     @Test
-    public void visitNodesSinglePlayerGame() {
-        final TreeNode rootNode = new TreeNode(null, new TestGameState(List.of("A")));
-
-        rootNode.expandPossibleMoves();
-
-        final TreeNode leftChildNode = rootNode.children().get(0);
-
-        assertThat(leftChildNode.isRootNode()).isFalse();
-        assertThat(leftChildNode.isLeafNode()).isTrue();
-        assertThat(leftChildNode.getParent()).isEqualTo(rootNode);
-        assertThat(leftChildNode.children()).hasSize(0);
-        assertThat(leftChildNode.getVisits()).isEqualTo(0);
-        assertThat(leftChildNode.getUcb1Value()).isEqualTo(Double.MAX_VALUE);
-
-        leftChildNode.addVisit(Map.of("A", 20.0));
-        rootNode.addVisit(Map.of("A", 20.0));
-
-        assertThat(rootNode.getTotalScores()).isEqualTo(Map.of("A", 20.0));
-        assertThat(rootNode.getVisits()).isEqualTo(1);
-        assertThat(rootNode.getUcb1Value()).isEqualTo(Double.MAX_VALUE);
-
-        assertThat(leftChildNode.getTotalScores()).isEqualTo(Map.of("A", 20.0));
-        assertThat(leftChildNode.getVisits()).isEqualTo(1);
-        assertThat(leftChildNode.getUcb1Value()).isEqualTo(20.0);
-
-        final TreeNode rightChildNode = rootNode.children().get(1);
-
-        assertThat(rightChildNode.getTotalScores()).isEqualTo(Map.of("A", 0.0));
-        assertThat(rightChildNode.getVisits()).isEqualTo(0);
-        assertThat(rightChildNode.getUcb1Value()).isEqualTo(Double.MAX_VALUE);
-
-        rightChildNode.addVisit(Map.of("A", 10.0));
-        rootNode.addVisit(Map.of("A", 10.0));
-
-        assertThat(rootNode.getTotalScores()).isEqualTo(Map.of("A", 30.0));
-        assertThat(rootNode.getVisits()).isEqualTo(2);
-        assertThat(rootNode.getUcb1Value()).isEqualTo(Double.MAX_VALUE);
-
-        assertThat(leftChildNode.getTotalScores()).isEqualTo(Map.of("A", 20.0));
-        assertThat(leftChildNode.getVisits()).isEqualTo(1);
-        assertThat(leftChildNode.getUcb1Value()).isCloseTo(21.67, within(0.01));
-
-        assertThat(rightChildNode.getTotalScores()).isEqualTo(Map.of("A", 10.0));
-        assertThat(rightChildNode.getVisits()).isEqualTo(1);
-        assertThat(rightChildNode.getUcb1Value()).isCloseTo(11.67, within(0.01));
-
-        leftChildNode.expandPossibleMoves();
-
-        final TreeNode leftGrandChildNode = leftChildNode.children().get(0);
-
-        leftGrandChildNode.addVisit(Map.of("A", 15.0));
-        leftChildNode.addVisit(Map.of("A", 15.0));
-        rootNode.addVisit(Map.of("A", 15.0));
-
-        assertThat(rootNode.getTotalScores()).isEqualTo(Map.of("A", 45.0));
-        assertThat(rootNode.getVisits()).isEqualTo(3);
-        assertThat(rootNode.getUcb1Value()).isEqualTo(Double.MAX_VALUE);
-
-        assertThat(leftChildNode.getTotalScores()).isEqualTo(Map.of("A", 35.0));
-        assertThat(leftChildNode.getVisits()).isEqualTo(2);
-        assertThat(leftChildNode.getUcb1Value()).isCloseTo(18.98, within(0.01));
-
-        assertThat(rightChildNode.getTotalScores()).isEqualTo(Map.of("A", 10.0));
-        assertThat(rightChildNode.getVisits()).isEqualTo(1);
-        assertThat(rightChildNode.getUcb1Value()).isCloseTo(12.10, within(0.01));
-
-        assertThat(leftGrandChildNode.getTotalScores()).isEqualTo(Map.of("A", 15.0));
-        assertThat(leftGrandChildNode.getVisits()).isEqualTo(1);
-        assertThat(leftGrandChildNode.getUcb1Value()).isCloseTo(16.67, within(0.01));
-
-        final TreeNode rightGrandChildNode = leftChildNode.children().get(1);
-
-        assertThat(rightGrandChildNode.getTotalScores()).isEqualTo(Map.of("A", 0.0));
-        assertThat(rightGrandChildNode.getVisits()).isEqualTo(0);
-        assertThat(rightGrandChildNode.getUcb1Value()).isEqualTo(Double.MAX_VALUE);
+    fun visitNodesSinglePlayerGame() {
+        val rootNode = TreeNode(null, TestGameState(listOf("A")))
+        rootNode.expandPossibleMoves()
+        val leftChildNode = rootNode.children()[0]
+        Assertions.assertThat(leftChildNode.isRootNode).isFalse
+        Assertions.assertThat(leftChildNode.isLeafNode).isTrue
+        Assertions.assertThat(leftChildNode.parent).isEqualTo(rootNode)
+        Assertions.assertThat(leftChildNode.children()).hasSize(0)
+        Assertions.assertThat(leftChildNode.visits).isEqualTo(0)
+        Assertions.assertThat(leftChildNode.ucb1Value).isEqualTo(Double.MAX_VALUE)
+        leftChildNode.addVisit(mapOf("A" to 20.0))
+        rootNode.addVisit(mapOf("A" to 20.0))
+        Assertions.assertThat(rootNode.totalScores).isEqualTo(mapOf("A" to 20.0))
+        Assertions.assertThat(rootNode.visits).isEqualTo(1)
+        Assertions.assertThat(rootNode.ucb1Value).isEqualTo(Double.MAX_VALUE)
+        Assertions.assertThat(leftChildNode.totalScores).isEqualTo(mapOf("A" to 20.0))
+        Assertions.assertThat(leftChildNode.visits).isEqualTo(1)
+        Assertions.assertThat(leftChildNode.ucb1Value).isEqualTo(20.0)
+        val rightChildNode = rootNode.children()[1]
+        Assertions.assertThat(rightChildNode.totalScores).isEqualTo(mapOf("A" to 0.0))
+        Assertions.assertThat(rightChildNode.visits).isEqualTo(0)
+        Assertions.assertThat(rightChildNode.ucb1Value).isEqualTo(Double.MAX_VALUE)
+        rightChildNode.addVisit(mapOf("A" to 10.0))
+        rootNode.addVisit(mapOf("A" to 10.0))
+        Assertions.assertThat(rootNode.totalScores).isEqualTo(mapOf("A" to 30.0))
+        Assertions.assertThat(rootNode.visits).isEqualTo(2)
+        Assertions.assertThat(rootNode.ucb1Value).isEqualTo(Double.MAX_VALUE)
+        Assertions.assertThat(leftChildNode.totalScores).isEqualTo(mapOf("A" to 20.0))
+        Assertions.assertThat(leftChildNode.visits).isEqualTo(1)
+        Assertions.assertThat(leftChildNode.ucb1Value).isCloseTo(21.67, Assertions.within(0.01))
+        Assertions.assertThat(rightChildNode.totalScores).isEqualTo(mapOf("A" to 10.0))
+        Assertions.assertThat(rightChildNode.visits).isEqualTo(1)
+        Assertions.assertThat(rightChildNode.ucb1Value).isCloseTo(11.67, Assertions.within(0.01))
+        leftChildNode.expandPossibleMoves()
+        val leftGrandChildNode = leftChildNode.children()[0]
+        leftGrandChildNode.addVisit(mapOf("A" to 15.0))
+        leftChildNode.addVisit(mapOf("A" to 15.0))
+        rootNode.addVisit(mapOf("A" to 15.0))
+        Assertions.assertThat(rootNode.totalScores).isEqualTo(mapOf("A" to 45.0))
+        Assertions.assertThat(rootNode.visits).isEqualTo(3)
+        Assertions.assertThat(rootNode.ucb1Value).isEqualTo(Double.MAX_VALUE)
+        Assertions.assertThat(leftChildNode.totalScores).isEqualTo(mapOf("A" to 35.0))
+        Assertions.assertThat(leftChildNode.visits).isEqualTo(2)
+        Assertions.assertThat(leftChildNode.ucb1Value).isCloseTo(18.98, Assertions.within(0.01))
+        Assertions.assertThat(rightChildNode.totalScores).isEqualTo(mapOf("A" to 10.0))
+        Assertions.assertThat(rightChildNode.visits).isEqualTo(1)
+        Assertions.assertThat(rightChildNode.ucb1Value).isCloseTo(12.10, Assertions.within(0.01))
+        Assertions.assertThat(leftGrandChildNode.totalScores).isEqualTo(mapOf("A" to 15.0))
+        Assertions.assertThat(leftGrandChildNode.visits).isEqualTo(1)
+        Assertions.assertThat(leftGrandChildNode.ucb1Value).isCloseTo(16.67, Assertions.within(0.01))
+        val rightGrandChildNode = leftChildNode.children()[1]
+        Assertions.assertThat(rightGrandChildNode.totalScores).isEqualTo(mapOf("A" to 0.0))
+        Assertions.assertThat(rightGrandChildNode.visits).isEqualTo(0)
+        Assertions.assertThat(rightGrandChildNode.ucb1Value).isEqualTo(Double.MAX_VALUE)
     }
 }

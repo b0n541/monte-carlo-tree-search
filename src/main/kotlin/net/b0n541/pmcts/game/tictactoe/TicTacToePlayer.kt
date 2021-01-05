@@ -1,6 +1,5 @@
 package net.b0n541.pmcts.game.tictactoe
 
-import net.b0n541.pmcts.game.tictactoe.TicTacToePlayer
 import net.b0n541.pmcts.mcts.GameMove
 import net.b0n541.pmcts.mcts.GamePlayer
 import net.b0n541.pmcts.mcts.GameState
