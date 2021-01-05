@@ -22,7 +22,7 @@ open class TicTacToePlayer(val playerSymbol: PlayerSymbol, firstPlayer: PlayerSy
     }
 
     fun addMove(move: TicTacToeMove?) {
-        gameState = gameState!!.addMove(move!!)
+        gameState = gameState.addMove(move!!)
     }
 
     override fun toShortString(): String {

@@ -47,7 +47,7 @@ object MonteCarloTreeSearch {
 
     private fun expandPossibleMoves(node: TreeNode): TreeNode {
         node.expandPossibleMoves()
-        return node.children()[0]!!
+        return node.children()[0]
     }
 
     private fun rollOut(node: TreeNode): Map<String, Double> {
