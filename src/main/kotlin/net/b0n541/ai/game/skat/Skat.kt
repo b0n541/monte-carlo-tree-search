@@ -9,9 +9,9 @@ object Skat {
     @JvmStatic
     fun playGame() {
         val players = mapOf(
-            PlayerPosition.FOREHAND to SkatPlayer(),
-            PlayerPosition.MIDDLEHAND to SkatPlayer(),
-            PlayerPosition.REARHAND to SkatPlayer()
+            PlayerPosition.FOREHAND to SkatPlayer(PlayerPosition.FOREHAND),
+            PlayerPosition.MIDDLEHAND to SkatPlayer(PlayerPosition.MIDDLEHAND),
+            PlayerPosition.REARHAND to SkatPlayer(PlayerPosition.REARHAND)
         )
 
         var gameState = SkatGameState(SkatGameType.CLUBS, PlayerPosition.FOREHAND, PlayerPosition.FOREHAND)
@@ -23,16 +23,16 @@ object Skat {
 
         var trickForeHand = gameState.nextPlayerPosition
         do {
-            val firstCard = players[trickForeHand]!!.playCard()
-            gameState = gameState.addMove(SkatGameMove(trickForeHand, firstCard))
+            val firstCard = players[trickForeHand]!!.play()
+            gameState = gameState.addMove(firstCard)
 
             val trickMiddleHand = trickForeHand.nextPlayer
-            val secondCard = players[trickMiddleHand]!!.playCard()
-            gameState = gameState.addMove(SkatGameMove(trickMiddleHand, secondCard))
+            val secondCard = players[trickMiddleHand]!!.play()
+            gameState = gameState.addMove(secondCard)
 
             val trickRearHand = trickMiddleHand.nextPlayer
-            val thirdCard = players[trickRearHand]!!.playCard()
-            gameState = gameState.addMove(SkatGameMove(trickRearHand, thirdCard))
+            val thirdCard = players[trickRearHand]!!.play()
+            gameState = gameState.addMove(thirdCard)
 
             trickForeHand = gameState.nextPlayerPosition
 

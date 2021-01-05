@@ -1,18 +1,19 @@
-package net.b0n541.ai.game.tictactoe
+package net.b0n541.ai.game.tictactoe.player
 
+import net.b0n541.ai.game.tictactoe.PlayerSymbol
+import net.b0n541.ai.game.tictactoe.TicTacToeMove
 import net.b0n541.ai.mcts.GameMove
-import net.b0n541.ai.mcts.GamePlayer
 import net.b0n541.ai.mcts.GameState
 import net.b0n541.ai.mcts.MonteCarloTreeSearch.run
 import net.b0n541.ai.mcts.Tree
 import org.slf4j.LoggerFactory
 import java.time.Duration
 
-open class TicTacToePlayer(val playerSymbol: PlayerSymbol, firstPlayer: PlayerSymbol) : GamePlayer<TicTacToeMove> {
+open class MctsTicTacToePlayer(playerSymbol: PlayerSymbol, firstPlayer: PlayerSymbol) :
+    AbstractTicTacToePlayer(playerSymbol, firstPlayer) {
 
-    private var gameState: TicTacToeGameState
 
-    open fun play(): TicTacToeMove {
+    override fun play(): TicTacToeMove {
         val tree = Tree(gameState as GameState<GameMove>)
 
         play(tree, Duration.ofSeconds(1))
@@ -23,16 +24,8 @@ open class TicTacToePlayer(val playerSymbol: PlayerSymbol, firstPlayer: PlayerSy
         return tree.bestMove as TicTacToeMove
     }
 
-    override fun addMove(move: TicTacToeMove) {
-        gameState = gameState.addMove(move)
-    }
-
-    override fun toShortString(): String {
-        return playerSymbol.toString()
-    }
-
     companion object {
-        private val LOG = LoggerFactory.getLogger(TicTacToePlayer::class.java)
+        private val LOG = LoggerFactory.getLogger(MctsTicTacToePlayer::class.java)
         private fun play(tree: Tree, maxRounds: Int) {
             var rounds: Long = 0
             do {
@@ -51,9 +44,5 @@ open class TicTacToePlayer(val playerSymbol: PlayerSymbol, firstPlayer: PlayerSy
             } while (System.nanoTime() < finishTime)
             LOG.info("Tree search finished. Rounds: {}, Tree size: {}", rounds, tree.size)
         }
-    }
-
-    init {
-        gameState = TicTacToeGameState(firstPlayer)
     }
 }

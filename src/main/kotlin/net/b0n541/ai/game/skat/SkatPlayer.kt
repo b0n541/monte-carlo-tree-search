@@ -2,7 +2,7 @@ package net.b0n541.ai.game.skat
 
 import net.b0n541.ai.mcts.GamePlayer
 
-class SkatPlayer : GamePlayer<SkatGameMove> {
+class SkatPlayer(val position: PlayerPosition) : GamePlayer<SkatGameMove> {
 
     private val hand: Hand = Hand()
 
@@ -10,7 +10,11 @@ class SkatPlayer : GamePlayer<SkatGameMove> {
         hand.takeCards(cards.toList())
     }
 
-    fun playCard(): OpenCard {
+    override fun play(): SkatGameMove {
+        return SkatGameMove(position, playCard())
+    }
+
+    private fun playCard(): OpenCard {
         val card = hand.openCards.random()
         hand.removeCard(card)
         return card

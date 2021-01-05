@@ -1,5 +1,6 @@
 package net.b0n541.ai.game.tictactoe
 
+import net.b0n541.ai.game.tictactoe.player.MctsTicTacToePlayer
 import org.slf4j.LoggerFactory
 
 object TicTacToe {
@@ -9,8 +10,8 @@ object TicTacToe {
     @JvmStatic
     fun playGame() {
         var gameState = TicTacToeGameState(PlayerSymbol.O)
-        val noughtsPlayer = TicTacToePlayer(PlayerSymbol.O, PlayerSymbol.O)
-        val crossesPlayer = TicTacToePlayer(PlayerSymbol.X, PlayerSymbol.O)
+        val noughtsPlayer = MctsTicTacToePlayer(PlayerSymbol.O, PlayerSymbol.O)
+        val crossesPlayer = MctsTicTacToePlayer(PlayerSymbol.X, PlayerSymbol.O)
         do {
             val nextPlayer = PlayerSymbol.O
             LOG.info("Next player: {}", nextPlayer)
