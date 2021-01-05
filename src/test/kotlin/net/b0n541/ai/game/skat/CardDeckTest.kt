@@ -38,7 +38,7 @@ internal class CardDeckTest {
 
     @Test
     fun invalidCardDecks() {
-        assertThrows<IllegalArgumentException> { CardDeck(listOf(CJ, SJ, HJ, DJ)) }
-        assertThrows<IllegalArgumentException> { CardDeck(listOf(CJ, CJ, CJ, CJ)) }
+        assertThrows<IllegalArgumentException> { CardDeck(setOf(CJ, SJ, HJ, DJ)) }
+        assertThrows<IllegalArgumentException> { CardDeck(setOf(CJ, CJ, CJ, CJ)) }
     }
 }

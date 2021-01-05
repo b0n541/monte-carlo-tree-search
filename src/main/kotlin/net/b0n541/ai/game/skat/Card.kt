@@ -108,4 +108,11 @@ val D9 = OpenCard(Suit.DIAMONDS, Rank.NINE)
 val D8 = OpenCard(Suit.DIAMONDS, Rank.EIGHT)
 val D7 = OpenCard(Suit.DIAMONDS, Rank.SEVEN)
 
+val ALL_32_CARDS = setOf(
+    CA, CK, CQ, CJ, CT, C9, C8, C7,
+    SA, SK, SQ, SJ, ST, S9, S8, S7,
+    HA, HK, HQ, HJ, HT, H9, H8, H7,
+    DA, DK, DQ, DJ, DT, D9, D8, D7
+)
+
 val JACKS = setOf(CJ, SJ, HJ, DJ)

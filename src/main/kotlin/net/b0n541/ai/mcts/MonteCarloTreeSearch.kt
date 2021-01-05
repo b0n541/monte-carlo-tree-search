@@ -52,6 +52,7 @@ object MonteCarloTreeSearch {
     private fun rollOut(node: TreeNode): Map<String, Double> {
         var currentState = node.gameState
         while (!currentState.isGameFinished) {
+            // TODO add other roll out functions
             currentState = currentState.addMove(currentState.possibleMoves.random())
         }
         return currentState.gameValues

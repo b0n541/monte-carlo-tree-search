@@ -1,18 +1,11 @@
 package net.b0n541.ai.game.skat
 
-class CardDeck(
-    defaultCards: List<OpenCard> = listOf(
-        CA, CK, CQ, CJ, CT, C9, C8, C7,
-        SA, SK, SQ, SJ, ST, S9, S8, S7,
-        HA, HK, HQ, HJ, HT, H9, H8, H7,
-        DA, DK, DQ, DJ, DT, D9, D8, D7
-    )
-) {
+class CardDeck(initialCards: Set<OpenCard> = ALL_32_CARDS) {
     init {
-        require(defaultCards.toSet().size == 32) { "Card deck needs to have a size of 32 cards." }
+        require(initialCards.size == 32) { "Card deck needs to have a size of 32 cards." }
     }
 
-    private val cards = defaultCards.toMutableList()
+    private val cards = initialCards.toMutableList()
 
     val sortedCards
         get() = cards.toList()
@@ -35,7 +28,7 @@ class CardDeck(
 }
 
 val PERFECT_CARD_DISTRIBUTION = CardDeck(
-    listOf(
+    setOf(
         CJ, SJ, HJ, DJ, CA, CT, C9, SA, ST, S9,
         CK, CQ, SK, SQ, HA, HK, HQ, DT, D9, D8,
         C8, C7, S8, S7, HT, H9, H8, DA, DK, DQ,
