@@ -9,7 +9,7 @@ class CardDeck(
     )
 ) {
     init {
-        require(defaultCards.toSet().size == 32)
+        require(defaultCards.toSet().size == 32) { "Card deck needs to have a size of 32 cards." }
     }
 
     private val cards = defaultCards.toMutableList()

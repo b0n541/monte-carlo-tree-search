@@ -1,33 +1,29 @@
-package net.b0n541.pmcts.mcts;
-
-import java.util.List;
-import java.util.Map;
+package net.b0n541.pmcts.mcts
 
 /**
- * Interface for all game state implementations to be used in the {@link MonteCarloTreeSearch}.
+ * Interface for all game state implementations to be used in the [MonteCarloTreeSearch].
  */
-public interface GameState<M extends GameMove> {
-
+interface GameState<M : GameMove> {
     /**
      * Gets all player identifications.
-     * <p>
+     *
      * return List of player identifications
      */
-    List<String> getPlayers();
+    val players: List<String>
 
     /**
      * Gets the identification of the player at the current game state.
      *
      * @return String representing the current player
      */
-    String getNextPlayer();
+    val nextPlayer: String
 
     /**
      * Gets all possible moves from the current game state.
      *
      * @return All possible moves
      */
-    List<M> getPossibleMoves();
+    val possibleMoves: List<M>
 
     /**
      * Adds a move to the game state and returns the resulting game state.
@@ -35,26 +31,26 @@ public interface GameState<M extends GameMove> {
      * @param move Move to make
      * @return Resulting game state
      */
-    GameState<M> addMove(M move);
+    fun addMove(move: M): GameState<M>
 
     /**
      * Checks whether the game is finished.
      *
      * @return True, if the game is finished
      */
-    boolean isGameFinished();
+    val isGameFinished: Boolean
 
     /**
      * Gets the game value for each player.
      *
      * @return Game result for each player
      */
-    Map<String, Double> getGameValues();
+    val gameValues: Map<String, Double>
 
     /**
      * Gets the last move done.
      *
      * @return Last move
      */
-    GameMove getLastMove();
+    val lastMove: GameMove
 }

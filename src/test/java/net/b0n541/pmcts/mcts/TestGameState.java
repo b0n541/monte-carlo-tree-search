@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class TestGameState implements GameState {
+public class TestGameState implements GameState<GameMove> {
 
     private final List<GameMove> moves = new ArrayList<>();
     private final List<String> players;
