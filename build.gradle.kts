@@ -27,7 +27,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     // Guava
-    implementation("com.google.guava:guava:29.0-jre")
+    implementation("com.google.guava:guava:30.0-jre")
 
     // Logging
     implementation("ch.qos.logback:logback-classic:1.2.3")
