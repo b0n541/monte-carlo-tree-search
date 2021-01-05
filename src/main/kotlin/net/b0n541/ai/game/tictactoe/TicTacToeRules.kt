@@ -9,7 +9,6 @@ object TicTacToeRules {
     /**
      * Indices of board cells in the winning patterns.
      *
-     *
      * 0 | 1 | 2
      * -----------
      * 3 | 4 | 5
@@ -17,16 +16,17 @@ object TicTacToeRules {
      * 6 | 7 | 8
      */
     private val WINNING_PATTERNS = intArrayOf(
-        7,  // row 0
-        56,  // row 1
-        448,  // row 2
-        73,  // column 0
-        146,  // column 1
-        292,  // column 2
-        273,  // diagonal
-        84 // diagonal reversed
+        0b000000111, // row 0
+        0b000111000, // row 1
+        0b111000000, // row 2
+        0b100100100, // column 0
+        0b010010010, // column 1
+        0b001001001, // column 2
+        0b100010001, // diagonal
+        0b001010100  // diagonal reversed
     )
-    private const val FULL_FIELD = 511
+
+    private const val FULL_FIELD = 0b111111111
 
     @JvmStatic
     fun hasWon(playerPattern: Int): Boolean {
