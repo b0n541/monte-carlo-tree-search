@@ -12,7 +12,6 @@ object MonteCarloTreeSearch {
             val rollOutNode = expandTree(leafNode)
             val gameValues = rollOut(rollOutNode)
             backPropagation(rollOutNode, gameValues)
-            //tree.printDigraph();
         }
     }
 

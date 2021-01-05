@@ -9,6 +9,7 @@ class TreeNode(val parent: TreeNode? = null, val gameState: GameState<GameMove>)
 
     private val children: MutableMap<GameMove, TreeNode> = mutableMapOf()
     fun children() = children.values.toList()
+    fun movesAndChildren() = children.toMap()
 
     private val statistics: TreeNodeStatistics = TreeNodeStatistics(gameState.players)
 
