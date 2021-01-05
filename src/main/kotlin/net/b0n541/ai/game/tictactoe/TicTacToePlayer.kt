@@ -8,21 +8,22 @@ import net.b0n541.ai.mcts.Tree
 import org.slf4j.LoggerFactory
 import java.time.Duration
 
-open class TicTacToePlayer(val playerSymbol: PlayerSymbol, firstPlayer: PlayerSymbol) : GamePlayer {
+open class TicTacToePlayer(val playerSymbol: PlayerSymbol, firstPlayer: PlayerSymbol) : GamePlayer<TicTacToeMove> {
 
     private var gameState: TicTacToeGameState
 
     open fun play(): TicTacToeMove {
         val tree = Tree(gameState as GameState<GameMove>)
         play(tree, Duration.ofSeconds(1))
-        //play(tree, 200);
 
-        //tree.printDigraph();
+        //play(tree, 200)
+        //tree.printDigraph()
+
         return tree.bestMove as TicTacToeMove
     }
 
-    fun addMove(move: TicTacToeMove?) {
-        gameState = gameState.addMove(move!!)
+    override fun addMove(move: TicTacToeMove) {
+        gameState = gameState.addMove(move)
     }
 
     override fun toShortString(): String {
