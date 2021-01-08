@@ -12,6 +12,9 @@ import java.time.Duration
 class MctsTicTacToePlayer(playerSymbol: PlayerSymbol, firstPlayer: PlayerSymbol) :
     AbstractTicTacToePlayer(playerSymbol, firstPlayer) {
 
+    companion object {
+        private val LOG = LoggerFactory.getLogger(MctsTicTacToePlayer::class.java)
+    }
 
     override fun play(): TicTacToeMove {
         val tree = Tree(gameState as GameState<GameMove>)
@@ -24,25 +27,22 @@ class MctsTicTacToePlayer(playerSymbol: PlayerSymbol, firstPlayer: PlayerSymbol)
         return tree.bestMove as TicTacToeMove
     }
 
-    companion object {
-        private val LOG = LoggerFactory.getLogger(MctsTicTacToePlayer::class.java)
-        private fun play(tree: Tree, maxRounds: Int) {
-            var rounds: Long = 0
-            do {
-                run(tree, 1)
-                rounds++
-            } while (rounds < maxRounds)
-            LOG.info("Tree search finished. Rounds: {}, Tree size: {}", rounds, tree.size)
-        }
+    private fun play(tree: Tree, maxRounds: Int) {
+        var rounds: Long = 0
+        do {
+            run(tree, 1)
+            rounds++
+        } while (rounds < maxRounds)
+        LOG.info("Tree search finished. Rounds: {}, Tree size: {}", rounds, tree.size)
+    }
 
-        private fun play(tree: Tree, duration: Duration) {
-            val finishTime = System.nanoTime() + duration.toNanos()
-            var rounds: Long = 0
-            do {
-                run(tree, 1)
-                rounds++
-            } while (System.nanoTime() < finishTime)
-            LOG.info("Tree search finished. Rounds: {}, Tree size: {}", rounds, tree.size)
-        }
+    private fun play(tree: Tree, duration: Duration) {
+        val finishTime = System.nanoTime() + duration.toNanos()
+        var rounds: Long = 0
+        do {
+            run(tree, 1)
+            rounds++
+        } while (System.nanoTime() < finishTime)
+        LOG.info("Tree search finished. Rounds: {}, Tree size: {}", rounds, tree.size)
     }
 }
