@@ -25,10 +25,12 @@ internal class TestGameState(override val players: List<String>) : GameState<Gam
                         .filter { move: GameMove -> move === TestGameMove.HEADS }
                         .count()
 
-            return mapOf(
-                TestGameMove.HEADS.toString() to headsGameValue,
-                TestGameMove.TAILS.toString() to 100 - headsGameValue
-            )
+            if (players.size == 1) {
+                return mapOf(players[0] to headsGameValue)
+            } else if (players.size == 2) {
+                return (mapOf(players[0] to headsGameValue, players[1] to (100 - headsGameValue)))
+            }
+            return mapOf()
         }
 
     override val lastMove: GameMove

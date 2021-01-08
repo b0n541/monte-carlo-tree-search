@@ -30,7 +30,14 @@ class TreeNode(val parent: TreeNode? = null, val gameState: GameState<GameMove>)
     val visits: Long
         get() = statistics.visits
 
-    fun addVisit(scores: Map<String, Double>) {
+    val currentTraversals: Long
+        get() = statistics.currentTraversals
+
+    fun addTraversal() {
+        statistics.addTraversal()
+    }
+
+    fun addScores(scores: Map<String, Double>) {
         statistics.addScores(scores)
     }
 
@@ -42,8 +49,10 @@ class TreeNode(val parent: TreeNode? = null, val gameState: GameState<GameMove>)
         get() = if (isRootNode || statistics.visits == 0L) {
             Double.MAX_VALUE
         } else {
-            statistics.getTotalScore(parent!!.player) / visits +
-                    EXPLORATION_FACTOR * Math.sqrt(Math.log(parent.visits.toDouble()) / visits)
+            val nodeVisits = visits.toDouble() + currentTraversals.toDouble()
+            val parentVisits = parent!!.visits.toDouble() + parent!!.currentTraversals.toDouble()
+            statistics.getTotalScore(parent!!.player) / nodeVisits +
+                    EXPLORATION_FACTOR * Math.sqrt(Math.log(parentVisits) / nodeVisits)
         }
 
     fun expandPossibleMoves() {

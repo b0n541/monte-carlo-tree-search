@@ -15,11 +15,20 @@ class TreeNodeStatistics(players: List<String>) {
     var visits: Long = 0
         private set
 
+    var currentTraversals: Long = 0
+        private set
+
+    fun addTraversal() {
+        currentTraversals++
+    }
+
     fun addScores(scores: Map<String, Double>) {
         for (player in scores.keys) {
             checkPlayer(player)
         }
+
         visits++
+        currentTraversals--
         scores.forEach { (key: String, value: Double) -> totalScores[key] = totalScores[key]!! + value }
     }
 

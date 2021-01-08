@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 internal class TreeTest {
     @Test
     fun emptyTree() {
-        val tree = Tree(TestGameState(listOf("HEADS", "TAILS")))
+        val tree = Tree(TestGameState(listOf("A", "B")))
         Assertions.assertThat(tree.size).isEqualTo(1)
         tree.rootNode.expandPossibleMoves()
         Assertions.assertThat(tree.size).isEqualTo(3)

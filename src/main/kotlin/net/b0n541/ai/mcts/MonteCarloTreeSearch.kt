@@ -17,6 +17,7 @@ object MonteCarloTreeSearch {
 
     private fun traverseTree(tree: Tree): TreeNode {
         var nextNode = tree.rootNode
+        nextNode.addTraversal()
         while (!nextNode.isLeafNode) {
             var bestChildNode: TreeNode? = null
             var bestUcb1Value = -1 * Double.MAX_VALUE
@@ -28,6 +29,7 @@ object MonteCarloTreeSearch {
                 }
             }
             nextNode = bestChildNode!!
+            nextNode.addTraversal()
         }
         return nextNode
     }
@@ -50,6 +52,7 @@ object MonteCarloTreeSearch {
     }
 
     private fun rollOut(node: TreeNode): Map<String, Double> {
+        node.addTraversal()
         var currentState = node.gameState
         while (!currentState.isGameFinished) {
             // TODO add other roll out functions
@@ -61,9 +64,9 @@ object MonteCarloTreeSearch {
     private fun backPropagation(node: TreeNode, gameValues: Map<String, Double>) {
         var currentNode = node
         do {
-            currentNode.addVisit(gameValues)
+            currentNode.addScores(gameValues)
             currentNode = currentNode.parent!!
         } while (!currentNode.isRootNode)
-        currentNode.addVisit(gameValues)
+        currentNode.addScores(gameValues)
     }
 }
