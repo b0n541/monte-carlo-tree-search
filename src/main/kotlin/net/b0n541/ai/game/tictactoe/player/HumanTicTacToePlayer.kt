@@ -1,9 +1,12 @@
-package net.b0n541.ai.game.tictactoe
+package net.b0n541.ai.game.tictactoe.player
 
+import net.b0n541.ai.game.tictactoe.PlayerSymbol
+import net.b0n541.ai.game.tictactoe.TicTacToeMove
 import java.util.*
 
 class HumanTicTacToePlayer(playerSymbol: PlayerSymbol, firstPlayer: PlayerSymbol) :
-    TicTacToePlayer(playerSymbol, firstPlayer) {
+    AbstractTicTacToePlayer(playerSymbol, firstPlayer) {
+    
     override fun play(): TicTacToeMove {
         println("Your move...")
         print("Row: ")
