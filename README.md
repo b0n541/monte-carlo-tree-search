@@ -19,7 +19,15 @@ Status:
 
 - Tic Tac Toe ✅
 - Skat 🚧
-- Four Connect 🗓
+- Connect 4 ✅ (https://en.wikipedia.org/wiki/Connect_Four)
+- Mau Mau 🗓 (https://en.wikipedia.org/wiki/Mau-Mau_(card_game))
+- Schwimmen 🗓 (https://de.wikipedia.org/wiki/Schwimmen_(Kartenspiel))
+
+## Simulation Environment
+
+- Training with Selfplay 🗓
+- Elo Rating 🗓 (https://en.wikipedia.org/wiki/Elo_rating_system)
+- Tournaments 🗓
 
 ## License
 
