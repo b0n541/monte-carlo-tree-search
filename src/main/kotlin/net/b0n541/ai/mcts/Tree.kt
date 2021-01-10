@@ -18,7 +18,7 @@ class Tree(gameState: GameState<GameMove>) {
     val bestMove: GameMove
         get() {
             var highestVisits: Long = 0
-            var bestMove: GameMove? = null
+            var bestMoves = mutableListOf<GameMove>()
 
             rootNode.children()
                 .forEach {
@@ -26,14 +26,18 @@ class Tree(gameState: GameState<GameMove>) {
                     val visits = it.visits
                     val scores = it.totalScores
                     LOG.info("Move {} got visits {} and scores {}", move, visits, scores)
-                    if (it.visits > highestVisits) {
+                    if (it.visits >= highestVisits) {
+                        if (visits > highestVisits) {
+                            bestMoves.clear()
+                        }
                         highestVisits = visits
-                        bestMove = move
+                        bestMoves.add(move)
                     }
                 }
 
-            LOG.info("Best move {} with highest visits {}", bestMove, highestVisits)
-            return bestMove!!
+            LOG.info("Best move(s) {} with highest visits {}", bestMoves, highestVisits)
+
+            return bestMoves.random()
         }
 
     companion object {
