@@ -225,6 +225,24 @@ class Connect4Board(
         return result.toList()
     }
 
+    override fun toString(): String {
+        val builder = StringBuilder()
+        builder.append('\n')
+        for (row in MAX_COLUMN_HEIGHT - 1 downTo 0) {
+            formatRow(builder, getRow(row))
+        }
+        builder.append("===================== --> ${getGameResult()}\n")
+
+        return builder.toString()
+    }
+
+    private fun formatRow(builder: StringBuilder, row: List<String>) {
+        for (rowEntry in row) {
+            builder.append("[$rowEntry]")
+        }
+        builder.append('\n')
+    }
+
     class Connect4Column(initialPieces: List<String> = listOf()) {
         private val pieces = mutableListOf<String>()
 
