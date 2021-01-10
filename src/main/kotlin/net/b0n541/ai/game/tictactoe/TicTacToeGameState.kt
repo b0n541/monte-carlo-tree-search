@@ -1,8 +1,6 @@
 package net.b0n541.ai.game.tictactoe
 
-import net.b0n541.ai.mcts.GameMove
 import net.b0n541.ai.mcts.GameState
-import java.util.*
 import java.util.function.Consumer
 
 class TicTacToeGameState(firstPlayer: PlayerSymbol) : GameState<TicTacToeMove> {
@@ -34,13 +32,14 @@ class TicTacToeGameState(firstPlayer: PlayerSymbol) : GameState<TicTacToeMove> {
                 TicTacToeGameResult.X_WON -> 0.0
                 else -> 0.5
             }
-            val result: MutableMap<String, Double> = HashMap()
-            result[PlayerSymbol.O.toString()] = playerOResult
-            result[PlayerSymbol.X.toString()] = 1.0 - playerOResult
-            return result
+            
+            return mapOf(
+                PlayerSymbol.O.toString() to playerOResult,
+                PlayerSymbol.X.toString() to 1.0 - playerOResult
+            )
         }
 
-    override val lastMove: GameMove
+    override val lastMove: TicTacToeMove
         get() = board.moves().last()
 
     override val nextPlayer: String
