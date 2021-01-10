@@ -1,6 +1,5 @@
 package net.b0n541.ai.game.tictactoe
 
-import net.b0n541.ai.game.tictactoe.player.AlphaZeroTicTacToePlayer
 import net.b0n541.ai.game.tictactoe.player.MctsTicTacToePlayer
 import org.slf4j.LoggerFactory
 
@@ -11,7 +10,7 @@ object TicTacToe {
     @JvmStatic
     fun playGame() {
         var gameState = TicTacToeGameState(PlayerSymbol.O)
-        val noughtsPlayer = AlphaZeroTicTacToePlayer(PlayerSymbol.O, PlayerSymbol.O)
+        val noughtsPlayer = MctsTicTacToePlayer(PlayerSymbol.O, PlayerSymbol.O)
         val crossesPlayer = MctsTicTacToePlayer(PlayerSymbol.X, PlayerSymbol.O)
         var nextPlayer = PlayerSymbol.O
         do {
