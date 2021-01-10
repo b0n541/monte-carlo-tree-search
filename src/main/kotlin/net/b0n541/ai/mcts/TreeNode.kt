@@ -2,6 +2,8 @@ package net.b0n541.ai.mcts
 
 import org.slf4j.LoggerFactory
 import java.util.concurrent.atomic.AtomicLong
+import kotlin.math.ln
+import kotlin.math.sqrt
 
 class TreeNode(val parent: TreeNode? = null, val gameState: GameState<GameMove>) {
 
@@ -50,9 +52,8 @@ class TreeNode(val parent: TreeNode? = null, val gameState: GameState<GameMove>)
             Double.MAX_VALUE
         } else {
             val nodeVisits = visits.toDouble() + currentTraversals.toDouble()
-            val parentVisits = parent!!.visits.toDouble() + parent!!.currentTraversals.toDouble()
-            statistics.getTotalScore(parent!!.player) / nodeVisits +
-                    EXPLORATION_FACTOR * Math.sqrt(Math.log(parentVisits) / nodeVisits)
+            val parentVisits = parent!!.visits.toDouble() + parent.currentTraversals.toDouble()
+            statistics.getTotalScore(parent.player) / nodeVisits + EXPLORATION_FACTOR * sqrt(ln(parentVisits) / nodeVisits)
         }
 
     fun expandPossibleMoves() {
