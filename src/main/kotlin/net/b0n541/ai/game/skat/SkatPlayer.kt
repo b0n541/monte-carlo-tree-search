@@ -2,7 +2,7 @@ package net.b0n541.ai.game.skat
 
 import net.b0n541.ai.mcts.GamePlayer
 
-class SkatPlayer(val position: PlayerPosition) : GamePlayer<SkatGameMove> {
+class SkatPlayer(val position: PlayerPosition) : GamePlayer<SkatMove> {
 
     private val hand: Hand = Hand()
 
@@ -10,8 +10,8 @@ class SkatPlayer(val position: PlayerPosition) : GamePlayer<SkatGameMove> {
         hand.takeCards(cards.toList())
     }
 
-    override fun play(): SkatGameMove {
-        return SkatGameMove(position, playCard())
+    override fun play(): SkatMove {
+        return SkatMove(position, playCard())
     }
 
     private fun playCard(): OpenCard {
@@ -24,7 +24,7 @@ class SkatPlayer(val position: PlayerPosition) : GamePlayer<SkatGameMove> {
         TODO("Not yet implemented")
     }
 
-    override fun addMove(move: SkatGameMove) {
+    override fun addMove(move: SkatMove) {
         TODO("Not yet implemented")
     }
 }

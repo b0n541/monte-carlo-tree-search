@@ -2,9 +2,9 @@ package net.b0n541.ai.game.skat
 
 import net.b0n541.ai.mcts.GameMove
 
-data class SkatGameMove(val player: PlayerPosition, val card: OpenCard) : GameMove {
+data class SkatMove(val player: PlayerPosition, val card: OpenCard) : GameMove {
 
-    fun beats(move: SkatGameMove): Boolean {
+    fun beats(move: SkatMove): Boolean {
         val otherCard = move.card
         return beats(otherCard, card)
     }

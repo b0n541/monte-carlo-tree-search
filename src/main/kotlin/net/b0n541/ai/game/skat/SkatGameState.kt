@@ -1,6 +1,5 @@
 package net.b0n541.ai.game.skat
 
-import net.b0n541.ai.mcts.GameMove
 import net.b0n541.ai.mcts.GameState
 
 class SkatGameState(
@@ -8,9 +7,9 @@ class SkatGameState(
     val declarer: PlayerPosition,
     var nextPlayerPosition: PlayerPosition
 ) :
-    GameState<SkatGameMove> {
+    GameState<SkatMove> {
 
-    private val gameMoves: MutableList<GameMove> = mutableListOf()
+    private val gameMoves: MutableList<SkatMove> = mutableListOf()
 
     private val skatCards = Hand()
     private val playerCards = mapOf(
@@ -40,23 +39,23 @@ class SkatGameState(
     override val nextPlayer
         get() = nextPlayerPosition.toString()
 
-    override val possibleMoves: List<SkatGameMove>
+    override val possibleMoves: List<SkatMove>
         get() {
             val allCards = playerCards[nextPlayerPosition]!!
 
             return if (lastTrick.leadingCard == null) {
-                allCards.openCards.map { SkatGameMove(nextPlayerPosition, it) }
+                allCards.openCards.map { SkatMove(nextPlayerPosition, it) }
             } else {
                 val leadingCard = lastTrick.leadingCard!!
                 val trumpCards = playerCards[nextPlayerPosition]!!.getTrumpCards(gameType)
 
                 allCards.openCards
                     .filter { it.isAllowedOn(leadingCard, gameType, allCards) }
-                    .map { SkatGameMove(nextPlayerPosition, it) }
+                    .map { SkatMove(nextPlayerPosition, it) }
             }
         }
 
-    override fun addMove(move: SkatGameMove): SkatGameState {
+    override fun addMove(move: SkatMove): SkatGameState {
         require(nextPlayerPosition == move.player) { "Move player needs to be $nextPlayerPosition." }
 
         val newState = copy()

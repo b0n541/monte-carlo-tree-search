@@ -17,19 +17,19 @@ internal class TrickTest {
     fun addCards() {
         val trick = Trick(PlayerPosition.FOREHAND)
 
-        trick.addMove(SkatGameMove(PlayerPosition.FOREHAND, CJ))
+        trick.addMove(SkatMove(PlayerPosition.FOREHAND, CJ))
 
         assertThat(trick.isFinished).isFalse
         assertThat(trick.trickWinner).isNull()
         assertThat(trick.cardValues).isEqualTo(2)
 
-        trick.addMove(SkatGameMove(PlayerPosition.MIDDLEHAND, SA))
+        trick.addMove(SkatMove(PlayerPosition.MIDDLEHAND, SA))
 
         assertThat(trick.isFinished).isFalse
         assertThat(trick.trickWinner).isNull()
         assertThat(trick.cardValues).isEqualTo(13)
 
-        trick.addMove(SkatGameMove(PlayerPosition.REARHAND, HT))
+        trick.addMove(SkatMove(PlayerPosition.REARHAND, HT))
 
         assertThat(trick.isFinished).isTrue
         assertThat(trick.trickWinner).isEqualTo(PlayerPosition.FOREHAND)
@@ -40,12 +40,12 @@ internal class TrickTest {
     fun addFourthCard() {
         val trick = Trick(PlayerPosition.FOREHAND)
 
-        trick.addMove(SkatGameMove(PlayerPosition.FOREHAND, CJ))
-        trick.addMove(SkatGameMove(PlayerPosition.FOREHAND, SJ))
-        trick.addMove(SkatGameMove(PlayerPosition.FOREHAND, HJ))
+        trick.addMove(SkatMove(PlayerPosition.FOREHAND, CJ))
+        trick.addMove(SkatMove(PlayerPosition.FOREHAND, SJ))
+        trick.addMove(SkatMove(PlayerPosition.FOREHAND, HJ))
 
         assertThrows<IllegalArgumentException> {
-            trick.addMove(SkatGameMove(PlayerPosition.FOREHAND, DJ))
+            trick.addMove(SkatMove(PlayerPosition.FOREHAND, DJ))
         }
     }
 
@@ -53,9 +53,9 @@ internal class TrickTest {
     fun cardValues() {
         val trick = Trick(PlayerPosition.FOREHAND)
 
-        trick.addMove(SkatGameMove(PlayerPosition.FOREHAND, CK))
-        trick.addMove(SkatGameMove(PlayerPosition.FOREHAND, HA))
-        trick.addMove(SkatGameMove(PlayerPosition.FOREHAND, C8))
+        trick.addMove(SkatMove(PlayerPosition.FOREHAND, CK))
+        trick.addMove(SkatMove(PlayerPosition.FOREHAND, HA))
+        trick.addMove(SkatMove(PlayerPosition.FOREHAND, C8))
 
         assertThat(trick.cardValues).isEqualTo(15)
     }

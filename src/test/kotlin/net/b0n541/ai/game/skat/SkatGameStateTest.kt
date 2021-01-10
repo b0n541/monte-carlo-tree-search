@@ -33,23 +33,23 @@ internal class SkatGameStateTest {
     @Test
     fun addMoves() {
         val state0 = SkatGameState(SkatGameType.CLUBS, PlayerPosition.FOREHAND, PlayerPosition.FOREHAND)
-        val state1 = state0.addMove(SkatGameMove(PlayerPosition.FOREHAND, HJ))
-        val state2 = state1.addMove(SkatGameMove(PlayerPosition.MIDDLEHAND, CJ))
-        val state3 = state2.addMove(SkatGameMove(PlayerPosition.REARHAND, SJ))
+        val state1 = state0.addMove(SkatMove(PlayerPosition.FOREHAND, HJ))
+        val state2 = state1.addMove(SkatMove(PlayerPosition.MIDDLEHAND, CJ))
+        val state3 = state2.addMove(SkatMove(PlayerPosition.REARHAND, SJ))
 
         Assertions.assertThrows(NoSuchElementException::class.java) { state0.lastMove }
         assertThat(state0.nextPlayer).isEqualTo("FOREHAND")
         assertThat(state0.isGameFinished).isFalse
 
-        assertThat(state1.lastMove).isEqualTo(SkatGameMove(PlayerPosition.FOREHAND, HJ))
+        assertThat(state1.lastMove).isEqualTo(SkatMove(PlayerPosition.FOREHAND, HJ))
         assertThat(state1.nextPlayer).isEqualTo("MIDDLEHAND")
         assertThat(state1.isGameFinished).isFalse
 
-        assertThat(state2.lastMove).isEqualTo(SkatGameMove(PlayerPosition.MIDDLEHAND, CJ))
+        assertThat(state2.lastMove).isEqualTo(SkatMove(PlayerPosition.MIDDLEHAND, CJ))
         assertThat(state2.nextPlayer).isEqualTo("REARHAND")
         assertThat(state2.isGameFinished).isFalse
 
-        assertThat(state3.lastMove).isEqualTo(SkatGameMove(PlayerPosition.REARHAND, SJ))
+        assertThat(state3.lastMove).isEqualTo(SkatMove(PlayerPosition.REARHAND, SJ))
         assertThat(state3.nextPlayer).isEqualTo("MIDDLEHAND")
         assertThat(state3.isGameFinished).isFalse
     }
@@ -64,9 +64,9 @@ internal class SkatGameStateTest {
 
         for (i in 1..10) {
             val trickForeHand = state.nextPlayerPosition
-            state = state.addMove(SkatGameMove(trickForeHand, randomCard(unplayedCards)))
-                .addMove(SkatGameMove(trickForeHand.nextPlayer, randomCard(unplayedCards)))
-                .addMove(SkatGameMove(trickForeHand.nextPlayer.nextPlayer, randomCard(unplayedCards)))
+            state = state.addMove(SkatMove(trickForeHand, randomCard(unplayedCards)))
+                .addMove(SkatMove(trickForeHand.nextPlayer, randomCard(unplayedCards)))
+                .addMove(SkatMove(trickForeHand.nextPlayer.nextPlayer, randomCard(unplayedCards)))
         }
 
         assertThat(state.isGameFinished).isTrue
@@ -92,23 +92,23 @@ internal class SkatGameStateTest {
         state.dealSkat(cards.dealSkat().toList())
 
         assertThat(state.possibleMoves).containsExactlyInAnyOrder(
-            SkatGameMove(PlayerPosition.FOREHAND, CJ),
-            SkatGameMove(PlayerPosition.FOREHAND, SJ),
-            SkatGameMove(PlayerPosition.FOREHAND, HJ),
-            SkatGameMove(PlayerPosition.FOREHAND, DJ),
-            SkatGameMove(PlayerPosition.FOREHAND, CA),
-            SkatGameMove(PlayerPosition.FOREHAND, CT),
-            SkatGameMove(PlayerPosition.FOREHAND, C9),
-            SkatGameMove(PlayerPosition.FOREHAND, SA),
-            SkatGameMove(PlayerPosition.FOREHAND, ST),
-            SkatGameMove(PlayerPosition.FOREHAND, S9)
+            SkatMove(PlayerPosition.FOREHAND, CJ),
+            SkatMove(PlayerPosition.FOREHAND, SJ),
+            SkatMove(PlayerPosition.FOREHAND, HJ),
+            SkatMove(PlayerPosition.FOREHAND, DJ),
+            SkatMove(PlayerPosition.FOREHAND, CA),
+            SkatMove(PlayerPosition.FOREHAND, CT),
+            SkatMove(PlayerPosition.FOREHAND, C9),
+            SkatMove(PlayerPosition.FOREHAND, SA),
+            SkatMove(PlayerPosition.FOREHAND, ST),
+            SkatMove(PlayerPosition.FOREHAND, S9)
         )
 
-        state = state.addMove(SkatGameMove(PlayerPosition.FOREHAND, CJ))
+        state = state.addMove(SkatMove(PlayerPosition.FOREHAND, CJ))
 
         assertThat(state.possibleMoves).containsExactlyInAnyOrder(
-            SkatGameMove(PlayerPosition.MIDDLEHAND, CK),
-            SkatGameMove(PlayerPosition.MIDDLEHAND, CQ)
+            SkatMove(PlayerPosition.MIDDLEHAND, CK),
+            SkatMove(PlayerPosition.MIDDLEHAND, CQ)
         )
     }
 }

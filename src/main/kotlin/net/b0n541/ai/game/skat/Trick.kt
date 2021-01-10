@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 
 class Trick(
     private val trickForeHand: PlayerPosition,
-    private val cards: MutableList<SkatGameMove> = mutableListOf(),
+    private val cards: MutableList<SkatMove> = mutableListOf(),
 ) {
     private val LOG = LoggerFactory.getLogger(javaClass)
 
@@ -18,7 +18,7 @@ class Trick(
     val isFinished: Boolean
         get() = cards.size == 3
 
-    fun addMove(move: SkatGameMove) {
+    fun addMove(move: SkatMove) {
 
         require(cards.size < 3) { "Trick is already completed." }
 
