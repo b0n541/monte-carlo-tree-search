@@ -8,11 +8,7 @@ import net.b0n541.ai.mcts.GamePlayer
 abstract class AbstractTicTacToePlayer(val playerSymbol: PlayerSymbol, firstPlayer: PlayerSymbol) :
     GamePlayer<TicTacToeMove> {
 
-    protected open lateinit var gameState: TicTacToeGameState
-
-    init {
-        gameState = TicTacToeGameState(firstPlayer)
-    }
+    protected var gameState: TicTacToeGameState = TicTacToeGameState(firstPlayer)
 
     override fun addMove(move: TicTacToeMove) {
         gameState = gameState.addMove(move)
