@@ -52,5 +52,5 @@ interface GameState<M : GameMove> {
      *
      * @return Last move
      */
-    val lastMove: GameMove
+    val lastMove: M
 }

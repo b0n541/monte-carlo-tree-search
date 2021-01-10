@@ -166,15 +166,16 @@ internal class Connect4BoardTest {
     fun dropPiece() {
         val board = Connect4Board()
 
-        assertThrows<IllegalArgumentException> { board.dropPiece(-1) }
-        assertThrows<IllegalArgumentException> { board.dropPiece(7) }
+        assertThrows<IllegalArgumentException> { board.dropPiece(Connect4Move(Connect4PlayerSymbol.X, 0)) }
+        assertThrows<IllegalArgumentException> { board.dropPiece(Connect4Move(Connect4PlayerSymbol.O, -1)) }
+        assertThrows<IllegalArgumentException> { board.dropPiece(Connect4Move(Connect4PlayerSymbol.O, 7)) }
 
-        val newBoard = board.dropPiece(0)
+        val newBoard = board.dropPiece(Connect4Move(Connect4PlayerSymbol.O, 0))
 
         assertThat(newBoard.nextPlayer).isEqualTo(Connect4PlayerSymbol.X)
         assertThat(newBoard.getColumn(0)).isEqualTo(listOf("O", " ", " ", " ", " ", " "))
 
-        val newBoard2 = newBoard.dropPiece(0)
+        val newBoard2 = newBoard.dropPiece(Connect4Move(Connect4PlayerSymbol.X, 0))
 
         assertThat(newBoard2.nextPlayer).isEqualTo(Connect4PlayerSymbol.O)
         assertThat(newBoard2.getColumn(0)).isEqualTo(listOf("O", "X", " ", " ", " ", " "))
@@ -205,16 +206,16 @@ internal class Connect4BoardTest {
     fun columnFull() {
         val board = Connect4Board()
 
-        val newBoard = board.dropPiece(1)
-            .dropPiece(1)
-            .dropPiece(1)
-            .dropPiece(1)
-            .dropPiece(1)
-            .dropPiece(1)
+        val newBoard = board.dropPiece(Connect4Move(Connect4PlayerSymbol.O, 1))
+            .dropPiece(Connect4Move(Connect4PlayerSymbol.X, 1))
+            .dropPiece(Connect4Move(Connect4PlayerSymbol.O, 1))
+            .dropPiece(Connect4Move(Connect4PlayerSymbol.X, 1))
+            .dropPiece(Connect4Move(Connect4PlayerSymbol.O, 1))
+            .dropPiece(Connect4Move(Connect4PlayerSymbol.X, 1))
 
         assertThat(newBoard.getColumn(1)).isEqualTo(listOf("O", "X", "O", "X", "O", "X"))
 
-        assertThrows<IllegalArgumentException> { newBoard.dropPiece(1) }
+        assertThrows<IllegalArgumentException> { newBoard.dropPiece(Connect4Move(Connect4PlayerSymbol.O, 1)) }
     }
 
     @Test
@@ -246,7 +247,7 @@ internal class Connect4BoardTest {
                     arrayOf(" ", " ", "X", "X", "O", "O", "X"),
                     arrayOf(" ", "O", "X", "X", "O", "X", "O")
                 )
-            ).getGameResult()
+            ).gameResult
         ).isEqualTo(Connect4GameResult.UNDECIDED)
 
         // vertical win
@@ -260,7 +261,7 @@ internal class Connect4BoardTest {
                     arrayOf(" ", " ", "X", "X", "O", "O", "X"),
                     arrayOf(" ", "O", "X", "X", "O", "X", "O")
                 )
-            ).getGameResult()
+            ).gameResult
         ).isEqualTo(Connect4GameResult.X_WIN)
 
         // horizontal win
@@ -274,7 +275,7 @@ internal class Connect4BoardTest {
                     arrayOf("X", "X", "X", "X", "O", "O", "X"),
                     arrayOf("O", "O", "X", "X", "O", "X", "O")
                 )
-            ).getGameResult()
+            ).gameResult
         ).isEqualTo(Connect4GameResult.X_WIN)
 
         // diagnol win
@@ -288,7 +289,7 @@ internal class Connect4BoardTest {
                     arrayOf(" ", "X", "X", "X", "O", "O", "X"),
                     arrayOf(" ", "O", "X", "X", "O", "X", "O")
                 )
-            ).getGameResult()
+            ).gameResult
         ).isEqualTo(Connect4GameResult.O_WIN)
 
         assertThat(
@@ -301,7 +302,7 @@ internal class Connect4BoardTest {
                     arrayOf(" ", " ", "X", "X", "O", "O", "X"),
                     arrayOf(" ", "O", "X", "X", "O", "X", "O")
                 )
-            ).getGameResult()
+            ).gameResult
         ).isEqualTo(Connect4GameResult.X_WIN)
 
         // draw
@@ -315,7 +316,7 @@ internal class Connect4BoardTest {
                     arrayOf("O", "O", "X", "X", "O", "O", "X"),
                     arrayOf("O", "O", "X", "X", "O", "X", "O")
                 )
-            ).getGameResult()
+            ).gameResult
         ).isEqualTo(Connect4GameResult.DRAW)
     }
 }

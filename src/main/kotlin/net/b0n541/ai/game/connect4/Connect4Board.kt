@@ -29,15 +29,16 @@ class Connect4Board(
         val VALID_PIECES = setOf("O", "X")
 
         private fun checkColumnIndex(column: Int) {
-            require(column in 0 until MAX_ROW_LENGTH) { "Parameter column must be in range 0..6" }
+            require(column in 0 until MAX_ROW_LENGTH) { "Column must be in range 0..6" }
         }
 
         private fun checkRowIndex(row: Int) {
-            require(row in 0 until MAX_COLUMN_HEIGHT) { "Parameter row must be in range 0..5" }
+            require(row in 0 until MAX_COLUMN_HEIGHT) { "Row must be in range 0..5" }
         }
     }
 
     private var state: List<Connect4Column>
+    private val moves = mutableListOf<Connect4Move>()
 
     init {
         require(initialState.size == MAX_COLUMN_HEIGHT) { "Initial state must haven 6 rows" }
@@ -51,6 +52,9 @@ class Connect4Board(
             convertToState(initialState)
         }
     }
+
+    val lastMove
+        get() = moves.last()
 
     val isBoardFull
         get() = state.filter { it.isFull }.size == MAX_ROW_LENGTH
@@ -91,14 +95,15 @@ class Connect4Board(
         return state[column][row]
     }
 
-    fun dropPiece(column: Int): Connect4Board {
-        checkColumnIndex(column)
-        require(!state[column].isFull) { "Column $column is full." }
+    fun dropPiece(move: Connect4Move): Connect4Board {
+        require(move.player == nextPlayer) { "Next player must be $nextPlayer" }
+        checkColumnIndex(move.column)
+        require(!state[move.column].isFull) { "Column ${move.column} is full." }
 
         val newState = mutableListOf<Connect4Column>()
         for (columnIndex in 0 until MAX_ROW_LENGTH) {
             val columnCopy = state[columnIndex].copy()
-            if (columnIndex == column) {
+            if (columnIndex == move.column) {
                 columnCopy.add(nextPlayer.toString())
             }
             newState.add(columnCopy)
@@ -111,16 +116,19 @@ class Connect4Board(
 
         val newBoard = Connect4Board(nextPlayer = newNextPlayer)
         newBoard.state = newState
+        newBoard.moves.add(move)
+
         return newBoard
     }
 
-    fun getGameResult(): Connect4GameResult {
-        return when (getWinningPlayer()) {
-            "O" -> Connect4GameResult.O_WIN
-            "X" -> Connect4GameResult.X_WIN
-            else -> if (isBoardFull) Connect4GameResult.DRAW else Connect4GameResult.UNDECIDED
+    val gameResult: Connect4GameResult
+        get() {
+            return when (getWinningPlayer()) {
+                "O" -> Connect4GameResult.O_WIN
+                "X" -> Connect4GameResult.X_WIN
+                else -> if (isBoardFull) Connect4GameResult.DRAW else Connect4GameResult.UNDECIDED
+            }
         }
-    }
 
     private fun getWinningPlayer(): String {
         val board = state.map { it.toList() }
@@ -227,11 +235,12 @@ class Connect4Board(
 
     override fun toString(): String {
         val builder = StringBuilder()
-        builder.append('\n')
+        builder.append("\n\n")
         for (row in MAX_COLUMN_HEIGHT - 1 downTo 0) {
             formatRow(builder, getRow(row))
         }
-        builder.append("===================== --> ${getGameResult()}\n")
+        builder.append("=====================\n")
+        builder.append(" 0  1  2  3  4  5  6  --> $gameResult\n")
 
         return builder.toString()
     }
