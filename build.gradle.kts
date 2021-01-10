@@ -18,9 +18,6 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
 
-    // Guava
-    implementation("com.google.guava:guava:30.1-jre")
-
     // Deeplearning4J
     implementation("org.deeplearning4j:deeplearning4j-core:1.0.0-beta7")
     implementation("org.nd4j:nd4j-native-platform:1.0.0-beta7")
