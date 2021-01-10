@@ -31,4 +31,4 @@ Status:
 
 ## License
 
-MIT License (see also [LICENSE](LICENSE))
+Apache License 2.0 (see also [LICENSE](LICENSE))
