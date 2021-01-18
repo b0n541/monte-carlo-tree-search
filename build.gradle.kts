@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2-native-mt")
 
     // Deeplearning4J
     implementation("org.deeplearning4j:deeplearning4j-core:1.0.0-beta7")
