@@ -24,8 +24,9 @@ Status:
 - Schwimmen 🗓 (https://de.wikipedia.org/wiki/Schwimmen_(Kartenspiel))
 - Skat 🚧 (https://en.wikipedia.org/wiki/Skat_(card_game))
 
-## Simulation Environment
+## Gameplay/Simulation Environment
 
+- UIs for each game 🗓
 - Training with Selfplay 🗓
 - Elo Rating 🗓 (https://en.wikipedia.org/wiki/Elo_rating_system)
 - Tournaments 🗓
