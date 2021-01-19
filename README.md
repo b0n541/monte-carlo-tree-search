@@ -18,10 +18,11 @@ Status:
 ## Games
 
 - Tic Tac Toe ✅
-- Skat 🚧
 - Connect 4 ✅ (https://en.wikipedia.org/wiki/Connect_Four)
 - Mau Mau 🗓 (https://en.wikipedia.org/wiki/Mau-Mau_(card_game))
+- Uno 🗓 (https://en.wikipedia.org/wiki/Uno_(card_game))
 - Schwimmen 🗓 (https://de.wikipedia.org/wiki/Schwimmen_(Kartenspiel))
+- Skat 🚧 (https://en.wikipedia.org/wiki/Skat_(card_game))
 
 ## Simulation Environment
 
