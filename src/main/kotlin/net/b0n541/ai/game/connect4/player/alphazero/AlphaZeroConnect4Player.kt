@@ -46,23 +46,28 @@ class AlphaZeroConnect4Player(playerSymbol: Connect4PlayerSymbol, firstPlayer: C
 
     override fun play(): Connect4Move {
 
+        val possibleMoves = gameState.possibleMoves.map { it.column }
         val input = gameState.networkInputs
         val outputs = network.output(input)
 
         LOG.info("Game value prediction: ${outputs[0]}")
 
+        val movePredictions = outputs[1]
         var bestMove = -1
         var highestMoveValue = Double.MIN_VALUE
         LOG.info("Move prediction:")
-        for (i in 0..6) {
-            var moveValue = outputs[1].getDouble(i)
-            LOG.info("Move $i value: $moveValue.")
-            if (moveValue > highestMoveValue) {
-                highestMoveValue = moveValue
-                bestMove = i
+        for (column in 0..6) {
+            if (possibleMoves.contains(column)) {
+                var moveValue = movePredictions.getDouble(column)
+                LOG.info("Move $column value: $moveValue.")
+                if (moveValue > highestMoveValue) {
+                    highestMoveValue = moveValue
+                    bestMove = column
+                }
             }
         }
         LOG.info("Best move: $bestMove")
+
         return Connect4Move(playerSymbol, bestMove)
     }
 
