@@ -25,7 +25,7 @@ class Tree(gameState: GameState<GameMove>) {
                     val move = it.gameState.lastMove
                     val visits = it.visits
                     val scores = it.totalScores
-                    LOG.info("Move {} got visits {} and scores {}", move, visits, scores)
+                    LOG.info("Move $move got visits $visits and scores $scores")
                     if (it.visits >= highestVisits) {
                         if (visits > highestVisits) {
                             bestMoves.clear()
@@ -35,7 +35,7 @@ class Tree(gameState: GameState<GameMove>) {
                     }
                 }
 
-            LOG.info("Best move(s) {} with highest visits {}", bestMoves, highestVisits)
+            LOG.info("Best move(s) $bestMoves with highest visits $highestVisits")
 
             return bestMoves.random()
         }
