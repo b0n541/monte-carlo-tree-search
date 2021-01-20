@@ -2,10 +2,7 @@ package net.b0n541.ai.game.connect4.player
 
 import net.b0n541.ai.game.connect4.Connect4Move
 import net.b0n541.ai.game.connect4.Connect4PlayerSymbol
-import net.b0n541.ai.mcts.GameMove
-import net.b0n541.ai.mcts.GameState
-import net.b0n541.ai.mcts.MonteCarloTreeSearch
-import net.b0n541.ai.mcts.Tree
+import net.b0n541.ai.mcts.*
 import org.slf4j.LoggerFactory
 import java.time.Duration
 
@@ -27,7 +24,7 @@ class MctsConnect4Player(playerSymbol: Connect4PlayerSymbol, firstPlayer: Connec
     private fun play(tree: Tree, maxRounds: Int) {
         var rounds: Long = 0
         do {
-            MonteCarloTreeSearch.run(tree, 1)
+            MonteCarloTreeSearch.run(tree, 1, RandomPlayoutPolicy())
             rounds++
         } while (rounds < maxRounds)
         LOG.info("Tree search finished. Rounds: {}, Tree size: {}", rounds, tree.size)
@@ -37,7 +34,7 @@ class MctsConnect4Player(playerSymbol: Connect4PlayerSymbol, firstPlayer: Connec
         val finishTime = System.nanoTime() + duration.toNanos()
         var rounds: Long = 0
         do {
-            MonteCarloTreeSearch.run(tree, 1)
+            MonteCarloTreeSearch.run(tree, 1, RandomPlayoutPolicy())
             rounds++
         } while (System.nanoTime() < finishTime)
         LOG.info("Tree search finished. Rounds: {}, Tree size: {}", rounds, tree.size)
