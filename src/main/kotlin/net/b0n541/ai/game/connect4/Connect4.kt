@@ -1,6 +1,6 @@
 package net.b0n541.ai.game.connect4
 
-import net.b0n541.ai.game.connect4.player.MctsConnect4Player
+import net.b0n541.ai.game.connect4.player.simple.MctsConnect4Player
 import org.slf4j.LoggerFactory
 
 object Connect4 {
