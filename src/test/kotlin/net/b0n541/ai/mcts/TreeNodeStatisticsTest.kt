@@ -21,7 +21,7 @@ internal class TreeNodeStatisticsTest {
         statistics.addTraversal()
 
         assertThat(statistics.visits).isEqualTo(0)
-        assertThat(statistics.currentTraversals).isEqualTo(1)
+        assertThat(statistics.currentTraversals).isEqualTo(0)
         assertThat(statistics.getTotalScore("A")).isZero
         assertThat(statistics.getTotalScore("B")).isZero
 
@@ -35,7 +35,7 @@ internal class TreeNodeStatisticsTest {
         statistics.addTraversal()
 
         assertThat(statistics.visits).isEqualTo(1)
-        assertThat(statistics.currentTraversals).isEqualTo(1)
+        assertThat(statistics.currentTraversals).isEqualTo(0)
         assertThat(statistics.getTotalScore("A")).isEqualTo(10.0)
         assertThat(statistics.getTotalScore("B")).isZero
 
