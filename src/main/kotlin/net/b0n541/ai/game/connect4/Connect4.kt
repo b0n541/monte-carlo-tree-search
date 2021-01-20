@@ -1,5 +1,6 @@
 package net.b0n541.ai.game.connect4
 
+import net.b0n541.ai.game.connect4.player.alphazero.AlphaZeroConnect4Player
 import net.b0n541.ai.game.connect4.player.simple.MctsConnect4Player
 import org.slf4j.LoggerFactory
 
@@ -10,7 +11,7 @@ object Connect4 {
     @JvmStatic
     fun playGame() {
         var gameState = Connect4GameState(Connect4PlayerSymbol.O)
-        val noughtsPlayer = MctsConnect4Player(Connect4PlayerSymbol.O, Connect4PlayerSymbol.O)
+        val noughtsPlayer = AlphaZeroConnect4Player(Connect4PlayerSymbol.O, Connect4PlayerSymbol.O)
         val crossesPlayer = MctsConnect4Player(Connect4PlayerSymbol.X, Connect4PlayerSymbol.O)
 
         LOG.info(gameState.toString())
