@@ -177,8 +177,12 @@ internal class Connect4BoardTest {
 
         val newBoard2 = newBoard.dropPiece(Connect4Move(Connect4PlayerSymbol.X, 0))
 
+        assertThat(newBoard.nextPlayer).isEqualTo(Connect4PlayerSymbol.X)
+        assertThat(newBoard.getColumn(0)).isEqualTo(listOf("O", " ", " ", " ", " ", " "))
+        assertThat(newBoard.lastMove).isEqualTo(Connect4Move(Connect4PlayerSymbol.O, 0))
         assertThat(newBoard2.nextPlayer).isEqualTo(Connect4PlayerSymbol.O)
         assertThat(newBoard2.getColumn(0)).isEqualTo(listOf("O", "X", " ", " ", " ", " "))
+        assertThat(newBoard2.lastMove).isEqualTo(Connect4Move(Connect4PlayerSymbol.X, 0))
     }
 
     @Test

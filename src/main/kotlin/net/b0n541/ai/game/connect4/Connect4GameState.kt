@@ -1,6 +1,8 @@
 package net.b0n541.ai.game.connect4
 
 import net.b0n541.ai.mcts.GameState
+import org.nd4j.linalg.api.ndarray.INDArray
+import org.nd4j.linalg.factory.Nd4j
 
 class Connect4GameState(
     firstPlayer: Connect4PlayerSymbol = Connect4PlayerSymbol.O,
@@ -44,4 +46,24 @@ class Connect4GameState(
     override fun toString(): String {
         return board.toString()
     }
+
+    val networkInputs: INDArray
+        get() {
+            val result = mutableListOf<Double>()
+
+            for (column in 0..6) {
+                val columnValues = board.getColumn(column).map {
+                    when (it) {
+                        " " -> 0.0
+                        nextPlayer -> 1.0
+                        else -> -1.0
+                    }
+                }
+                result.addAll(columnValues)
+            }
+
+            result.add(1.0)
+
+            return Nd4j.create(result.toDoubleArray(), intArrayOf(1, 43), 'c')
+        }
 }

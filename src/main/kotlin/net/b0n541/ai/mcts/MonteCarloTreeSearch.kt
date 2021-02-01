@@ -6,11 +6,11 @@ object MonteCarloTreeSearch {
     private val LOG = LoggerFactory.getLogger(MonteCarloTreeSearch::class.java)
 
     @JvmStatic
-    fun run(tree: Tree, rounds: Int) {
+    fun run(tree: Tree, rounds: Int, policy: PlayoutPolicy) {
         for (i in 0 until rounds) {
             val leafNode = traverseTree(tree)
             val rollOutNode = expandTree(leafNode)
-            val gameValues = rollOut(rollOutNode)
+            val gameValues = rollOut(rollOutNode, policy)
             backPropagation(rollOutNode, gameValues)
         }
     }
@@ -51,12 +51,11 @@ object MonteCarloTreeSearch {
         return node.children()[0]
     }
 
-    private fun rollOut(node: TreeNode): Map<String, Double> {
+    private fun rollOut(node: TreeNode, policy: PlayoutPolicy): Map<String, Double> {
         node.addTraversal()
         var currentState = node.gameState
         while (!currentState.isGameFinished) {
-            // TODO add other roll out functions
-            currentState = currentState.addMove(currentState.possibleMoves.random())
+            currentState = currentState.addMove(policy.play(currentState))
         }
         return currentState.gameValues
     }

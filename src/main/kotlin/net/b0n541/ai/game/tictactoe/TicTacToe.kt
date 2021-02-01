@@ -1,6 +1,6 @@
 package net.b0n541.ai.game.tictactoe
 
-import net.b0n541.ai.game.tictactoe.player.MctsTicTacToePlayer
+import net.b0n541.ai.game.tictactoe.player.mcts.MctsTicTacToePlayer
 import org.slf4j.LoggerFactory
 
 object TicTacToe {
