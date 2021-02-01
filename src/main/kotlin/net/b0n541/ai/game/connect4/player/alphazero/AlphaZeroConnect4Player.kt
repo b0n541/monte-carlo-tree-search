@@ -21,18 +21,28 @@ class AlphaZeroConnect4Player(playerSymbol: Connect4PlayerSymbol, firstPlayer: C
             .addInputs("input")
             .addLayer(
                 "L1",
-                DenseLayer.Builder().nIn(43).nOut(1024).build(),
+                DenseLayer.Builder()
+                    .nIn(43)
+                    .nOut(1024)
+                    .build(),
                 "input"
             )
             .addLayer(
                 "out1",
-                OutputLayer.Builder().lossFunction(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD).nIn(1024).nOut(2)
+                OutputLayer.Builder()
+                    .nIn(1024)
+                    .lossFunction(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
+                    .nOut(2)
                     .build(),
                 "L1"
             )
             .addLayer(
                 "out2",
-                OutputLayer.Builder().lossFunction(LossFunctions.LossFunction.MSE).nIn(1024).nOut(7).build(),
+                OutputLayer.Builder()
+                    .nIn(1024)
+                    .lossFunction(LossFunctions.LossFunction.MSE)
+                    .nOut(7)
+                    .build(),
                 "L1"
             )
             .setOutputs("out1", "out2")
@@ -55,7 +65,9 @@ class AlphaZeroConnect4Player(playerSymbol: Connect4PlayerSymbol, firstPlayer: C
         val movePredictions = outputs[1]
         var bestMove = -1
         var highestMoveValue = Double.MIN_VALUE
+
         LOG.info("Move prediction:")
+
         for (column in 0..6) {
             if (possibleMoves.contains(column)) {
                 var moveValue = movePredictions.getDouble(column)

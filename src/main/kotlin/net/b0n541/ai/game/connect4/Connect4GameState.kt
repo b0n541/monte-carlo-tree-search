@@ -64,8 +64,6 @@ class Connect4GameState(
 
             result.add(1.0)
 
-            println(result)
-
             return Nd4j.create(result.toDoubleArray(), intArrayOf(1, 43), 'c')
         }
 }

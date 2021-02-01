@@ -121,6 +121,10 @@ class Connect4Board(
         return newBoard
     }
 
+    fun copy() {
+
+    }
+
     val gameResult: Connect4GameResult
         get() {
             return when (getWinningPlayer()) {
