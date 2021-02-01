@@ -1,4 +1,4 @@
-package net.b0n541.ai.game.connect4.player.simple
+package net.b0n541.ai.game.connect4.player.human
 
 import net.b0n541.ai.game.connect4.Connect4Move
 import net.b0n541.ai.game.connect4.Connect4PlayerSymbol

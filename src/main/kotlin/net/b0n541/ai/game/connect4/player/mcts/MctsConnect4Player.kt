@@ -1,27 +1,25 @@
-package net.b0n541.ai.game.tictactoe.player
+package net.b0n541.ai.game.connect4.player.mcts
 
-import net.b0n541.ai.game.tictactoe.PlayerSymbol
-import net.b0n541.ai.game.tictactoe.TicTacToeMove
+import net.b0n541.ai.game.connect4.Connect4Move
+import net.b0n541.ai.game.connect4.Connect4PlayerSymbol
+import net.b0n541.ai.game.connect4.player.AbstractConnect4Player
 import net.b0n541.ai.mcts.*
 import org.slf4j.LoggerFactory
 import java.time.Duration
 
-class MctsTicTacToePlayer(playerSymbol: PlayerSymbol, firstPlayer: PlayerSymbol) :
-    AbstractTicTacToePlayer(playerSymbol, firstPlayer) {
+class MctsConnect4Player(playerSymbol: Connect4PlayerSymbol, firstPlayer: Connect4PlayerSymbol) :
+    AbstractConnect4Player(playerSymbol, firstPlayer) {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(MctsTicTacToePlayer::class.java)
+        private val LOG = LoggerFactory.getLogger(MctsConnect4Player::class.java)
     }
 
-    override fun play(): TicTacToeMove {
+    override fun play(): Connect4Move {
         val tree = Tree(gameState as GameState<GameMove>)
 
         play(tree, Duration.ofSeconds(1))
 
-//        play(tree, 200)
-//        tree.printDigraph()
-
-        return tree.bestMove as TicTacToeMove
+        return tree.bestMove as Connect4Move
     }
 
     private fun play(tree: Tree, maxRounds: Int) {
