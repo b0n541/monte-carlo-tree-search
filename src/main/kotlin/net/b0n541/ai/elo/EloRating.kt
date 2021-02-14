@@ -5,8 +5,7 @@ import kotlin.math.round
 
 class EloRating {
 
-    val playerGames = mutableMapOf<String, Int>()
-    val playerRanking = mutableMapOf<String, Int>()
+    val players = mutableMapOf<String, PlayerRating>()
 
     companion object {
         @JvmStatic
@@ -14,15 +13,28 @@ class EloRating {
             return 1.0 / (1 + 10.0.pow((eloRankPlayerB - eloRankPlayerA) / 400.0))
         }
 
+        private val K_FACTOR = 32
+
         @JvmStatic
         fun newRating(playerRating: Int, gameResults: List<Pair<Int, Double>>): Int {
             val expectedScore = gameResults.map { winPropability(playerRating, it.first) }.sum()
             val actualScore = gameResults.map { it.second }.sum()
-            return round(playerRating + 32 * (actualScore - expectedScore)).toInt()
+            return round(playerRating + K_FACTOR * (actualScore - expectedScore)).toInt()
         }
     }
 
-    fun addGame(gameResult: Double, vararg players: String) {
+    fun addGame(gameResult: Double, players: List<String>) {
 
+        incrementGames(players)
     }
+
+    private fun incrementGames(players: List<String>) {
+        players.forEach {
+            val playerRating = this.players.getOrDefault(it, PlayerRating())
+            
+            this.players[it] = playerRating
+        }
+    }
+
+    data class PlayerRating(val gameCount: Long = 0, val rating: Int = 1000)
 }
