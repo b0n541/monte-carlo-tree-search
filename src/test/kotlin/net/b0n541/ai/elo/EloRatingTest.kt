@@ -11,7 +11,7 @@ internal class EloRatingTest {
 
     companion object {
         @JvmStatic
-        private fun winPropabilities() = listOf(
+        private fun winProbabilities() = listOf(
             Arguments.of(1000, 1000, 0.5),
             Arguments.of(1100, 1000, 0.64),
             Arguments.of(900, 1000, 0.36),
@@ -25,9 +25,9 @@ internal class EloRatingTest {
     }
 
     @ParameterizedTest
-    @MethodSource("winPropabilities")
+    @MethodSource("winProbabilities")
     fun winProbability(eloPlayerA: Int, eloPlayerB: Int, expectedWinProbability: Double) {
-        assertThat(EloRating.winPropability(eloPlayerA, eloPlayerB))
+        assertThat(EloRating.winProbability(eloPlayerA, eloPlayerB))
             .isCloseTo(expectedWinProbability, within(0.001))
     }
 
