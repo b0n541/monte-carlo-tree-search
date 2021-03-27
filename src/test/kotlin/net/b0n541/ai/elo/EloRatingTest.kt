@@ -11,7 +11,7 @@ internal class EloRatingTest {
 
     companion object {
         @JvmStatic
-        private fun winProbabilities() = listOf(
+        private fun expectedScores() = listOf(
             Arguments.of(1000, 1000, 0.5),
             Arguments.of(1100, 1000, 0.64),
             Arguments.of(900, 1000, 0.36),
@@ -25,37 +25,55 @@ internal class EloRatingTest {
     }
 
     @ParameterizedTest
-    @MethodSource("winProbabilities")
-    fun winProbability(eloPlayerA: Int, eloPlayerB: Int, expectedWinProbability: Double) {
-        assertThat(EloRating.winProbability(eloPlayerA, eloPlayerB))
+    @MethodSource("expectedScores")
+    fun `Expected scores`(eloPlayerA: Int, eloPlayerB: Int, expectedWinProbability: Double) {
+        assertThat(expectedScore(eloPlayerA, eloPlayerB))
             .isCloseTo(expectedWinProbability, within(0.001))
     }
 
+    private val gameResultsForLowerRating = listOf(
+        1609 to 0.0,
+        1477 to 0.5,
+        1388 to 1.0,
+        1586 to 1.0,
+        1720 to 0.0
+    )
+
     @Test
-    fun lowerRating() {
-        val playerARating = 1613
-        val gameResults = listOf(
-            1609 to 0.0,
-            1477 to 0.5,
-            1388 to 1.0,
-            1586 to 1.0,
-            1720 to 0.0
-        )
-        assertThat(EloRating.newRating(playerARating, gameResults))
-            .isEqualTo(1601)
+    fun `Lower rating after batch of games`() {
+        assertThat(
+            EloRating(rating = 1613).addGames(gameResultsForLowerRating).rating
+        ).isEqualTo(1601)
     }
 
     @Test
-    fun raiseRating() {
-        val playerARating = 1613
-        val gameResults = listOf(
-            1609 to 1.0,
-            1477 to 1.0,
-            1388 to 0.0,
-            1586 to 0.5,
-            1720 to 0.5
-        )
-        assertThat(EloRating.newRating(playerARating, gameResults))
-            .isEqualTo(1617)
+    fun `Lower rating after single games`() {
+        var eloRating = EloRating(rating = 1613)
+        gameResultsForLowerRating.forEach { eloRating = eloRating.addGame(it.first, it.second) }
+
+        assertThat(eloRating.rating).isEqualTo(1604)
+    }
+
+    private val gameResultsForHigherRating = listOf(
+        1609 to 1.0,
+        1477 to 1.0,
+        1388 to 0.0,
+        1586 to 0.5,
+        1720 to 0.5
+    )
+
+    @Test
+    fun `Higher rating after batch of games`() {
+        assertThat(
+            EloRating(rating = 1613).addGames(gameResultsForHigherRating).rating
+        ).isEqualTo(1617)
+    }
+
+    @Test
+    fun `Higher rating after single games`() {
+        var eloRating = EloRating(rating = 1613)
+        gameResultsForHigherRating.forEach { eloRating = eloRating.addGame(it.first, it.second) }
+
+        assertThat(eloRating.rating).isEqualTo(1616)
     }
 }

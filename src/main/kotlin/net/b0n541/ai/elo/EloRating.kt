@@ -3,25 +3,22 @@ package net.b0n541.ai.elo
 import kotlin.math.pow
 import kotlin.math.round
 
-class EloRating {
+data class EloRating(val gameCount: Long = 0, val rating: Int = 1000) {
 
-    val players = mutableMapOf<String, PlayerRating>()
+    private val kFactor = 32
 
-    companion object {
-        private const val K_FACTOR = 32
-
-        @JvmStatic
-        fun winProbability(eloRankPlayerA: Int, eloRankPlayerB: Int): Double {
-            return 1.0 / (1 + 10.0.pow((eloRankPlayerB - eloRankPlayerA) / 400.0))
-        }
-
-        @JvmStatic
-        fun newRating(playerRating: Int, gameResults: List<Pair<Int, Double>>): Int {
-            val expectedScore = gameResults.map { winProbability(playerRating, it.first) }.sum()
-            val actualScore = gameResults.map { it.second }.sum()
-            return round(playerRating + K_FACTOR * (actualScore - expectedScore)).toInt()
-        }
+    fun addGame(opponentRating: Int, gameResult: Double): EloRating {
+        return addGames(listOf(Pair(opponentRating, gameResult)))
     }
 
-    data class PlayerRating(val gameCount: Long = 0, val rating: Int = 1000)
+    fun addGames(gameResults: List<Pair<Int, Double>>): EloRating {
+        val expectedScore = gameResults.map { expectedScore(rating, it.first) }.sum()
+        val actualScore = gameResults.map { it.second }.sum()
+        val newRating = round(rating + kFactor * (actualScore - expectedScore)).toInt()
+        return EloRating(gameCount + gameResults.size, newRating)
+    }
+}
+
+fun expectedScore(eloRatingPlayerA: Int, eloRatingPlayerB: Int): Double {
+    return 1.0 / (1 + 10.0.pow((eloRatingPlayerB - eloRatingPlayerA) / 400.0))
 }
