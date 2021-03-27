@@ -8,12 +8,12 @@ class EloRating {
     val players = mutableMapOf<String, PlayerRating>()
 
     companion object {
+        private const val K_FACTOR = 32
+
         @JvmStatic
         fun winPropability(eloRankPlayerA: Int, eloRankPlayerB: Int): Double {
             return 1.0 / (1 + 10.0.pow((eloRankPlayerB - eloRankPlayerA) / 400.0))
         }
-
-        private val K_FACTOR = 32
 
         @JvmStatic
         fun newRating(playerRating: Int, gameResults: List<Pair<Int, Double>>): Int {
