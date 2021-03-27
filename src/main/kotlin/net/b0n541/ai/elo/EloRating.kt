@@ -23,13 +23,5 @@ class EloRating {
         }
     }
 
-    private fun incrementGames(players: List<String>) {
-        players.forEach {
-            val playerRating = this.players.getOrDefault(it, PlayerRating())
-
-            this.players[it] = playerRating
-        }
-    }
-
     data class PlayerRating(val gameCount: Long = 0, val rating: Int = 1000)
 }
