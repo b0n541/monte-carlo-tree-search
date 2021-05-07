@@ -1,6 +1,6 @@
 package net.b0n541.ai.game.skat
 
-import net.b0n541.ai.mcts.GameState
+import net.b0n541.ai.game.common.GameState
 
 class SkatGameState(
     val gameType: SkatGameType,

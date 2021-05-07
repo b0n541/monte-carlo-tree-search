@@ -1,6 +1,6 @@
 package net.b0n541.ai.game.connect4
 
-import net.b0n541.ai.mcts.GameState
+import net.b0n541.ai.game.common.GameState
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.factory.Nd4j
 

@@ -1,4 +1,4 @@
-package net.b0n541.ai.mcts
+package net.b0n541.ai.game.common
 
 /**
  * Interface for all game state implementations to be used in the [MonteCarloTreeSearch].

@@ -1,5 +1,6 @@
-package net.b0n541.ai.mcts
+package net.b0n541.ai.tree
 
+import net.b0n541.ai.mcts.TestGameState
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.within
 import org.assertj.core.data.Offset

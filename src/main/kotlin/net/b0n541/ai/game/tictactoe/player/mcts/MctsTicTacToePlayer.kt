@@ -1,9 +1,13 @@
 package net.b0n541.ai.game.tictactoe.player.mcts
 
+import net.b0n541.ai.game.common.GameMove
+import net.b0n541.ai.game.common.GameState
 import net.b0n541.ai.game.tictactoe.PlayerSymbol
 import net.b0n541.ai.game.tictactoe.TicTacToeMove
 import net.b0n541.ai.game.tictactoe.player.AbstractTicTacToePlayer
-import net.b0n541.ai.mcts.*
+import net.b0n541.ai.mcts.MonteCarloTreeSearch
+import net.b0n541.ai.mcts.RandomPlayoutPolicy
+import net.b0n541.ai.tree.Tree
 import org.slf4j.LoggerFactory
 import java.time.Duration
 

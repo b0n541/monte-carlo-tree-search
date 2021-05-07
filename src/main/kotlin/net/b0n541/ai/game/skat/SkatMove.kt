@@ -1,6 +1,6 @@
 package net.b0n541.ai.game.skat
 
-import net.b0n541.ai.mcts.GameMove
+import net.b0n541.ai.game.common.GameMove
 
 data class SkatMove(val player: PlayerPosition, val card: OpenCard) : GameMove {
 

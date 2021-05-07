@@ -1,5 +1,7 @@
-package net.b0n541.ai.mcts
+package net.b0n541.ai.tree
 
+import net.b0n541.ai.game.common.GameMove
+import net.b0n541.ai.game.common.GameState
 import org.slf4j.LoggerFactory
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.math.ln

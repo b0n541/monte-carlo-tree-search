@@ -1,6 +1,6 @@
 package net.b0n541.ai.game.tictactoe
 
-import net.b0n541.ai.mcts.GameState
+import net.b0n541.ai.game.common.GameState
 import java.util.function.Consumer
 
 class TicTacToeGameState(firstPlayer: PlayerSymbol) : GameState<TicTacToeMove> {
@@ -32,7 +32,7 @@ class TicTacToeGameState(firstPlayer: PlayerSymbol) : GameState<TicTacToeMove> {
                 TicTacToeGameResult.X_WON -> 0.0
                 else -> 0.5
             }
-            
+
             return mapOf(
                 PlayerSymbol.O.toString() to playerOResult,
                 PlayerSymbol.X.toString() to 1.0 - playerOResult

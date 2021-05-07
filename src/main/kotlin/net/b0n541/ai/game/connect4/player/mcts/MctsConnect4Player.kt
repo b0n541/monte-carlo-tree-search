@@ -1,9 +1,13 @@
 package net.b0n541.ai.game.connect4.player.mcts
 
+import net.b0n541.ai.game.common.GameMove
+import net.b0n541.ai.game.common.GameState
 import net.b0n541.ai.game.connect4.Connect4Move
 import net.b0n541.ai.game.connect4.Connect4PlayerSymbol
 import net.b0n541.ai.game.connect4.player.AbstractConnect4Player
-import net.b0n541.ai.mcts.*
+import net.b0n541.ai.mcts.MonteCarloTreeSearch
+import net.b0n541.ai.mcts.RandomPlayoutPolicy
+import net.b0n541.ai.tree.Tree
 import org.slf4j.LoggerFactory
 import java.time.Duration
 

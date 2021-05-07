@@ -1,7 +1,9 @@
 package net.b0n541.ai.game.tictactoe
 
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -63,19 +65,20 @@ internal class TicTacToeBoardTest {
         )
     }
 
-    @ParameterizedTest
-    @MethodSource("provideWinningMoves")
-    fun winningGames(moves: List<TicTacToeMove>, expectedResult: TicTacToeGameResult?) {
-        val board = TicTacToeBoard(PlayerSymbol.X)
-        for ((playerSymbol, row, column) in moves) {
-            board.addMove(TicTacToeMove(playerSymbol, row, column))
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class WinningGames() {
+        @ParameterizedTest
+        @MethodSource("provideWinningMoves")
+        fun winningGames(moves: List<TicTacToeMove>, expectedResult: TicTacToeGameResult?) {
+            val board = TicTacToeBoard(PlayerSymbol.X)
+            for ((playerSymbol, row, column) in moves) {
+                board.addMove(TicTacToeMove(playerSymbol, row, column))
+            }
+            Assertions.assertThat(board.isFinished).isTrue
+            Assertions.assertThat(board.gameResult).isEqualTo(expectedResult)
         }
-        Assertions.assertThat(board.isFinished).isTrue
-        Assertions.assertThat(board.gameResult).isEqualTo(expectedResult)
-    }
 
-    companion object {
-        @JvmStatic
         private fun provideWinningMoves(): Stream<Arguments> {
             return Stream.of( // win in a row
                 Arguments.of(

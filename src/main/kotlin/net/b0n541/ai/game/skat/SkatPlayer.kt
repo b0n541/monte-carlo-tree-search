@@ -1,6 +1,6 @@
 package net.b0n541.ai.game.skat
 
-import net.b0n541.ai.mcts.GamePlayer
+import net.b0n541.ai.game.common.GamePlayer
 
 class SkatPlayer(val position: PlayerPosition) : GamePlayer<SkatMove> {
 

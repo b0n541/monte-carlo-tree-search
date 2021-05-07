@@ -1,5 +1,7 @@
 package net.b0n541.ai.mcts
 
+import net.b0n541.ai.tree.Tree
+import net.b0n541.ai.tree.TreeNode
 import org.slf4j.LoggerFactory
 
 object MonteCarloTreeSearch {

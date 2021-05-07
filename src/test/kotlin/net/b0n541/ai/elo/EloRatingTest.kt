@@ -2,15 +2,17 @@ package net.b0n541.ai.elo
 
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.within
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 
 internal class EloRatingTest {
-
-    companion object {
-        @JvmStatic
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class ExpectedScores {
         private fun expectedScores() = listOf(
             Arguments.of(1000, 1000, 0.5),
             Arguments.of(1100, 1000, 0.64),
@@ -22,13 +24,13 @@ internal class EloRatingTest {
             Arguments.of(1400, 1000, 0.91),
             Arguments.of(600, 1000, 0.09)
         )
-    }
 
-    @ParameterizedTest
-    @MethodSource("expectedScores")
-    fun `Expected scores`(eloPlayerA: Int, eloPlayerB: Int, expectedWinProbability: Double) {
-        assertThat(expectedScore(eloPlayerA, eloPlayerB))
-            .isCloseTo(expectedWinProbability, within(0.001))
+        @ParameterizedTest
+        @MethodSource("expectedScores")
+        fun `Expected scores`(eloPlayerA: Int, eloPlayerB: Int, expectedWinProbability: Double) {
+            assertThat(expectedScore(eloPlayerA, eloPlayerB))
+                .isCloseTo(expectedWinProbability, within(0.001))
+        }
     }
 
     private val gameResultsForLowerRating = listOf(
@@ -40,14 +42,14 @@ internal class EloRatingTest {
     )
 
     @Test
-    fun `Lower rating after batch of games`() {
+    fun `Lower rating after batch of game`() {
         assertThat(
             EloRating(rating = 1613).addGames(gameResultsForLowerRating).rating
         ).isEqualTo(1601)
     }
 
     @Test
-    fun `Lower rating after single games`() {
+    fun `Lower rating after single game`() {
         var eloRating = EloRating(rating = 1613)
         gameResultsForLowerRating.forEach { eloRating = eloRating.addGame(it.first, it.second) }
 

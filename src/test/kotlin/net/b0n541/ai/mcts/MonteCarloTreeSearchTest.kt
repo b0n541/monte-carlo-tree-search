@@ -1,5 +1,6 @@
 package net.b0n541.ai.mcts
 
+import net.b0n541.ai.tree.Tree
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test

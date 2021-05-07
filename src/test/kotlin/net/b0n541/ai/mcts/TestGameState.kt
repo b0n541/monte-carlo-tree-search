@@ -1,5 +1,8 @@
 package net.b0n541.ai.mcts
 
+import net.b0n541.ai.game.common.GameMove
+import net.b0n541.ai.game.common.GameState
+
 internal class TestGameState(override val players: List<String>) : GameState<GameMove> {
     private val moves: MutableList<GameMove> = mutableListOf()
 

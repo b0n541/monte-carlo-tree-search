@@ -1,4 +1,4 @@
-package net.b0n541.ai.mcts
+package net.b0n541.ai.tree
 
 class TreeNodeStatistics(players: List<String>) {
     private val totalScores: MutableMap<String, Double> = mutableMapOf()

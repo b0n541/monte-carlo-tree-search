@@ -1,9 +1,9 @@
 package net.b0n541.ai.game.connect4.player
 
+import net.b0n541.ai.game.common.GamePlayer
 import net.b0n541.ai.game.connect4.Connect4GameState
 import net.b0n541.ai.game.connect4.Connect4Move
 import net.b0n541.ai.game.connect4.Connect4PlayerSymbol
-import net.b0n541.ai.mcts.GamePlayer
 
 abstract class AbstractConnect4Player(
     val playerSymbol: Connect4PlayerSymbol,

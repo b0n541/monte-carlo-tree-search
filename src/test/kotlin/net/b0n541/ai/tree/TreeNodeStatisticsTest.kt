@@ -1,4 +1,4 @@
-package net.b0n541.ai.mcts
+package net.b0n541.ai.tree
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
