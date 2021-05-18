@@ -10,6 +10,9 @@ class TicTacToe(val noughtsPlayer: TicTacToePlayer, val crossesPlayer: TicTacToe
 
     fun play() {
         var nextPlayer = TicTacToePlayerSymbol.O
+        noughtsPlayer.startNewGame(TicTacToePlayerSymbol.O, TicTacToePlayerSymbol.O)
+        crossesPlayer.startNewGame(TicTacToePlayerSymbol.X, TicTacToePlayerSymbol.O)
+
         do {
             LOG.info("Next player: {}", nextPlayer)
             var move: TicTacToeMove? = null

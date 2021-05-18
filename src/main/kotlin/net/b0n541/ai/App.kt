@@ -10,14 +10,14 @@ object App {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        //TicTacToe.playGame()
-        //Connect4.playGame()
+//        TicTacToe(noughtsPlayer = RandomTicTacToePlayer(), crossesPlayer = MctsTicTacToePlayer()).play()
+//        Connect4(noughtsPlayer = RandomConnect4Player(), crossesPlayer = MctsConnect4Player()).play()
         //Skat.playGame()
 
         val tournament = TicTacToeTournament(listOf(RandomTicTacToePlayer(), MctsTicTacToePlayer()))
-
         tournament.run()
 
+        LOG.info("Final ranking:")
         println(tournament.getScores())
     }
 }

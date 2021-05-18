@@ -7,8 +7,10 @@ class Connect4(val noughtsPlayer: Connect4Player, val crossesPlayer: Connect4Pla
 
     private val LOG = LoggerFactory.getLogger(Connect4::class.java)
 
-    fun playGame() {
+    fun play() {
         var gameState = Connect4GameState()
+        noughtsPlayer.startNewGame(Connect4PlayerSymbol.O, Connect4PlayerSymbol.O)
+        crossesPlayer.startNewGame(Connect4PlayerSymbol.X, Connect4PlayerSymbol.O)
 
         LOG.info(gameState.toString())
 
