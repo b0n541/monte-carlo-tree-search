@@ -16,7 +16,6 @@ object App {
 
         val tournament = TicTacToeTournament(listOf(RandomTicTacToePlayer(), MctsTicTacToePlayer()))
         tournament.run()
-
         LOG.info("Final ranking:")
         println(tournament.getScores())
     }
