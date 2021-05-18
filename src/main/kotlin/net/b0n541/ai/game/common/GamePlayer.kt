@@ -1,10 +1,12 @@
 package net.b0n541.ai.game.common
 
-interface GamePlayer<M : GameMove> {
+interface GamePlayer<S : PlayerSymbol, M : GameMove> {
 
-    fun toShortString(): String
+    fun startNewGame(playerSymbol: S, firstPlayer: S)
 
     fun play(): M
 
     fun addMove(move: M)
+
+    fun toShortString(): String
 }

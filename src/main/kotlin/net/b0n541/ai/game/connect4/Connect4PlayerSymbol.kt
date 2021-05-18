@@ -1,5 +1,7 @@
 package net.b0n541.ai.game.connect4
 
-enum class Connect4PlayerSymbol {
+import net.b0n541.ai.game.common.PlayerSymbol
+
+enum class Connect4PlayerSymbol : PlayerSymbol {
     O, X
 }

@@ -48,14 +48,14 @@ object TicTacToeRules {
         return noughts or crosses and FULL_FIELD == FULL_FIELD
     }
 
-    fun getPossibleMoves(player: PlayerSymbol, noughts: Int, crosses: Int): List<TicTacToeMove> {
+    fun getPossibleMoves(ticTacToePlayer: TicTacToePlayerSymbol, noughts: Int, crosses: Int): List<TicTacToeMove> {
         val freeCells = (noughts or crosses and FULL_FIELD).inv()
         val result: MutableList<TicTacToeMove> = ArrayList()
         for (row in 0..2) {
             for (column in 0..2) {
                 val free = freeCells and (0x1 shl row * 3 + column) != 0
                 if (free) {
-                    result.add(TicTacToeMove(player, row, column))
+                    result.add(TicTacToeMove(ticTacToePlayer, row, column))
                 }
             }
         }

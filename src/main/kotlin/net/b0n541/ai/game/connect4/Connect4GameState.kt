@@ -4,10 +4,7 @@ import net.b0n541.ai.game.common.GameState
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.factory.Nd4j
 
-class Connect4GameState(
-    firstPlayer: Connect4PlayerSymbol = Connect4PlayerSymbol.O,
-    private val board: Connect4Board = Connect4Board(nextPlayer = firstPlayer)
-) : GameState<Connect4Move> {
+class Connect4GameState(val board: Connect4Board = Connect4Board()) : GameState<Connect4Move> {
 
     private constructor(oldBoard: Connect4Board, move: Connect4Move) : this(board = oldBoard.dropPiece(move))
 

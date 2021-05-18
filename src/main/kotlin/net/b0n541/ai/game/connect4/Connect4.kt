@@ -1,18 +1,14 @@
 package net.b0n541.ai.game.connect4
 
-import net.b0n541.ai.game.connect4.player.mcts.MctsConnect4Player
-import net.b0n541.ai.game.connect4.player.random.RandomConnect4Player
+import net.b0n541.ai.game.connect4.player.Connect4Player
 import org.slf4j.LoggerFactory
 
-object Connect4 {
+class Connect4(val noughtsPlayer: Connect4Player, val crossesPlayer: Connect4Player) {
 
     private val LOG = LoggerFactory.getLogger(Connect4::class.java)
 
-    @JvmStatic
     fun playGame() {
-        var gameState = Connect4GameState(Connect4PlayerSymbol.O)
-        val noughtsPlayer = MctsConnect4Player(Connect4PlayerSymbol.O, Connect4PlayerSymbol.O)
-        val crossesPlayer = RandomConnect4Player(Connect4PlayerSymbol.X, Connect4PlayerSymbol.O)
+        var gameState = Connect4GameState()
 
         LOG.info(gameState.toString())
 

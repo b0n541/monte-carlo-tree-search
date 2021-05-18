@@ -9,9 +9,9 @@ object Skat {
     @JvmStatic
     fun playGame() {
         val players = mapOf(
-            PlayerPosition.FOREHAND to SkatPlayer(PlayerPosition.FOREHAND),
-            PlayerPosition.MIDDLEHAND to SkatPlayer(PlayerPosition.MIDDLEHAND),
-            PlayerPosition.REARHAND to SkatPlayer(PlayerPosition.REARHAND)
+            PlayerPosition.FOREHAND to SkatPlayer(),
+            PlayerPosition.MIDDLEHAND to SkatPlayer(),
+            PlayerPosition.REARHAND to SkatPlayer()
         )
 
         var gameState = SkatGameState(SkatGameType.CLUBS, PlayerPosition.FOREHAND, PlayerPosition.FOREHAND)

@@ -2,31 +2,36 @@ package net.b0n541.ai.game.tictactoe
 
 import org.slf4j.LoggerFactory
 
-class TicTacToeBoard(val firstPlayer: PlayerSymbol) {
-    private val board = listOf(
-        mutableListOf<PlayerSymbol?>(null, null, null),
-        mutableListOf<PlayerSymbol?>(null, null, null),
-        mutableListOf<PlayerSymbol?>(null, null, null)
-    )
+class TicTacToeBoard(firstPlayer: TicTacToePlayerSymbol) {
+
+    companion object {
+        private val LOG = LoggerFactory.getLogger(TicTacToeBoard::class.java)
+    }
+
+    var nextTicTacToePlayer: TicTacToePlayerSymbol
+        private set
+
+    init {
+        nextTicTacToePlayer = firstPlayer
+    }
 
     private var noughts = 0
     private var crosses = 0
 
-    var nextPlayer: PlayerSymbol
-        private set
-
+    private val board = listOf(
+        mutableListOf<TicTacToePlayerSymbol?>(null, null, null),
+        mutableListOf<TicTacToePlayerSymbol?>(null, null, null),
+        mutableListOf<TicTacToePlayerSymbol?>(null, null, null)
+    )
     private val moves: MutableList<TicTacToeMove> = mutableListOf()
-    fun moves() = moves.toList()
 
     private var noughtsWon = false
     private var crossesWon = false
     private var isDraw = false
 
-    init {
-        nextPlayer = firstPlayer
-    }
+    fun moves() = moves.toList()
 
-    operator fun get(row: Int, column: Int): PlayerSymbol? {
+    operator fun get(row: Int, column: Int): TicTacToePlayerSymbol? {
         return board[row][column]
     }
 
@@ -38,7 +43,7 @@ class TicTacToeBoard(val firstPlayer: PlayerSymbol) {
         get() = if (isFinished) {
             emptyList()
         } else {
-            TicTacToeRules.getPossibleMoves(nextPlayer, noughts, crosses)
+            TicTacToeRules.getPossibleMoves(nextTicTacToePlayer, noughts, crosses)
         }
 
     fun addMove(move: TicTacToeMove) {
@@ -49,12 +54,12 @@ class TicTacToeBoard(val firstPlayer: PlayerSymbol) {
     private fun addMoveInternal(move: TicTacToeMove) {
         require(board[move.row][move.column] == null) { "Board position already occupied." }
 
-        board[move.row][move.column] = move.playerSymbol
-        updateNoughtsAndCrosses(move.playerSymbol, move.row, move.column)
+        board[move.row][move.column] = move.ticTacToePlayerSymbol
+        updateNoughtsAndCrosses(move.ticTacToePlayerSymbol, move.row, move.column)
         moves.add(move)
-        if (move.playerSymbol == PlayerSymbol.O) {
+        if (move.ticTacToePlayerSymbol == TicTacToePlayerSymbol.O) {
             noughtsWon = TicTacToeRules.hasWon(noughts)
-        } else if (move.playerSymbol == PlayerSymbol.X) {
+        } else if (move.ticTacToePlayerSymbol == TicTacToePlayerSymbol.X) {
             crossesWon = TicTacToeRules.hasWon(crosses)
         }
         if (TicTacToeRules.isBoardFull(noughts, crosses)) {
@@ -63,18 +68,18 @@ class TicTacToeBoard(val firstPlayer: PlayerSymbol) {
     }
 
     private fun switchPlayer() {
-        if (nextPlayer == PlayerSymbol.O) {
-            nextPlayer = PlayerSymbol.X
-        } else if (nextPlayer == PlayerSymbol.X) {
-            nextPlayer = PlayerSymbol.O
+        if (nextTicTacToePlayer == TicTacToePlayerSymbol.O) {
+            nextTicTacToePlayer = TicTacToePlayerSymbol.X
+        } else if (nextTicTacToePlayer == TicTacToePlayerSymbol.X) {
+            nextTicTacToePlayer = TicTacToePlayerSymbol.O
         }
     }
 
-    private fun updateNoughtsAndCrosses(playerSymbol: PlayerSymbol?, row: Int, column: Int) {
+    private fun updateNoughtsAndCrosses(ticTacToePlayerSymbol: TicTacToePlayerSymbol?, row: Int, column: Int) {
         val bitPosition = row * 3 + column
-        if (playerSymbol == PlayerSymbol.O) {
+        if (ticTacToePlayerSymbol == TicTacToePlayerSymbol.O) {
             noughts = noughts or (0x1 shl bitPosition)
-        } else if (playerSymbol == PlayerSymbol.X) {
+        } else if (ticTacToePlayerSymbol == TicTacToePlayerSymbol.X) {
             crosses = crosses or (0x1 shl bitPosition)
         }
     }
@@ -108,9 +113,5 @@ class TicTacToeBoard(val firstPlayer: PlayerSymbol) {
             }
         }
         return builder.toString()
-    }
-
-    companion object {
-        private val LOG = LoggerFactory.getLogger(TicTacToeBoard::class.java)
     }
 }

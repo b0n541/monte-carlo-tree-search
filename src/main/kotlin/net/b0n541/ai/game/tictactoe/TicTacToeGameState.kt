@@ -3,19 +3,19 @@ package net.b0n541.ai.game.tictactoe
 import net.b0n541.ai.game.common.GameState
 import java.util.function.Consumer
 
-class TicTacToeGameState(firstPlayer: PlayerSymbol) : GameState<TicTacToeMove> {
+class TicTacToeGameState() : GameState<TicTacToeMove> {
 
-    private val board: TicTacToeBoard = TicTacToeBoard(firstPlayer)
+    private val board = TicTacToeBoard(TicTacToePlayerSymbol.O)
 
-    private constructor(oldBoard: TicTacToeBoard, nextMove: TicTacToeMove) : this(oldBoard.firstPlayer) {
+    private constructor(oldBoard: TicTacToeBoard, nextMove: TicTacToeMove) : this() {
         oldBoard.moves().forEach(Consumer { move: TicTacToeMove -> board.addMove(move) })
         board.addMove(nextMove)
     }
 
-    override val players: List<String>
-        get() = listOf(PlayerSymbol.O.toString(), PlayerSymbol.X.toString())
+    override val players
+        get() = listOf(TicTacToePlayerSymbol.O.toString(), TicTacToePlayerSymbol.X.toString())
 
-    override val possibleMoves: List<TicTacToeMove>
+    override val possibleMoves
         get() = board.possibleMoves
 
     override fun addMove(move: TicTacToeMove): TicTacToeGameState {
@@ -27,15 +27,15 @@ class TicTacToeGameState(firstPlayer: PlayerSymbol) : GameState<TicTacToeMove> {
 
     override val gameValues: Map<String, Double>
         get() {
-            val playerOResult: Double = when (board.gameResult) {
+            val playerOResult = when (board.gameResult) {
                 TicTacToeGameResult.O_WON -> 1.0
                 TicTacToeGameResult.X_WON -> 0.0
                 else -> 0.5
             }
 
             return mapOf(
-                PlayerSymbol.O.toString() to playerOResult,
-                PlayerSymbol.X.toString() to 1.0 - playerOResult
+                TicTacToePlayerSymbol.O.toString() to playerOResult,
+                TicTacToePlayerSymbol.X.toString() to 1.0 - playerOResult
             )
         }
 
@@ -43,7 +43,7 @@ class TicTacToeGameState(firstPlayer: PlayerSymbol) : GameState<TicTacToeMove> {
         get() = board.moves().last()
 
     override val nextPlayer: String
-        get() = board.nextPlayer.toString()
+        get() = board.nextTicTacToePlayer.toString()
 
     override fun toString(): String {
         return board.format()

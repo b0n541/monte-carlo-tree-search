@@ -2,16 +2,22 @@ package net.b0n541.ai.game.skat
 
 import net.b0n541.ai.game.common.GamePlayer
 
-class SkatPlayer(val position: PlayerPosition) : GamePlayer<SkatMove> {
+class SkatPlayer : GamePlayer<PlayerPosition, SkatMove> {
 
-    private val hand: Hand = Hand()
+    private var playerPosition: PlayerPosition? = null
+    private var hand: Hand = Hand()
+
+    override fun startNewGame(playerPosition: PlayerPosition, firstPlayer: PlayerPosition) {
+        this.playerPosition = playerPosition
+        this.hand = Hand()
+    }
 
     fun takeCards(cards: Set<OpenCard>) {
         hand.takeCards(cards.toList())
     }
 
     override fun play(): SkatMove {
-        return SkatMove(position, playCard())
+        return SkatMove(playerPosition!!, playCard())
     }
 
     private fun playCard(): OpenCard {
