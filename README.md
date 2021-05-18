@@ -40,7 +40,7 @@ Status:
         - Card Games ✅
 - Training with Selfplay 🗓
 - Elo Rating ✅ (https://en.wikipedia.org/wiki/Elo_rating_system)
-- Tournaments 🗓
+- Tournaments 🚧
 
 ## License
 
