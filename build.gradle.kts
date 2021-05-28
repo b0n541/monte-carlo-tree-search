@@ -20,7 +20,7 @@ dependencies {
 
     // Deeplearning4J
     implementation("org.deeplearning4j:deeplearning4j-core:1.0.0-beta7")
-    implementation("org.nd4j:nd4j-native-platform:1.0.0-beta7")
+    implementation("org.nd4j:nd4j-native-platform:1.0.0-M1")
 
     // Logging
     implementation("ch.qos.logback:logback-classic:1.2.3")
