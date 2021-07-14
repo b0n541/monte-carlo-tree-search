@@ -92,4 +92,15 @@ internal class TournamentTest {
             listOf(third, second, first)
         )
     }
+
+    @Test
+    fun `3 player types in 4 player game`() {
+        val first = RandomConnect4Player()
+        val second = MctsConnect4Player()
+        val third = HumanConnect4Player()
+
+        val result = getPlayerCombinations(4, listOf(first, second, third))
+
+        assertThat(result).hasSize(78)
+    }
 }

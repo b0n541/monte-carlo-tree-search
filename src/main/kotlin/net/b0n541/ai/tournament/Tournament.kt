@@ -3,148 +3,89 @@ package net.b0n541.ai.tournament
 import net.b0n541.ai.game.common.GameMove
 import net.b0n541.ai.game.common.GamePlayer
 import net.b0n541.ai.game.common.PlayerSymbol
-import kotlin.math.pow
 
 fun <S : PlayerSymbol, M : GameMove> getPlayerCombinations(
     numberOfPlayerPerGame: Int,
     player: List<GamePlayer<S, M>>
 ): List<List<GamePlayer<S, M>>> {
-    val result = mutableListOf<MutableList<GamePlayer<S, M>>>()
 
-    repeat(numberOfGames(numberOfPlayerPerGame, player.size)) {
-        result.add(mutableListOf())
-    }
+    val tournamentTree = TreeNode(emptyList<GamePlayer<S, M>>())
 
-    // TODO Generalize with tree
-    if (numberOfPlayerPerGame == 2) {
-        if (player.size == 2) {
-            result[0].add(player[0])
-            result[1].add(player[1])
+    addChildren(tournamentTree, player, numberOfPlayerPerGame)
 
-            result[0].add(player[1])
-            result[1].add(player[0])
-        }
-        if (player.size == 3) {
-            result[0].add(player[0])
-            result[1].add(player[0])
-            result[2].add(player[1])
-            result[3].add(player[1])
-            result[4].add(player[2])
-            result[5].add(player[2])
-
-            result[0].add(player[1])
-            result[1].add(player[2])
-            result[2].add(player[0])
-            result[3].add(player[2])
-            result[4].add(player[0])
-            result[5].add(player[1])
-        }
-    }
-    if (numberOfPlayerPerGame == 3) {
-        if (player.size == 2) {
-            result[0].add(player[0])
-            result[1].add(player[0])
-            result[2].add(player[0])
-            result[3].add(player[1])
-            result[4].add(player[1])
-            result[5].add(player[1])
-
-            result[0].add(player[0])
-            result[1].add(player[1])
-            result[2].add(player[1])
-            result[3].add(player[1])
-            result[4].add(player[0])
-            result[5].add(player[0])
-
-            result[0].add(player[1])
-            result[1].add(player[0])
-            result[2].add(player[1])
-            result[3].add(player[0])
-            result[4].add(player[1])
-            result[5].add(player[0])
-        }
-        if (player.size == 3) {
-            result[0].add(player[0])
-            result[1].add(player[0])
-            result[2].add(player[0])
-            result[3].add(player[0])
-            result[4].add(player[0])
-            result[5].add(player[0])
-            result[6].add(player[0])
-            result[7].add(player[0])
-            result[8].add(player[1])
-            result[9].add(player[1])
-            result[10].add(player[1])
-            result[11].add(player[1])
-            result[12].add(player[1])
-            result[13].add(player[1])
-            result[14].add(player[1])
-            result[15].add(player[1])
-            result[16].add(player[2])
-            result[17].add(player[2])
-            result[18].add(player[2])
-            result[19].add(player[2])
-            result[20].add(player[2])
-            result[21].add(player[2])
-            result[22].add(player[2])
-            result[23].add(player[2])
-
-            result[0].add(player[0])
-            result[1].add(player[0])
-            result[2].add(player[1])
-            result[3].add(player[1])
-            result[4].add(player[2])
-            result[5].add(player[2])
-            result[6].add(player[1])
-            result[7].add(player[2])
-            result[8].add(player[1])
-            result[9].add(player[1])
-            result[10].add(player[0])
-            result[11].add(player[0])
-            result[12].add(player[2])
-            result[13].add(player[2])
-            result[14].add(player[0])
-            result[15].add(player[2])
-            result[16].add(player[2])
-            result[17].add(player[2])
-            result[18].add(player[0])
-            result[19].add(player[0])
-            result[20].add(player[1])
-            result[21].add(player[1])
-            result[22].add(player[0])
-            result[23].add(player[1])
-
-            result[0].add(player[1])
-            result[1].add(player[2])
-            result[2].add(player[0])
-            result[3].add(player[1])
-            result[4].add(player[0])
-            result[5].add(player[2])
-            result[6].add(player[2])
-            result[7].add(player[1])
-            result[8].add(player[0])
-            result[9].add(player[2])
-            result[10].add(player[1])
-            result[11].add(player[0])
-            result[12].add(player[1])
-            result[13].add(player[2])
-            result[14].add(player[2])
-            result[15].add(player[0])
-            result[16].add(player[0])
-            result[17].add(player[1])
-            result[18].add(player[2])
-            result[19].add(player[0])
-            result[20].add(player[2])
-            result[21].add(player[1])
-            result[22].add(player[1])
-            result[23].add(player[0])
-        }
-    }
-
-    return result.toList()
+    return tournamentTree.getLeafNodeValues()
 }
 
-private fun numberOfGames(
-    numberOfPlayerPerGame: Int,
-    numberOfPlayerTypes: Int
-) = (numberOfPlayerTypes.toDouble().pow(numberOfPlayerPerGame.toDouble()) - numberOfPlayerTypes).toInt()
+private fun <S : PlayerSymbol, M : GameMove> addChildren(
+    parent: TreeNode<List<GamePlayer<S, M>>>,
+    player: List<GamePlayer<S, M>>,
+    depth: Int
+) {
+    if (depth > 1) {
+        player.forEach {
+            val child = addChild(parent, it)
+            addChildren(child, player, depth - 1)
+        }
+    } else {
+        player.forEach {
+            if (containsNotOnly(parent, it)) {
+                addChild(parent, it)
+            }
+        }
+    }
+}
+
+private fun <M : GameMove, S : PlayerSymbol> addChild(
+    parent: TreeNode<List<GamePlayer<S, M>>>,
+    it: GamePlayer<S, M>
+): TreeNode<List<GamePlayer<S, M>>> {
+    val childPlayer = parent.value.toMutableList() + it
+    val child = TreeNode(childPlayer)
+    parent.addChild(child)
+    return child
+}
+
+private fun <M : GameMove, S : PlayerSymbol> containsNotOnly(
+    parent: TreeNode<List<GamePlayer<S, M>>>,
+    it: GamePlayer<S, M>
+): Boolean {
+    val parentPlayer = parent.value.toMutableSet()
+    parentPlayer.remove(it)
+    return parentPlayer.isNotEmpty()
+}
+
+internal class TreeNode<T>(value: T) {
+    var value: T = value
+    var parent: TreeNode<T>? = null
+
+    var children: MutableList<TreeNode<T>> = mutableListOf()
+
+    fun addChild(node: TreeNode<T>) {
+        children.add(node)
+        node.parent = this
+    }
+
+    fun getLeafNodeValues(): List<T> {
+        val result = mutableListOf<T>()
+
+        children.forEach {
+            result.addAll(getLeafNodeValues(it))
+        }
+
+        return result
+    }
+
+    private fun getLeafNodeValues(parent: TreeNode<T>): List<T> {
+        val result = mutableListOf<T>()
+
+        parent.children.forEach {
+            if (it.children.isEmpty()) {
+                result.add(it.value)
+            } else {
+                result.addAll(getLeafNodeValues(it))
+            }
+        }
+
+        return result
+    }
+}
