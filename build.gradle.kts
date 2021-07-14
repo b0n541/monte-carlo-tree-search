@@ -7,7 +7,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application.
     application
 
-    kotlin("jvm") version "1.5.0"
+    kotlin("jvm") version "1.5.21"
 }
 
 repositories {
@@ -16,11 +16,11 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-native-mt")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt")
 
     // Deeplearning4J
-    implementation("org.deeplearning4j:deeplearning4j-core:1.0.0-beta7")
-    implementation("org.nd4j:nd4j-native-platform:1.0.0-beta7")
+    implementation("org.deeplearning4j:deeplearning4j-core:1.0.0-M1")
+    implementation("org.nd4j:nd4j-native-platform:1.0.0-M1")
 
     // Logging
     implementation("ch.qos.logback:logback-classic:1.2.3")
@@ -29,7 +29,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter:5.7.2")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.2")
-    testImplementation("org.assertj:assertj-core:3.19.0")
+    testImplementation("org.assertj:assertj-core:3.20.2")
 }
 
 application {
