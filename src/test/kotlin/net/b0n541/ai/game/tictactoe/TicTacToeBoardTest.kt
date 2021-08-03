@@ -82,63 +82,63 @@ internal class TicTacToeBoardTest {
         private fun provideWinningMoves(): Stream<Arguments> {
             return Stream.of( // win in a row
                 Arguments.of(
-                    java.util.List.of(
+                    listOf(
                         TicTacToeMove(TicTacToePlayerSymbol.X, 0, 0),
                         TicTacToeMove(TicTacToePlayerSymbol.X, 0, 1),
                         TicTacToeMove(TicTacToePlayerSymbol.X, 0, 2)
                     ), TicTacToeGameResult.X_WON
                 ),
                 Arguments.of(
-                    java.util.List.of(
+                    listOf(
                         TicTacToeMove(TicTacToePlayerSymbol.X, 1, 0),
                         TicTacToeMove(TicTacToePlayerSymbol.X, 1, 1),
                         TicTacToeMove(TicTacToePlayerSymbol.X, 1, 2)
                     ), TicTacToeGameResult.X_WON
                 ),
                 Arguments.of(
-                    java.util.List.of(
+                    listOf(
                         TicTacToeMove(TicTacToePlayerSymbol.X, 2, 0),
                         TicTacToeMove(TicTacToePlayerSymbol.X, 2, 1),
                         TicTacToeMove(TicTacToePlayerSymbol.X, 2, 2)
                     ), TicTacToeGameResult.X_WON
                 ),  // win in a column
                 Arguments.of(
-                    java.util.List.of(
+                    listOf(
                         TicTacToeMove(TicTacToePlayerSymbol.O, 0, 0),
                         TicTacToeMove(TicTacToePlayerSymbol.O, 1, 0),
                         TicTacToeMove(TicTacToePlayerSymbol.O, 2, 0)
                     ), TicTacToeGameResult.O_WON
                 ),
                 Arguments.of(
-                    java.util.List.of(
+                    listOf(
                         TicTacToeMove(TicTacToePlayerSymbol.O, 0, 1),
                         TicTacToeMove(TicTacToePlayerSymbol.O, 1, 1),
                         TicTacToeMove(TicTacToePlayerSymbol.O, 2, 1)
                     ), TicTacToeGameResult.O_WON
                 ),
                 Arguments.of(
-                    java.util.List.of(
+                    listOf(
                         TicTacToeMove(TicTacToePlayerSymbol.O, 0, 2),
                         TicTacToeMove(TicTacToePlayerSymbol.O, 1, 2),
                         TicTacToeMove(TicTacToePlayerSymbol.O, 2, 2)
                     ), TicTacToeGameResult.O_WON
                 ),  // win in a diagonal
                 Arguments.of(
-                    java.util.List.of(
+                    listOf(
                         TicTacToeMove(TicTacToePlayerSymbol.X, 0, 0),
                         TicTacToeMove(TicTacToePlayerSymbol.X, 1, 1),
                         TicTacToeMove(TicTacToePlayerSymbol.X, 2, 2)
                     ), TicTacToeGameResult.X_WON
                 ),
                 Arguments.of(
-                    java.util.List.of(
+                    listOf(
                         TicTacToeMove(TicTacToePlayerSymbol.O, 0, 2),
                         TicTacToeMove(TicTacToePlayerSymbol.O, 1, 1),
                         TicTacToeMove(TicTacToePlayerSymbol.O, 2, 0)
                     ), TicTacToeGameResult.O_WON
                 ),  // draw  game
                 Arguments.of(
-                    java.util.List.of(
+                    listOf(
                         TicTacToeMove(TicTacToePlayerSymbol.X, 0, 0),
                         TicTacToeMove(TicTacToePlayerSymbol.X, 0, 1),
                         TicTacToeMove(TicTacToePlayerSymbol.O, 0, 2),
