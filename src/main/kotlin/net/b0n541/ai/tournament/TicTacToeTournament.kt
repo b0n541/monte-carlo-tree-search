@@ -27,8 +27,8 @@ class TicTacToeTournament(val player: List<TicTacToePlayer>) {
             gameNo++
             LOG.info("Game no. $gameNo")
             val ticTacToe = TicTacToe(
-                noughtsPlayer = gamePlayer[0] as TicTacToePlayer,
-                crossesPlayer = gamePlayer[1] as TicTacToePlayer
+                noughtsPlayer = gamePlayer[0],
+                crossesPlayer = gamePlayer[1]
             )
             ticTacToe.play()
             val gameValues = ticTacToe.getGameValues()
@@ -41,8 +41,4 @@ class TicTacToeTournament(val player: List<TicTacToePlayer>) {
                 crossesRating.addGame(noughtsRating.rating, gameValues[TicTacToePlayerSymbol.X.toString()]!!)
         }
     }
-}
-
-fun permutations(player: List<TicTacToePlayer>, playerCountPerGame: Int): List<List<TicTacToePlayer>> {
-    return listOf()
 }

@@ -4,21 +4,21 @@ import net.b0n541.ai.game.common.GameMove
 import net.b0n541.ai.game.common.GamePlayer
 import net.b0n541.ai.game.common.PlayerSymbol
 
-fun <S : PlayerSymbol, M : GameMove> getPlayerCombinations(
+fun <S : PlayerSymbol, M : GameMove, P : GamePlayer<S, M>> getPlayerCombinations(
     numberOfPlayerPerGame: Int,
-    player: List<GamePlayer<S, M>>
-): List<List<GamePlayer<S, M>>> {
+    player: List<P>
+): List<List<P>> {
 
-    val tournamentTree = TreeNode(emptyList<GamePlayer<S, M>>())
+    val tournamentTree = TreeNode(emptyList<P>())
 
     addChildren(tournamentTree, player, numberOfPlayerPerGame)
 
     return tournamentTree.getLeafNodeValues()
 }
 
-private fun <S : PlayerSymbol, M : GameMove> addChildren(
-    parent: TreeNode<List<GamePlayer<S, M>>>,
-    player: List<GamePlayer<S, M>>,
+private fun <S : PlayerSymbol, M : GameMove, P : GamePlayer<S, M>> addChildren(
+    parent: TreeNode<List<P>>,
+    player: List<P>,
     depth: Int
 ) {
     if (depth > 1) {
@@ -35,19 +35,19 @@ private fun <S : PlayerSymbol, M : GameMove> addChildren(
     }
 }
 
-private fun <M : GameMove, S : PlayerSymbol> addChild(
-    parent: TreeNode<List<GamePlayer<S, M>>>,
-    it: GamePlayer<S, M>
-): TreeNode<List<GamePlayer<S, M>>> {
+private fun <M : GameMove, S : PlayerSymbol, P : GamePlayer<S, M>> addChild(
+    parent: TreeNode<List<P>>,
+    it: P
+): TreeNode<List<P>> {
     val childPlayer = parent.value.toMutableList() + it
     val child = TreeNode(childPlayer)
     parent.addChild(child)
     return child
 }
 
-private fun <M : GameMove, S : PlayerSymbol> containsNotOnly(
-    parent: TreeNode<List<GamePlayer<S, M>>>,
-    it: GamePlayer<S, M>
+private fun <M : GameMove, S : PlayerSymbol, P : GamePlayer<S, M>> containsNotOnly(
+    parent: TreeNode<List<P>>,
+    it: P
 ): Boolean {
     val parentPlayer = parent.value.toMutableSet()
     parentPlayer.remove(it)
