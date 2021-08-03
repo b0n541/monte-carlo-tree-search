@@ -20,9 +20,16 @@ class TicTacToeTournament(val player: List<TicTacToePlayer>) {
         eloRatings.toList().sortedByDescending { (_, value) -> value.rating }.toMap()
 
     fun run() {
-        for (gameNo in 1..10) {
+        val games = getPlayerCombinations(2, player)
+
+        var gameNo = 0
+        for (gamePlayer in games) {
+            gameNo++
             LOG.info("Game no. $gameNo")
-            val ticTacToe = TicTacToe(noughtsPlayer = player[0], crossesPlayer = player[1])
+            val ticTacToe = TicTacToe(
+                noughtsPlayer = gamePlayer[0] as TicTacToePlayer,
+                crossesPlayer = gamePlayer[1] as TicTacToePlayer
+            )
             ticTacToe.play()
             val gameValues = ticTacToe.getGameValues()
             val noughtsRating = eloRatings[player[0].javaClass.name]!!
