@@ -30,3 +30,4 @@ build
 
 # IntelliJ Idea
 .idea
+/out/

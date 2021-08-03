@@ -1,37 +1,37 @@
 package net.b0n541.ai.game.common.card
 
-val TOP_OF_CARD_LINE = " _____ "
+const val TOP_OF_CARD_LINE = " _____ "
 
-val HIDDEN_CARD_LINE = "|\u001B[34m#####\u001B[0m|"
+const val HIDDEN_CARD_LINE = "|\u001B[34m#####\u001B[0m|"
 
-val EMPTY_LINE = "|     |"
-val ONE_SYMBOL_LINE = "|  *  |"
-val TWO_SYMBOLS_LINE = "| * * |"
-val THREE_SYMBOLS_LINE = "|* * *|"
+const val EMPTY_LINE = "|     |"
+const val ONE_SYMBOL_LINE = "|  *  |"
+const val TWO_SYMBOLS_LINE = "| * * |"
+const val THREE_SYMBOLS_LINE = "|* * *|"
 
-val ACE_TOP_LINE = "|A*   |"
-val ACE_BOTTOM_LINE = "|___*A|"
+const val ACE_TOP_LINE = "|A*   |"
+const val ACE_BOTTOM_LINE = "|___*A|"
 
-val KING_TOP_LINE = "|K* WW|"
-val KING_BOTTOM_LINE = "|_***K|"
+const val KING_TOP_LINE = "|K* WW|"
+const val KING_BOTTOM_LINE = "|_***K|"
 
-val QUEEN_TOP_LINE = "|Q* ww|"
-val QUEEN_BOTTOM_LINE = "|_***Q|"
+const val QUEEN_TOP_LINE = "|Q* ww|"
+const val QUEEN_BOTTOM_LINE = "|_***Q|"
 
-val JACK_TOP_LINE = "|J*  w|"
-val JACK_BOTTOM_LINE = "|__**J|"
+const val JACK_TOP_LINE = "|J*  w|"
+const val JACK_BOTTOM_LINE = "|__**J|"
 
-val MALE_HEAD_LINE = "|   {)|"
-val FEMALE_HEAD_LINE = "|   {(|"
+const val MALE_HEAD_LINE = "|   {)|"
+const val FEMALE_HEAD_LINE = "|   {(|"
 
-val TWO_SYMBOLS_BODY_LINE = "|   **|"
-val THREE_SYMBOLS_BODY_LINE = "|  ***|"
+const val TWO_SYMBOLS_BODY_LINE = "|   **|"
+const val THREE_SYMBOLS_BODY_LINE = "|  ***|"
 
-val TEN_TOP_LINE = "|10* *|"
-val TEN_BOTTOM_LINE = "|__*10|"
+const val TEN_TOP_LINE = "|10* *|"
+const val TEN_BOTTOM_LINE = "|__*10|"
 
-val SINGLE_NUMBER_TOP_LINE = "|#*   |"
-val SINGLE_NUMBER_BOTTOM_LINE = "|___*#|"
+const val SINGLE_NUMBER_TOP_LINE = "|#*   |"
+const val SINGLE_NUMBER_BOTTOM_LINE = "|___*#|"
 
 val ACE_CARD = listOf(
     TOP_OF_CARD_LINE,

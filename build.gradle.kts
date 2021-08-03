@@ -12,10 +12,14 @@ plugins {
 
 repositories {
     jcenter()
+    maven {
+        url = uri("https://repo.maven.apache.org/maven2")
+        name = "Maven Central"
+    }
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.21")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt")
 
     // Deeplearning4J
