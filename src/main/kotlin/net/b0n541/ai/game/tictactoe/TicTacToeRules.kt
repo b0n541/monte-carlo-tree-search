@@ -19,9 +19,9 @@ object TicTacToeRules {
         0b000000111, // row 0
         0b000111000, // row 1
         0b111000000, // row 2
-        0b100100100, // column 0
+        0b001001001, // column 0
         0b010010010, // column 1
-        0b001001001, // column 2
+        0b100100100, // column 2
         0b100010001, // diagonal
         0b001010100  // diagonal reversed
     )
@@ -45,11 +45,12 @@ object TicTacToeRules {
 
     @JvmStatic
     fun isBoardFull(noughts: Int, crosses: Int): Boolean {
-        return noughts or crosses and FULL_FIELD == FULL_FIELD
+        return noughts or crosses == FULL_FIELD
     }
 
+    @JvmStatic
     fun getPossibleMoves(ticTacToePlayer: TicTacToePlayerSymbol, noughts: Int, crosses: Int): List<TicTacToeMove> {
-        val freeCells = (noughts or crosses and FULL_FIELD).inv()
+        val freeCells = (noughts or crosses).inv()
         val result: MutableList<TicTacToeMove> = ArrayList()
         for (row in 0..2) {
             for (column in 0..2) {
