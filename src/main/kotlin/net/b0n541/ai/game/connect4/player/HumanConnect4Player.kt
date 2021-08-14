@@ -9,6 +9,6 @@ class HumanConnect4Player : Connect4Player() {
         println("Your move...")
         print("Column: ")
         val column = Scanner(System.`in`).nextInt()
-        return Connect4Move(playerSymbol!!, column)
+        return Connect4Move(playerSymbol, column)
     }
 }

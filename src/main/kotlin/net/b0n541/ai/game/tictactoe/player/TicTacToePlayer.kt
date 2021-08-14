@@ -7,7 +7,7 @@ import net.b0n541.ai.game.tictactoe.TicTacToePlayerSymbol
 
 sealed class TicTacToePlayer : GamePlayer<TicTacToePlayerSymbol, TicTacToeMove> {
 
-    protected var playerSymbol: TicTacToePlayerSymbol? = null
+    protected lateinit var playerSymbol: TicTacToePlayerSymbol
     protected var gameState: TicTacToeGameState = TicTacToeGameState()
 
     override fun startNewGame(

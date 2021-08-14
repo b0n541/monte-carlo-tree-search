@@ -77,7 +77,7 @@ class AlphaZeroConnect4Player : Connect4Player() {
         }
         LOG.info("Best move: $bestMove")
 
-        return Connect4Move(playerSymbol!!, bestMove)
+        return Connect4Move(playerSymbol, bestMove)
     }
 
     companion object {

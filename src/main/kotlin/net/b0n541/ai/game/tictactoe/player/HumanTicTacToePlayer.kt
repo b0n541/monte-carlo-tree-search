@@ -12,6 +12,6 @@ class HumanTicTacToePlayer : TicTacToePlayer() {
         val row = scanner.nextInt()
         print("Column: ")
         val column = scanner.nextInt()
-        return TicTacToeMove(playerSymbol!!, row, column)
+        return TicTacToeMove(playerSymbol, row, column)
     }
 }

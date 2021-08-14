@@ -4,7 +4,7 @@ import net.b0n541.ai.game.common.GamePlayer
 
 class SkatPlayer : GamePlayer<PlayerPosition, SkatMove> {
 
-    private var playerPosition: PlayerPosition? = null
+    private lateinit var playerPosition: PlayerPosition
     private var hand: Hand = Hand()
 
     override fun startNewGame(playerPosition: PlayerPosition, firstPlayer: PlayerPosition) {

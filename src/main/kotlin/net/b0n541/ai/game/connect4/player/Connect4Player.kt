@@ -7,7 +7,7 @@ import net.b0n541.ai.game.connect4.Connect4PlayerSymbol
 
 sealed class Connect4Player : GamePlayer<Connect4PlayerSymbol, Connect4Move> {
 
-    protected var playerSymbol: Connect4PlayerSymbol? = null
+    protected lateinit var playerSymbol: Connect4PlayerSymbol
     protected var gameState: Connect4GameState = Connect4GameState()
 
     override fun startNewGame(playerSymbol: Connect4PlayerSymbol, firstPlayer: Connect4PlayerSymbol) {
