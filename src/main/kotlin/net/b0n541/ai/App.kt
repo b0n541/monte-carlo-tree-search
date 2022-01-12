@@ -14,7 +14,7 @@ object App {
 //        Connect4(noughtsPlayer = RandomConnect4Player(), crossesPlayer = MctsConnect4Player()).play()
         //Skat.playGame()
 
-        val tournament = TicTacToeTournament(listOf(RandomTicTacToePlayer(), MctsTicTacToePlayer()))
+        val tournament = TicTacToeTournament(listOf(RandomTicTacToePlayer(), MctsTicTacToePlayer()), 10)
         tournament.run()
         LOG.info("Final ranking:")
         println(tournament.getScores())

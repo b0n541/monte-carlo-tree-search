@@ -7,7 +7,7 @@ import net.b0n541.ai.game.tictactoe.player.TicTacToePlayer
 import net.b0n541.ai.tournament.elo.EloRating
 import org.slf4j.LoggerFactory
 
-class TicTacToeTournament(val player: List<TicTacToePlayer>) {
+class TicTacToeTournament(val player: List<TicTacToePlayer>, private val rounds: Int) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(MctsTicTacToePlayer::class.java)
@@ -20,25 +20,27 @@ class TicTacToeTournament(val player: List<TicTacToePlayer>) {
         eloRatings.toList().sortedByDescending { (_, value) -> value.rating }.toMap()
 
     fun run() {
-        val games = getPlayerCombinations(2, player)
+        val playerCombinations = getPlayerCombinations(2, player)
 
         var gameNo = 0
-        for (gamePlayer in games) {
-            gameNo++
-            LOG.info("Game no. $gameNo")
-            val ticTacToe = TicTacToe(
-                noughtsPlayer = gamePlayer[0],
-                crossesPlayer = gamePlayer[1]
-            )
-            ticTacToe.play()
-            val gameValues = ticTacToe.getGameValues()
-            val noughtsRating = eloRatings[player[0].javaClass.name]!!
-            val crossesRating = eloRatings[player[1].javaClass.name]!!
+        for (currentRound in 1..rounds) {
+            for (currentGamePlayer in playerCombinations) {
+                gameNo++
+                LOG.info("Game no. $gameNo")
+                val ticTacToe = TicTacToe(
+                    noughtsPlayer = currentGamePlayer[0],
+                    crossesPlayer = currentGamePlayer[1]
+                )
+                ticTacToe.play()
+                val gameValues = ticTacToe.getGameValues()
+                val noughtsRating = eloRatings[currentGamePlayer[0].javaClass.name]!!
+                val crossesRating = eloRatings[currentGamePlayer[1].javaClass.name]!!
 
-            eloRatings[player[0].javaClass.name] =
-                noughtsRating.addGame(crossesRating.rating, gameValues[TicTacToePlayerSymbol.O.toString()]!!)
-            eloRatings[player[1].javaClass.name] =
-                crossesRating.addGame(noughtsRating.rating, gameValues[TicTacToePlayerSymbol.X.toString()]!!)
+                eloRatings[currentGamePlayer[0].javaClass.name] =
+                    noughtsRating.addGame(crossesRating.rating, gameValues[TicTacToePlayerSymbol.O.toString()]!!)
+                eloRatings[currentGamePlayer[1].javaClass.name] =
+                    crossesRating.addGame(noughtsRating.rating, gameValues[TicTacToePlayerSymbol.X.toString()]!!)
+            }
         }
     }
 }
