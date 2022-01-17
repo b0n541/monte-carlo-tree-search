@@ -175,18 +175,29 @@ val CARDS = mapOf(
     Rank.TWO to TWO_CARD,
 )
 
-fun printHand(hand: Hand): String {
+fun printHand(hand: Hand, leftIndent: Int = 0): String {
+    return printHands(listOf(hand), leftIndent = leftIndent)
+}
 
+fun printHands(hands: List<Hand>, leftIndent: Int = 0, blanks: Int = 0): String {
     var result = ""
 
     for (line in 0 until 6) {
-        for (card in hand.cards) {
-            var cardString = ""
-            cardString += when (card) {
-                is HiddenCard -> if (line == 0) TOP_OF_CARD_LINE else HIDDEN_CARD_LINE
-                is OpenCard -> getOpenCardLine(line, card).replace("*", getSuitSymbolInAnsiColor(card.suit))
+        repeat(leftIndent) {
+            result += " "
+        }
+        for (hand in hands) {
+            for (card in hand.cards) {
+                var cardString = ""
+                cardString += when (card) {
+                    is HiddenCard -> if (line == 0) TOP_OF_CARD_LINE else HIDDEN_CARD_LINE
+                    is OpenCard -> getOpenCardLine(line, card).replace("*", getSuitSymbolInAnsiColor(card.suit))
+                }
+                result += "$cardString "
             }
-            result += "$cardString "
+            repeat(blanks) {
+                result += " "
+            }
         }
         result += "\n"
     }

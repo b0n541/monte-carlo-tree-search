@@ -1,7 +1,7 @@
 package net.b0n541.ai.game.common.card
 
 class CardDeck(
-    val cards: List<OpenCard> = listOf(
+    val cards: MutableList<OpenCard> = mutableListOf(
         OpenCard(Suit.CLUBS, Rank.ACE),
         OpenCard(Suit.CLUBS, Rank.KING),
         OpenCard(Suit.CLUBS, Rank.QUEEN),
@@ -36,6 +36,21 @@ class CardDeck(
         OpenCard(Suit.DIAMONDS, Rank.SEVEN)
     )
 ) {
+
+    fun dealRandomCard(): OpenCard {
+        val randomCard = cards.random()
+        cards.remove(randomCard)
+        return randomCard
+    }
+
+    fun dealRandomCards(count: Int): List<OpenCard> {
+        val result = mutableListOf<OpenCard>()
+        repeat(count) {
+            result.add(dealRandomCard())
+        }
+        return result.toList()
+    }
+
     override fun toString(): String {
         return cards.joinToString(separator = " ")
     }
