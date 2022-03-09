@@ -26,7 +26,7 @@ dependencies {
     implementation("org.nd4j:nd4j-native-platform:1.0.0-M2")
 
     // Logging
-    implementation("ch.qos.logback:logback-classic:1.2.10")
+    implementation("ch.qos.logback:logback-classic:1.2.11")
 
     // Test
     testRuntimeOnly("org.junit.jupiter:junit-jupiter:5.8.2")
