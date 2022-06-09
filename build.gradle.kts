@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0")
 
     // Deeplearning4J
     implementation("org.deeplearning4j:deeplearning4j-core:1.0.0-M2")
