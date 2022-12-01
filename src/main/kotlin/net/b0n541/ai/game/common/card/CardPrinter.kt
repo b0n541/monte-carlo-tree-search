@@ -195,15 +195,12 @@ fun printHand(hand: Hand): String {
 }
 
 private fun getSuitSymbolInAnsiColor(suit: Suit): String {
-    var result = ""
-    when (suit) {
-        Suit.SPADES -> result += "\u001B[32m"
-        Suit.HEARTS -> result += "\u001B[31m"
-        Suit.DIAMONDS -> result += "\u001B[33m"
+    return when (suit) {
+        Suit.CLUBS -> suit.symbol
+        Suit.SPADES -> "\u001B[32m" + suit.symbol + "\u001B[0m"
+        Suit.HEARTS -> "\u001B[31m" + suit.symbol + "\u001B[0m"
+        Suit.DIAMONDS -> "\u001B[33m" + suit.symbol + "\u001B[0m"
     }
-    result += suit.symbol + "\u001B[0m"
-
-    return result
 }
 
 fun getOpenCardLine(line: Int, card: OpenCard): String {
