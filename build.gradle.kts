@@ -52,3 +52,6 @@ compileTestKotlin.kotlinOptions {
 val test by tasks.getting(Test::class) {
     useJUnitPlatform()
 }
+
+val wrapper: Wrapper by tasks
+wrapper.gradleVersion = "7.6"
