@@ -54,4 +54,4 @@ val test by tasks.getting(Test::class) {
 }
 
 val wrapper: Wrapper by tasks
-wrapper.gradleVersion = "7.6"
+wrapper.gradleVersion = "8.6"

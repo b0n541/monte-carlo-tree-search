@@ -15,8 +15,8 @@ class OpenCard(val suit: Suit, val rank: Rank) : Card() {
 }
 
 enum class Suit(val symbol: String) {
-    CLUBS("♠"),
-    SPADES("♣"),
+    CLUBS("♣"),
+    SPADES("♠"),
     HEARTS("♥"),
     DIAMONDS("♦");
 
