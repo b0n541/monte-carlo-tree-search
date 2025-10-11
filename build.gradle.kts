@@ -32,7 +32,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter:6.0.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:6.0.0")
-    testImplementation("org.assertj:assertj-core:3.27.4")
+    testImplementation("org.assertj:assertj-core:3.27.6")
 }
 
 application {
