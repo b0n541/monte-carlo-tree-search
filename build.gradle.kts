@@ -29,9 +29,9 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.31")
 
     // Test
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter:6.0.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:6.0.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter:6.0.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:6.0.3")
     testImplementation("org.assertj:assertj-core:3.27.7")
 }
 
